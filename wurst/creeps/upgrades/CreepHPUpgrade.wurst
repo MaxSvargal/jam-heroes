@@ -1,0 +1,11 @@
+package CreepHPUpgrade
+
+import UpgradeObjEditing
+import ObjectIdGenerator
+
+public constant CREEP_HP_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+
+@compiletime function gen()
+  new UpgradeDefinition(CREEP_HP_UPGRADE_ID)
+    ..addEffectHitPointBonusPercent(0.1, 0.1)
+    ..setLevels(100)

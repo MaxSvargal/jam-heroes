@@ -1,0 +1,65 @@
+package HeroBaseDefinition
+
+import UnitObjEditing
+import UnitIds
+import ObjectIds
+
+import MoveToCastle
+
+public class HeroBaseDefinition extends HeroDefinition
+	UnitDefinition onMapUnit
+
+	construct(int origId, int newId, int onMapId)
+		super(newId, origId)
+		setFoodCost(0)
+		setRequirements("")
+		setGoldCost(0)
+		setLumberCost(0)
+		setLevel(100)
+		setStockMaximum(1)
+
+		onMapUnit = new UnitDefinition(onMapId, UnitIds.peasant)
+			..setScalingValue(.8)
+			..setSpeedBase(70)
+			..setAnimationWalkSpeed(400)
+			..setNormalAbilities(commaList(MOVE_TO_CASTLE_ID))
+			..setStructuresBuilt("")
+
+	function setAttack(int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
+		setAttack1DamageBase(damageBase)
+		setAttack1DamageNumberofDice(numberofDice)
+		setAttack1DamageSidesperDie(sidesperDie)
+		setAttack1CooldownTime(cooldownTime)
+	
+	function setDefence(ArmorType armorType, int hitPoints, int defenceBase, int upgradeBonus)
+		setArmorType(armorType)
+		setHitPointsMaximumBase(hitPoints)
+		setDefenseBase(defenceBase)
+		setDefenseUpgradeBonus(upgradeBonus) // Required for defence upgrades
+
+	function setGoldBounty(int base, int numberOfDice, int sideperDie)
+		setGoldBountyAwardedBase(base)
+		setGoldBountyAwardedNumberofDice(numberOfDice)
+		setGoldBountyAwardedSidesperDie(sideperDie)
+
+	function setWalkSpeed(int base, int min, int max)
+		setSpeedBase(base)
+		setSpeedMinimum(min)
+		setSpeedMaximum(max)
+
+	function setColor(int red, int green, int blue)
+		setTintingColorRed(red)
+		setTintingColorGreen(green)
+		setTintingColorBlue(blue)
+
+	override function setModelFile(string data)
+		super.setModelFile(data)
+		onMapUnit.setModelFile(data)
+
+	function setStats(int startingStrength, int startingAgility, int startingIntelligence, real strengthPerLevel, real agilityPerLevel, real intelligencePerLevel)
+		setStartingStrength(startingStrength)
+		setStartingAgility(startingAgility)
+		setStartingIntelligence(startingIntelligence)
+		setStrengthPerLevel(strengthPerLevel)
+		setAgilityPerLevel(agilityPerLevel)
+		setIntelligencePerLevel(intelligencePerLevel)

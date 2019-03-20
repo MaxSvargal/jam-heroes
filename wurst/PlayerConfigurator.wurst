@@ -1,0 +1,147 @@
+package PlayerConfigurator
+
+import ClosureEvents
+import HashMap
+import HashList
+import UnitIds
+
+import Tavern
+import UnitBuildPlaceSmall
+import UnitBuildPlaceLarge
+
+import MoveToCastle
+import BuildingToUnitRelations
+import HeroesList
+
+public class PlayerConfigurator
+	constant player p
+	constant heroGroup = new HashList<unit>()
+	group groupInBattle
+	unit hero
+	unit heroOnMap
+	vec2 selectHeroArea
+	vec2 onGlobalMapPos
+	vec2 castleHeroPoint
+	
+	construct(player pl)
+		p = pl
+		selectHeroArea = p.getStartLocation()
+		initBuildingPlaces()
+		createUnit(p, TAVERN_ID, selectHeroArea, angle(220))
+		p.panCameraTo(selectHeroArea)
+		p.addGold(1000)
+		p.addLumber(1000)
+
+		castleHeroPoint = vec2(14779, -12470)
+		let castleRect = Rect(13115, -13290, 15166, -11460)
+
+		CreateFogModifierRectBJ(true, p, FOG_OF_WAR_VISIBLE, castleRect)
+
+		// store last pos
+		onGlobalMapPos = vec2(-3315, -15100)
+
+		EventListener.add(EVENT_PLAYER_UNIT_SELL) ->
+			onHeroBought(GetSellingUnit(), GetSoldUnit())
+
+		EventListener.add(EVENT_PLAYER_UNIT_SPELL_CAST) ->
+			if GetSpellAbilityId() == MOVE_TO_CASTLE_ID
+				moveToCastle()
+			if GetSpellAbilityId() == MOVE_TO_GLOBAL_MAP_ID
+				moveToGlobalMap()
+				
+	private function onHeroBought(unit selling, unit sold)
+		if selling.getTypeId() == TAVERN_ID and selling.getOwner() == p
+			hero = sold
+			hero
+				..setPos(castleHeroPoint)
+				..addAbility(MOVE_TO_GLOBAL_MAP_ID)
+			p.setCameraPosition(castleHeroPoint)
+			// make hero on map
+			let onMapHero = heroesOnMapAndInBattleRelations.get(hero.getTypeId())
+			heroOnMap = createUnit(p, onMapHero, onGlobalMapPos, angle(220))
+				..hide()
+
+	private function moveToCastle()
+		pauseHeroOnMap(true)
+		hero
+			..setPos(castleHeroPoint)
+			..show()
+			..addAbility(MOVE_TO_GLOBAL_MAP_ID)
+		p.setCameraPosition(castleHeroPoint)
+		heroOnMap.hide()
+		onGlobalMapPos = heroOnMap.getPos()
+		p.selectSingle(hero)
+
+	private function moveToGlobalMap()
+		pauseHeroOnMap(false)
+		hero
+			..hide()
+			..removeAbility(MOVE_TO_GLOBAL_MAP_ID)
+		p.setCameraPosition(onGlobalMapPos)
+		heroOnMap.show()
+		p.selectSingle(heroOnMap)
+
+	function createGroupAtPos(vec2 pos) returns group
+		let allUnits = GetUnitsOfPlayerAll(p)
+		let createdGroup = CreateGroup()
+		for u in allUnits
+			let t = u.getTypeId()
+			if buildingToUnitRelations.has(t)
+				let uId = buildingToUnitRelations.get(t)
+				let nu = createUnit(p, uId, pos, angle(0))
+				p.select(nu)
+				createdGroup.addUnit(nu)
+		return createdGroup
+
+	function startBattleAt(vec2 pos)
+		pauseHeroOnMap(true)
+		onGlobalMapPos = heroOnMap.getPos()
+		hero..setPos(pos)..show()
+		p..setCameraPosition(pos)..selectSingle(hero)
+		groupInBattle = createGroupAtPos(pos)
+
+	function battleVictory()
+		pauseHeroOnMap(false)
+		hero.queueAnimation("Cast")
+		moveToGlobalMap()
+		for u in groupInBattle
+			u.remove()
+
+	function battleDefeat()
+		moveToCastle()
+		hero.revive(castleHeroPoint, true)
+		p.selectSingle(hero)
+		for u in groupInBattle
+			u.remove()
+
+	function pauseHeroOnMap(boolean status)
+		heroOnMap.setInvulnerable(status)
+		if status
+			heroOnMap.pause()
+		else
+			heroOnMap.unpause()
+
+	function initBuildingPlaces()
+		let small = GetUnitsOfPlayerAndTypeId(p, UnitIds.circleofpower)
+		for sm from small
+			let pos = sm.getPos()
+			sm.remove()
+			createUnit(p, UNIT_BUILD_PLACE_SMALL_ID, pos, angle(0))
+		small.destr()
+
+		let large = GetUnitsOfPlayerAndTypeId(p, UnitIds.circleofpowerlarge)
+		for lg from large
+			let pos = lg.getPos()
+			lg.remove()
+			createUnit(p, UNIT_BUILD_PLACE_LARGE_ID, pos, angle(0))
+		large.destr()
+
+	function isGroupAlive() returns boolean
+		var isAnyAlive = false
+		for u in groupInBattle
+			if u.isAlive()
+				isAnyAlive = true
+		return isAnyAlive
+
+	function isHeroAlive() returns boolean
+		return hero.isAlive()

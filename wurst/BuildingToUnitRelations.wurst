@@ -1,0 +1,5 @@
+package BuildingToUnitRelations
+
+import HashMap
+
+public let buildingToUnitRelations = new HashMap<int, int>()

@@ -1,0 +1,9 @@
+package DropTables
+
+import DropTable
+
+import Gloves
+
+public constant commonDropTable = new DropTable()
+  ..addDropItem(ITEM_GLOVES_ID)
+  ..addDropNothing()

@@ -1,0 +1,11 @@
+package CreepDefenceUpgrade
+
+import UpgradeObjEditing
+import ObjectIdGenerator
+
+public constant CREEP_DEFENCE_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+
+@compiletime function gen()
+  new UpgradeDefinition(CREEP_DEFENCE_UPGRADE_ID)
+    ..addEffectApplyDefenseUpgradeBonus()
+    ..setLevels(100)

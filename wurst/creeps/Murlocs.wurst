@@ -1,0 +1,28 @@
+package Murlocs
+
+import UnitIds
+import ObjectIdGenerator
+import AbilityObjEditing
+
+import CreepOnMapDefinition
+import CreepDefinition
+
+public constant MURLOC_ID = compiletime(UNIT_ID_GEN.next())
+public constant MURLOC_WARRIOR_ID = compiletime(UNIT_ID_GEN.next())
+public constant MURLOC_MUTANT_ID = compiletime(UNIT_ID_GEN.next())
+public constant MURLOC_MUTANT_ID_ONMAP = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+  new CreepDefinition(MURLOC_ID, UnitIds.murlocflesheater, 3)
+    ..setAttack(8, 2, 4, 1.3)
+    ..setDefence(ArmorType.Medium, 250, 1, 1)
+
+  new CreepDefinition(MURLOC_WARRIOR_ID, UnitIds.murlochuntsman, 4)
+    ..setAttack(15, 2, 6, 1.2)
+    ..setDefence(ArmorType.Medium, 350, 2, 1)
+
+  new CreepDefinition(MURLOC_MUTANT_ID, UnitIds.murlocmutant, 5)
+    ..setAttack(25, 2, 10, 1.1)
+    ..setDefence(ArmorType.Large, 600, 4, 2)
+
+  new CreepOnMapDefinition(MURLOC_MUTANT_ID_ONMAP, UnitIds.murlocmutant, 5)

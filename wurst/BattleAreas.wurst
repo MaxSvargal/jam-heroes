@@ -1,0 +1,23 @@
+package BattleAreas
+
+class BattleArea
+  rect r
+  vec2 heroStartPoint
+  vec2 enemiesStartPoint
+  construct(rect r, vec2 heroStartPoint, vec2 enemiesStartPoint)
+    this.r = r
+    this.heroStartPoint = heroStartPoint
+    this.enemiesStartPoint = enemiesStartPoint
+
+  function clean()
+    let g = GetUnitsInRectAll(r)
+    let iterator = g.iterator()
+    for u from iterator
+      u.remove()
+    iterator.close()
+    g.destr()
+
+public let firstBattleArea = new BattleArea(
+  Rect(-15400, 13300, -12200, 15200),
+  vec2(-14850, 14200),
+  vec2(-12740, 14300))

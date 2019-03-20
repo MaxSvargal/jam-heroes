@@ -1,0 +1,12 @@
+package Main
+
+import Players
+import CreepsOnMap
+import Multiboard
+
+init
+  initPlayers()
+  new CreepsOnMap()
+  CreateMultiboardBJ(1, 1, "Difficulity")
+    .getItem(0, 0)
+    .setValue("0")

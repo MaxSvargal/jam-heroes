@@ -1,0 +1,52 @@
+package CreepsList
+
+import HashMap
+import LinkedList
+
+import Crabs
+import Murlocs
+import SeaElementals
+
+let creepRegularList = new IterableMap<int, int>()
+	..put(CRAB_CRAWLER_ID, 1)
+	..put(CRAB_LIMBRIPPER_ID, 2)
+	..put(MURLOC_ID, 3)
+	..put(MURLOC_WARRIOR_ID, 4)
+	..put(REEF_ELEMENTAL_ID, 5)
+	..put(SEA_ELEMENTAL_ID, 6)
+
+let creepWarlordsList = new IterableMap<int, int>()
+	..put(CRAB_BEHEMOTH_ID, 3)
+	..put(MURLOC_MUTANT_ID, 5)
+	..put(BLACKWATER_ELEMENTAL_ID, 7)
+
+// Only warlords here
+public let creepsBattleOnMapRelations = new IterableMap<int, int>()
+	..put(CRAB_BEHEMOTH_ID, CRAB_BEHEMOTH_ID_ONMAP)
+	..put(MURLOC_MUTANT_ID, MURLOC_MUTANT_ID_ONMAP)
+	..put(BLACKWATER_ELEMENTAL_ID, BLACKWATER_ELEMENTAL_ID_ONMAP)
+
+
+ function getRandomUnitOfLevel(IterableMap<int, int> hMap, int level, int min, int max) returns int
+	let iterator = hMap.iterator()
+	let minLvl = level + min
+	let maxLvl = level + max
+	let list = new LinkedList<int>()
+	for uId from iterator
+		let lvl = hMap.get(uId)
+		if lvl >= minLvl and lvl <= maxLvl
+			list.add(uId)
+	iterator.close()
+	if list.size() == 0
+		return hMap.get(0)
+	else
+		return list..shuffle().get(0)
+
+public function getRandomWarlordIdOfLevel(int level) returns int
+	return getRandomUnitOfLevel(creepWarlordsList, level, 2, 5)
+
+public function getRandomRegularIdOfLevel(int level) returns int
+	return getRandomUnitOfLevel(creepRegularList, level, 0, 2)
+
+public function getOnMapUnitIdByBattleId(int id) returns int
+	return creepsBattleOnMapRelations.get(id)

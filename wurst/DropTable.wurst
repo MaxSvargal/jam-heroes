@@ -1,0 +1,23 @@
+package DropTable
+
+import HashList
+import LinkedList
+
+public class DropTable
+	LinkedList<group> sourceGroups = new LinkedList<group>()
+	HashList<int> items = new HashList<int>()
+
+	function addDropItem(int itemId)
+		items.add(itemId)
+
+	function addDropNothing()
+		items.add(0)
+
+	function getRandomItem() returns int
+		let i = GetRandomInt(0, items.size() - 1)
+		return items.get(i)
+		
+	function dropRandomItemAtPos(vec2 pos)
+		let itemId = getRandomItem()
+		if itemId != 0
+			createItem(itemId, pos)

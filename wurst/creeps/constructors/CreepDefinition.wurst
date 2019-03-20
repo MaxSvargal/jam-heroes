@@ -1,0 +1,41 @@
+package CreepDefinition
+
+import AbilityObjEditing
+import ObjectIds
+
+import CreepDamageUpgrade
+import CreepDefenceUpgrade
+import CreepHPUpgrade
+
+public class CreepDefinition extends UnitDefinition
+	construct(int newId, int origId, int level)
+		super(newId, origId)
+		setUpgradesUsed(commaList(CREEP_DAMAGE_UPGRADE_ID, CREEP_DEFENCE_UPGRADE_ID, CREEP_HP_UPGRADE_ID))
+		setLevel(level)
+
+	function setAttack(int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
+		setAttack1DamageBase(damageBase)
+		setAttack1DamageNumberofDice(numberofDice)
+		setAttack1DamageSidesperDie(sidesperDie)
+		setAttack1CooldownTime(cooldownTime)
+	
+	function setDefence(ArmorType armorType, int hitPoints, int defenceBase, int upgradeBonus)
+		setArmorType(armorType)
+		setHitPointsMaximumBase(hitPoints)
+		setDefenseBase(defenceBase)
+		setDefenseUpgradeBonus(upgradeBonus) // Required for defence upgrades
+
+	function setGoldBounty(int base, int numberOfDice, int sideperDie)
+		setGoldBountyAwardedBase(base)
+		setGoldBountyAwardedNumberofDice(numberOfDice)
+		setGoldBountyAwardedSidesperDie(sideperDie)
+
+	function setWalkSpeed(int base, int min, int max)
+		setSpeedBase(base)
+		setSpeedMinimum(min)
+		setSpeedMaximum(max)
+
+	function setColor(int red, int green, int blue)
+		setTintingColorRed(red)
+		setTintingColorGreen(green)
+		setTintingColorBlue(blue)

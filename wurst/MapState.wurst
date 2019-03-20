@@ -1,0 +1,30 @@
+package MapState
+
+import HashSet
+import initlater CreepCamp
+
+class MapState
+  int difficalityLevel = 1
+  real increasedLevel = -2.
+  constant creepCampsToRestore = new HashSet<CreepCamp>()
+
+  function getDifficalityLevel() returns int
+    return difficalityLevel
+
+  function setDifficalityLevel(int val)
+    difficalityLevel = val
+
+  function getIncreasedLevel() returns real
+    return increasedLevel
+  
+  function increaseLevel()
+    increasedLevel++
+  
+  function increaseLevel(real increase)
+    increasedLevel += increase
+
+  function addCreepCampToRestoreQueue(CreepCamp creepCamp)
+    creepCampsToRestore.add(creepCamp)
+    
+
+public let mapState = new MapState()

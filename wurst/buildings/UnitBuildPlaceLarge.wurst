@@ -1,0 +1,16 @@
+package UnitBuildPlaceLarge
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+import ObjectIds
+
+import Giant
+
+public constant UNIT_BUILD_PLACE_LARGE_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new BuildingDefinition(UNIT_BUILD_PLACE_LARGE_ID, UnitIds.circleofpowerlarge)
+		..setName("Unit Build Place Large")
+		..setUpgradesTo(commaList(MOUNTAIN_GIANT_ID_BUILDING))
+		..setNormalAbilities("")

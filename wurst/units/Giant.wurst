@@ -1,0 +1,40 @@
+package Giant
+
+import Icons
+import Units
+import UnitIds
+import ObjectIdGenerator
+
+import UnitTowerDefinition
+import BuildingToUnitRelations
+
+public constant MOUNTAIN_GIANT_ID = compiletime(UNIT_ID_GEN.next())
+public constant MOUNTAIN_GIANT_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant HYDRA_ID = compiletime(UNIT_ID_GEN.next())
+public constant HYDRA_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new UnitTowerDefinition(
+		MOUNTAIN_GIANT_ID,
+		MOUNTAIN_GIANT_ID_BUILDING,
+		UnitIds.mountaingiant)
+		..setUnitSize(UnitSize.Big)
+		..setModelFile(Units.mountainGiant1)
+		..setIconGameInterface(Icons.bTNMountainGiant)
+		..setUpgradesTo(HYDRA_ID_BUILDING)
+		..setCost(500, 5)
+
+	new UnitTowerDefinition(
+		HYDRA_ID,
+		HYDRA_ID_BUILDING,
+		UnitIds.hydra)
+		..setUnitSize(UnitSize.Big)
+		..setModelFile(Units.hydra)
+		..setIconGameInterface(Icons.bTNHydra)
+		..setCost(1000, 10)
+
+init
+	buildingToUnitRelations
+		..put(MOUNTAIN_GIANT_ID_BUILDING, MOUNTAIN_GIANT_ID)
+		..put(HYDRA_ID_BUILDING, HYDRA_ID)

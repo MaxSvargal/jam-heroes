@@ -1,0 +1,75 @@
+package UnitTowerDefinition
+
+import UnitIds
+import ObjectIds
+import UnitObjEditing
+import LinkedList
+import StringUtils
+
+enum UnitSize
+	Small
+	Big
+
+public class UnitTowerDefinition extends UnitDefinition
+	BuildingDefinition building
+	int buildingId
+
+	construct(int newId, int buildingId, int origId)
+		super(newId, origId)
+		setBuildTime(1)
+		makeBuilding(buildingId)
+		setUnitSize(UnitSize.Small)
+
+	private function makeBuilding(int buildingId)
+		this.buildingId = buildingId
+		building = new BuildingDefinition(buildingId, UnitIds.scouttower)
+			..setBuildTime(1)
+			..setNormalAbilities("")
+			..setGroundTexture("")
+	
+	override function setModelFile(string data)
+		super.setModelFile(data)
+		building.setModelFile(data)
+	
+	override function setIconGameInterface(string data)
+		super.setIconGameInterface(data)
+		building.setIconGameInterface(data)
+
+	function setUpgradesNone()
+		building.setUpgradesTo("")
+
+	function setUpgradesTo(vararg int ids)
+		let list = new LinkedList<int>()
+		for id in ids
+			list.add(id)
+		let result = list.joinBy((int i) -> i.toRawCode(), ",")
+		destroy list
+		building.setUpgradesTo(result)
+
+	function setCost(int gold, int lumber)
+		building.setGoldCost(gold)
+		building.setLumberCost(lumber)
+
+	function setUnitSize(UnitSize unitSize)
+		switch unitSize
+			case Big
+				building.setPathingMap("\\PathTextures\\8x8default.tga")
+			case Small
+				building.setPathingMap("\\PathTextures\\4x4default.tga")
+
+	function setAttack(int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
+		setAttack1DamageBase(damageBase)
+		setAttack1DamageNumberofDice(numberofDice)
+		setAttack1DamageSidesperDie(sidesperDie)
+		setAttack1CooldownTime(cooldownTime)
+	
+	function setDefence(ArmorType armorType, int hitPoints, int defenceBase, int upgradeBonus)
+		setArmorType(armorType)
+		setHitPointsMaximumBase(hitPoints)
+		setDefenseBase(defenceBase)
+		setDefenseUpgradeBonus(upgradeBonus) // Required for defence upgrades
+
+	function setGoldBounty(int base, int numberOfDice, int sideperDie)
+		setGoldBountyAwardedBase(base)
+		setGoldBountyAwardedNumberofDice(numberOfDice)
+		setGoldBountyAwardedSidesperDie(sideperDie)

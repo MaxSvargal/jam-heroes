@@ -1,0 +1,26 @@
+package MoveToCastle
+
+import ChannelAbilityPreset
+import Icons
+
+public constant MOVE_TO_CASTLE_ID = compiletime(ABIL_ID_GEN.next())
+public constant MOVE_TO_GLOBAL_MAP_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function gen()
+  new AbilityDefinitionTaurenChieftainWarStomp(MOVE_TO_CASTLE_ID)
+    ..setHeroAbility(false)
+    ..presetHotkey("T")
+    ..setName("Move To Castle [T]")
+    ..setManaCost(1, 0)
+    ..presetIcon(Icons.bTNTinyCastle)
+    ..setButtonPositionNormalX(0)
+    ..setButtonPositionNormalY(2)
+
+  new AbilityDefinitionTaurenChieftainWarStomp(MOVE_TO_GLOBAL_MAP_ID)
+    ..setHeroAbility(false)
+    ..presetHotkey("T")
+    ..setName("Move To Global Map [T]")
+    ..setManaCost(1, 0)
+    ..presetIcon(Icons.bTNSpy)
+    ..setButtonPositionNormalX(2)
+    ..setButtonPositionNormalY(1)

@@ -1,0 +1,12 @@
+package CreepDamageUpgrade
+
+import UpgradeObjEditing
+import ObjectIdGenerator
+
+public constant CREEP_DAMAGE_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+
+@compiletime function gen()
+  new UpgradeDefinition(CREEP_DAMAGE_UPGRADE_ID)
+    ..addEffectAttackDamageBonus(10, 10)
+    ..addEffectAttackDiceBonus(1, 1)
+    ..setLevels(100)

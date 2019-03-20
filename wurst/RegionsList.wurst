@@ -1,0 +1,4 @@
+package RegionsList
+
+public let topOfMap = vec2(-3500, 4400)
+public let bottomOfMap = vec2(-3500, -14900)

@@ -1,0 +1,57 @@
+package CreepCamp
+
+import ClosureEvents
+import OrderIds
+import ClosureTimers
+
+import Players
+import MapState
+import CreepCampGroup
+import BattleAreas
+import DropTables
+
+public class CreepCamp
+	vec2 pos
+	CreepCampGroup campGroup
+
+	construct(vec2 initPos)
+		pos = initPos
+		createNewCampGroup()
+		EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
+			if campGroup != null and campGroup.getOnMapUnit() == GetAttacker()
+				execBattle(GetAttackedUnitBJ())
+
+	function createNewCampGroup() // need to make other one instantly?
+		campGroup = new CreepCampGroup(pos)
+
+	function getPos() returns vec2
+		return pos
+
+	function execBattle(unit target)
+		let pl = playersInstances.get(target.getOwner().getId())
+		pl.startBattleAt(firstBattleArea.heroStartPoint)
+
+		let g = campGroup.createGroupAtRect(firstBattleArea.enemiesStartPoint.withRadiusRect(300))
+		g.pointOrderById(Orders.attack, firstBattleArea.heroStartPoint) // TODO: get area by tile under creep
+
+		doPeriodically(2) cb ->
+			if not campGroup.isGroupAlive()
+				g.destr()
+				pl.battleVictory()
+				firstBattleArea.clean()
+				destroy cb
+				destroy campGroup
+				campGroup = null
+				// TODO: drop items on the map and hero needs to move to exit
+				commonDropTable.dropRandomItemAtPos(pl.castleHeroPoint)
+				mapState.increaseLevel(1) // .25 orig
+				mapState.addCreepCampToRestoreQueue(this)
+
+			if not pl.isGroupAlive() and not pl.isHeroAlive()
+				g.destr()
+				pl.battleDefeat()
+				firstBattleArea.clean()
+				destroy cb
+				destroy campGroup
+				campGroup = null
+				// TODO: store current state?

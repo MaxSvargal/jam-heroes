@@ -1,0 +1,5 @@
+package HeroesList
+
+import HashMap
+
+public let heroesOnMapAndInBattleRelations = new HashMap<int, int>()

@@ -1,0 +1,22 @@
+package GromHellscream
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+import Units
+import HeroesList
+import HeroBaseDefinition
+
+public constant GROM_HELLSCREAM_ID = compiletime(HERO_ID_GEN.next())
+public constant GROM_HELLSCREAM_ONMAP_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new HeroBaseDefinition(UnitIds.gromhellscream, GROM_HELLSCREAM_ID, GROM_HELLSCREAM_ONMAP_ID)
+		..setAttack(25, 2, 10, 1.2) // 36 DPS
+		..setDefence(ArmorType.Hero, 200, 3, 2)
+		..setModelFile(Units.hellscream1)
+		..setStats(23, 19, 16, 2, 1.75, 2)
+
+init
+	heroesOnMapAndInBattleRelations
+		..put(GROM_HELLSCREAM_ID, GROM_HELLSCREAM_ONMAP_ID)

@@ -1,0 +1,91 @@
+package Footman
+
+import Icons
+import Units
+import UnitIds
+import ObjectIdGenerator
+
+import UnitTowerDefinition
+import BuildingToUnitRelations
+
+public constant FOOTMAN_ID = compiletime(UNIT_ID_GEN.next())
+public constant FOOTMAN_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant CAPITAN_ID = compiletime(UNIT_ID_GEN.next())
+public constant CAPITAN_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant KNIGHT_ID = compiletime(UNIT_ID_GEN.next())
+public constant KNIGHT_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant BANDIT_ID = compiletime(UNIT_ID_GEN.next())
+public constant BANDIT_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant BANDIT_LORD_ID = compiletime(UNIT_ID_GEN.next())
+public constant BANDIT_LORD_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant SEIGE_ENGINE_ID = compiletime(UNIT_ID_GEN.next())
+public constant SEIGE_ENGINE_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+  new UnitTowerDefinition(
+    FOOTMAN_ID,
+    FOOTMAN_ID_BUILDING,
+    UnitIds.footman)
+    ..setModelFile(Units.footman1)
+    ..setIconGameInterface(Icons.bTNFootman)
+    ..setUpgradesTo(CAPITAN_ID_BUILDING)
+    ..setCost(50, 0)
+
+  new UnitTowerDefinition(
+    CAPITAN_ID,
+    CAPITAN_ID_BUILDING,
+    UnitIds.highelvenswordsman)
+    ..setModelFile(Units.theCaptain1)
+    ..setIconGameInterface(Icons.bTNTheCaptain)
+    ..setUpgradesTo(BANDIT_ID_BUILDING, KNIGHT_ID_BUILDING)
+    ..setCost(100, 1)
+
+  new UnitTowerDefinition(
+    KNIGHT_ID,
+    KNIGHT_ID_BUILDING,
+    UnitIds.knight)
+    ..setModelFile(Units.knight1)
+    ..setIconGameInterface(Icons.bTNKnight)
+    ..setUpgradesTo(SEIGE_ENGINE_ID_BUILDING)
+    ..setCost(200, 2)
+
+  new UnitTowerDefinition(
+    BANDIT_ID,
+    BANDIT_ID_BUILDING,
+    UnitIds.jailorkassan)
+    ..setModelFile(Units.bandit1)
+    ..setIconGameInterface(Icons.bTNBandit)
+    ..setUpgradesTo(BANDIT_LORD_ID_BUILDING)
+    ..setCost(200, 2)
+
+  new UnitTowerDefinition(
+    BANDIT_LORD_ID,
+    BANDIT_LORD_ID_BUILDING,
+    UnitIds.banditlord)
+    ..setModelFile(Units.banditLord1)
+    ..setIconGameInterface(Icons.bTNBandit)
+    ..setUpgradesNone()
+    ..setCost(400, 3)
+
+  new UnitTowerDefinition(
+    SEIGE_ENGINE_ID,
+    SEIGE_ENGINE_ID_BUILDING,
+    UnitIds.siegeengine)
+    ..setModelFile(Units.warWagon)
+    ..setIconGameInterface(Icons.bTNSeigeEngine)
+    ..setUpgradesNone()
+    ..setCost(400, 3)
+
+init
+  buildingToUnitRelations
+    ..put(FOOTMAN_ID_BUILDING, FOOTMAN_ID)
+    ..put(CAPITAN_ID_BUILDING, CAPITAN_ID)
+    ..put(KNIGHT_ID_BUILDING, KNIGHT_ID)
+    ..put(BANDIT_ID_BUILDING, BANDIT_ID)
+    ..put(BANDIT_LORD_ID_BUILDING, BANDIT_LORD_ID)
+    ..put(SEIGE_ENGINE_ID_BUILDING, SEIGE_ENGINE_ID)
