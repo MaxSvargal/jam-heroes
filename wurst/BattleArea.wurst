@@ -1,9 +1,10 @@
-package BattleAreas
+package BattleArea
 
-class BattleArea
+public class BattleArea
   rect r
   vec2 heroStartPoint
   vec2 enemiesStartPoint
+
   construct(rect r, vec2 heroStartPoint, vec2 enemiesStartPoint)
     this.r = r
     this.heroStartPoint = heroStartPoint

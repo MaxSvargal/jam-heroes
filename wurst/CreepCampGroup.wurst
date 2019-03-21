@@ -4,6 +4,7 @@ import LinkedList
 import CreepsList
 import MapState
 import RegionsList
+import CreepCamp
 
 public class CreepCampGroup
 	constant p = players[PLAYER_NEUTRAL_AGGRESSIVE]
@@ -12,8 +13,10 @@ public class CreepCampGroup
 	int onMapWarlordId
 	unit onMapWarlord
 	group units
+	CreepCamp creepCamp
 
-	construct(vec2 pos)
+	construct(CreepCamp creepCamp)
+		let pos = creepCamp.getPos()
 		// get pos distance and set level increased by distance
 		let lvlIncrease = calcLevelIncByDistance(pos)
 		let lvl = mapState.getIncreasedLevel().toInt() + lvlIncrease
@@ -56,6 +59,5 @@ public class CreepCampGroup
 
 	ondestroy
 		onMapWarlord.kill()
-		destroy unitIds // TODO: CHECK
-		// destroy this
-
+		units.destr()
+		destroy unitIds

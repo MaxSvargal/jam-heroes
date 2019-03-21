@@ -1,0 +1,41 @@
+package Battle
+
+import OrderIds
+import ClosureTimers
+import BattleArea
+import Players
+import DropTables
+import CreepCampGroup
+import CreepCamp
+
+public class Battle
+	construct(player triggeredPlayer, CreepCamp creepCamp, CreepCampGroup campGroup, BattleArea battleArea)
+		let pl = playersInstances
+			.get(triggeredPlayer.getId())
+			..startBattleAt(battleArea.heroStartPoint)
+
+		// TODO: get battle area by tile under creep
+		campGroup
+			.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
+			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
+
+		doPeriodically(2) cb ->
+			if not campGroup.isGroupAlive()
+				pl.battleVictory()
+				battleArea.clean()
+				// TODO: drop items on the map and hero needs to move to exit
+				// TODO: move method to player instead of droptable?
+				commonDropTable.dropRandomItemAtPos(pl.castleHeroPoint)
+				creepCamp.toRestore()
+				destroy cb
+				destroy campGroup
+				destroy this
+
+			else if not pl.isGroupAlive() and not pl.isHeroAlive()
+				pl.battleDefeat()
+				battleArea.clean()
+				creepCamp.toRestore()
+				destroy cb
+				destroy campGroup
+				destroy this
+				// TODO: store current state?
