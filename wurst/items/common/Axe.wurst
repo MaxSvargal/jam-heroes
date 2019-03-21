@@ -1,0 +1,20 @@
+package Axe
+
+import ObjectIdGenerator
+import ItemObjEditing
+
+import ItemDefinition
+
+public constant ITEM_AXE_ID = compiletime(ITEM_ID_GEN.next())
+public constant ITEM_AXE_NAME = "Axe"
+
+@compiletime function gen()
+	new BaseItemDefinition(ITEM_AXE_ID, 'rst1', ItemType.COMMON)
+		..setGoldCost(100)
+		..setLumberCost(0)
+		..setAttackBonus(15)
+		..setName(ITEM_AXE_NAME)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")

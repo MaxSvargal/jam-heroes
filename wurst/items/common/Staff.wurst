@@ -1,0 +1,20 @@
+package Staff
+
+import ObjectIdGenerator
+import ItemObjEditing
+
+import ItemDefinition
+
+public constant ITEM_STAFF_ID = compiletime(ITEM_ID_GEN.next())
+public constant ITEM_STAFF_NAME = "Staff"
+
+@compiletime function gen()
+	new BaseItemDefinition(ITEM_STAFF_ID, 'rst1', ItemType.COMMON)
+		..setGoldCost(100)
+		..setLumberCost(0)
+		..setAttackBonus(15)
+		..setName(ITEM_STAFF_NAME)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")

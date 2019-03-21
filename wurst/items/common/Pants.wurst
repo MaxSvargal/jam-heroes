@@ -1,0 +1,20 @@
+package Pants
+
+import ObjectIdGenerator
+import ItemObjEditing
+
+import ItemDefinition
+
+public constant ITEM_PANTS_ID = compiletime(ITEM_ID_GEN.next())
+public constant ITEM_PANTS_NAME = "Pants"
+
+@compiletime function gen()
+	new BaseItemDefinition(ITEM_PANTS_ID, 'rst1', ItemType.COMMON)
+		..setGoldCost(150)
+		..setLumberCost(0)
+		..setDefenceBonus(3)
+		..setName(ITEM_PANTS_NAME)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")

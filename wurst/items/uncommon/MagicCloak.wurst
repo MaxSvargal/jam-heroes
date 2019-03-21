@@ -1,0 +1,21 @@
+package MagicCloak
+
+import ObjectIdGenerator
+import ItemObjEditing
+
+import ItemDefinition
+
+public constant MAGIC_CLOAK_ID = compiletime(ITEM_ID_GEN.next())
+public constant MAGIC_CLOAK_NAME = "Gloves"
+
+@compiletime function gen()
+	new BaseItemDefinition(MAGIC_CLOAK_ID, 'rst1', ItemType.COMMON)
+		..setGoldCost(400)
+		..setLumberCost(0)
+		..setIntelligenceBonus(20)
+		..setMaxManaGained(20)
+		..setName(MAGIC_CLOAK_NAME)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")

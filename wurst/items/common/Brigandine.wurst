@@ -1,0 +1,20 @@
+package Brigandine
+
+import ObjectIdGenerator
+import ItemObjEditing
+
+import ItemDefinition
+
+public constant ITEM_BRIGANDINE_ID = compiletime(ITEM_ID_GEN.next())
+public constant ITEM_BRIGANDINE_NAME = "Brigandine"
+
+@compiletime function gen()
+	new BaseItemDefinition(ITEM_BRIGANDINE_ID, 'rst1', ItemType.COMMON)
+		..setGoldCost(100)
+		..setLumberCost(0)
+		..setMaxLifeGained(500)
+		..setName(ITEM_BRIGANDINE_NAME)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")

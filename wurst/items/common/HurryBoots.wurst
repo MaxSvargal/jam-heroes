@@ -1,0 +1,20 @@
+package HurryBoots
+
+import ObjectIdGenerator
+import ItemObjEditing
+
+import ItemDefinition
+
+public constant ITEM_HURRY_BOOTS_ID = compiletime(ITEM_ID_GEN.next())
+public constant ITEM_HURRY_BOOTS_NAME = "Hurry Boots"
+
+@compiletime function gen()
+	new BaseItemDefinition(ITEM_HURRY_BOOTS_ID, 'rst1', ItemType.COMMON)
+		..setGoldCost(100)
+		..setLumberCost(0)
+		..setMovementSpeedBonus(40)
+		..setName(ITEM_HURRY_BOOTS_NAME)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")
