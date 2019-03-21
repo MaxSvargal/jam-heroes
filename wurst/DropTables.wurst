@@ -1,9 +1,23 @@
 package DropTables
 
 import DropTable
+import MapState
 
 import Gloves
+import Pants
+
+import MagicCloak
 
 public constant commonDropTable = new DropTable()
   ..addDropItem(ITEM_GLOVES_ID)
-  ..addDropNothing()
+  ..addDropItem(ITEM_PANTS_ID)
+
+public constant uncommonDropTable = new DropTable()
+  ..addDropItem(MAGIC_CLOAK_ID)
+
+class GenerateDropTable
+  construct()
+    let lvl = mapState.getIncreasedLevel().toInt()
+    let table = new DropTable()
+    for i = 0 to lvl
+      table.addDropItem(commonDropTable.getRandomItem())

@@ -17,7 +17,9 @@ public class DropTable
 		let i = GetRandomInt(0, items.size() - 1)
 		return items.get(i)
 		
-	function dropRandomItemAtPos(vec2 pos)
+	function dropRandomItemAtPos(vec2 pos) returns item
 		let itemId = getRandomItem()
 		if itemId != 0
-			createItem(itemId, pos)
+			return createItem(itemId, pos)
+		else
+			return null
