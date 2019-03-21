@@ -127,40 +127,95 @@ public class BaseItemDefinition extends ItemDefinition
 		addAbility(
 			new AbilityDefinitionStrengthBonusPlus1(ABIL_ID_GEN.next())
 				..setStrengthBonus(1, val)
-				.getNewId()
-		)
+				.getNewId())
+
+	function setAgilityBonus(int val)
+		addProp("agility", val.toString())
+		addAbility(
+			new AbilityDefinitionAgilityBonusPlus1(ABIL_ID_GEN.next())
+				..setAgilityBonus(1, val)
+				.getNewId())
+
+	function setIntelligenceBonus(int val)
+		addProp("intelligence", val.toString())
+		addAbility(
+			new AbilityDefinitionIntelligenceBonusPlus1(ABIL_ID_GEN.next())
+				..setIntelligenceBonus(1, val)
+				.getNewId())
 
 	function setAttackBonus(int val)
 		addProp("attack bonus", val.toString())
 		addAbility(
 			new AbilityDefinitionAttackBonus(ABIL_ID_GEN.next())
 				..setAttackBonus(1, val)
-				.getNewId()
-		)
-
-	function setDefenceBonus(int val)
-		addProp("defence bonus", val.toString())
-		addAbility(
-			new AbilityDefinitionDefenseBonusPlus1(ABIL_ID_GEN.next())
-				..setDefenseBonus(1, val)
-				.getNewId()
-		)
-
-	function setLifeRegenerationIncrease(real val)
-		addProp("life regeneration", val.toString() + "%")
-		addAbility(
-			new AbilityDefinitionDeathKnightUnholyAura(ABIL_ID_GEN.next())
-				..setLifeRegenerationIncrease(1, val)
-				..setMovementSpeedIncrease(1, 0)
-				..setAreaofEffect(1, 1)
-				..setArtTarget("")
-				.getNewId()
-		)
+				.getNewId())
 
 	function setAttackSpeedIncrease(real val)
 		addProp("attack speed", (val * 100).toString() + "%")
 		addAbility(
 			new AbilityDefinitionAttackSpeedIncrease(ABIL_ID_GEN.next())
 				..setAttackSpeedIncrease(1, val)
-				.getNewId()
-		)
+				.getNewId())
+
+	function setDefenceBonus(int val)
+		addProp("defence bonus", val.toString())
+		addAbility(
+			new AbilityDefinitionDefenseBonusPlus1(ABIL_ID_GEN.next())
+				..setDefenseBonus(1, val)
+				.getNewId())
+
+	function setMaxManaGained(int val)
+		addProp("mana gained", val.toString())
+		addAbility(
+			new AbilityDefinitionAImm(ABIL_ID_GEN.next())
+				..setMaxManaGained(1, val)
+				.getNewId())
+
+	function setMaxLifeGained(int val)
+		addProp("life gained", val.toString())
+		addAbility(
+			new AbilityDefinitionAImi(ABIL_ID_GEN.next())
+				..setMaxLifeGained(1, val)
+				.getNewId())
+
+	function setMovementSpeedBonus(int val)
+		addProp("movement speed", val.toString())
+		addAbility(
+			new AbilityDefinitionMoveSpeedBonus(ABIL_ID_GEN.next())
+				..setMovementSpeedBonus(1, val)
+				.getNewId())
+
+	function setMovementSpeedIncrease(real val)
+
+	function setAllStatsBonus(int val)
+		addProp("all stats", val.toString())
+		addAbility(
+			new AbilityDefinitionAllPlus1(ABIL_ID_GEN.next())
+				..setIntelligenceBonus(1, val)
+				..setAgilityBonus(1, val)
+				..setStrengthBonus(1, val)
+				.getNewId())
+
+	function setLifeRegenerationIncrease(real val)
+		addProp("life regeneration", val.toString() + " hp/s")
+		addAbility(
+			new AbilityDefinitionDeathKnightUnholyAura(ABIL_ID_GEN.next())
+				..setLifeRegenerationIncrease(1, val)
+				..setMovementSpeedIncrease(1, 0)
+				..setAreaofEffect(1, 1)
+				..setArtTarget("")
+				.getNewId())
+
+	function setPoisonAttack(real damagePerSecond, real attackSpeedFactor, real movementSpeedFactor)
+		addProp("poison effect", damagePerSecond.toString() + " hp/s")
+		if attackSpeedFactor != 0
+			addProp("decrease enemy attack speed", attackSpeedFactor.toString() + "%")
+		if movementSpeedFactor != 0
+			addProp("decrease enemy movement speed", movementSpeedFactor.toString() + "%")
+
+		addAbility(
+			new AbilityDefinitionPoisonAttack(ABIL_ID_GEN.next())
+				..setAttackSpeedFactor(1, attackSpeedFactor)
+				..setDamageperSecond(1, damagePerSecond)
+				..setMovementSpeedFactor(1, movementSpeedFactor)
+				.getNewId())
