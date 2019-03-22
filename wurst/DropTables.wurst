@@ -3,21 +3,86 @@ package DropTables
 import DropTable
 import MapState
 
+import Armor
+import Axe
+import Belt
+import BreakerOfVenom
+import Brigandine
 import Gloves
+import HightBoots
+import HurryBoots
+import Knife
+import LuckyBracers
+import MageBracers
+import MageCape
+import MagicCrown
+import ManaShield
+import Mantie
+import MarvelousRing
+import MisleadingCloak
 import Pants
+import RescueShirt
+import RingOfHaste
+import Shoulder
+import Staff
 
 import MagicCloak
 
 public constant commonDropTable = new DropTable()
-  ..addDropItem(ITEM_GLOVES_ID)
-  ..addDropItem(ITEM_PANTS_ID)
+	..addDropItem(ITEM_ARMOR_ID)
+	..addDropItem(ITEM_AXE_ID)
+	..addDropItem(ITEM_BELT_ID)
+	..addDropItem(ITEM_BREAKER_OF_VENOM_ID)
+	..addDropItem(ITEM_BRIGANDINE_ID)
+	..addDropItem(ITEM_GLOVES_ID)
+	..addDropItem(ITEM_HIGHT_BOOTS_ID)
+	..addDropItem(ITEM_HURRY_BOOTS_ID)
+	..addDropItem(ITEM_KNIFE_ID)
+	..addDropItem(ITEM_LUCKY_BRACERS_ID)
+	..addDropItem(ITEM_MAGE_BRACERS_ID)
+	..addDropItem(ITEM_MAGE_CAPE_ID)
+	..addDropItem(ITEM_MAGIC_CROWN_ID)
+	..addDropItem(ITEM_MANA_SHIELD_ID)
+	..addDropItem(ITEM_MANTIE_ID)
+	..addDropItem(ITEM_MARVELOUS_RING_ID)
+	..addDropItem(ITEM_MISLEADING_CLOAK_ID)
+	..addDropItem(ITEM_PANTS_ID)
+	..addDropItem(ITEM_RESCUE_SHIRT_ID)
+	..addDropItem(ITEM_RING_OF_HASTE_ID)
+	..addDropItem(ITEM_SHOULDER_ID)
+	..addDropItem(ITEM_STAFF_ID)
 
 public constant uncommonDropTable = new DropTable()
-  ..addDropItem(MAGIC_CLOAK_ID)
+	..addDropItem(MAGIC_CLOAK_ID)
+
+public constant rareDropTable = new DropTable()
+	..addDropItem(MAGIC_CLOAK_ID)
+
+public constant epicDropTable = new DropTable()
+	..addDropItem(MAGIC_CLOAK_ID)
+
+public constant uniqueDropTable = new DropTable()
+	..addDropItem(MAGIC_CLOAK_ID)
 
 class GenerateDropTable
-  construct()
-    let lvl = mapState.getIncreasedLevel().toInt()
-    let table = new DropTable()
-    for i = 0 to lvl
-      table.addDropItem(commonDropTable.getRandomItem())
+	DropTable dropTable
+
+	construct()
+		let lvl = mapState.getIncreasedLevel().toInt()
+		dropTable = new DropTable()
+		for i = 0 to 22 - 23 // 23 -> lvl
+			dropTable.addDropNothing()
+		for i = 0 to lvl
+			dropTable.addDropItem(commonDropTable.getRandomItem())
+		if lvl > 10
+			for i = 0 to lvl - 10
+				dropTable.addDropItem(uncommonDropTable.getRandomItem())
+		if lvl >= 20
+			dropTable.addDropItem(uniqueDropTable.getRandomItem())
+		if lvl >= 40
+			dropTable.addDropItem(rareDropTable.getRandomItem())
+		if lvl >= 50
+			dropTable.addDropItem(epicDropTable.getRandomItem())
+
+	function getDropTable() returns DropTable
+		return dropTable

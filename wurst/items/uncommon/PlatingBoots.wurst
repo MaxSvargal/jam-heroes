@@ -1,0 +1,38 @@
+package PlatingBoots
+
+import ObjectIdGenerator
+import ItemDefinition
+import ItemReceipt
+
+import HurryBoots
+import Shoulder
+import BreakerOfVenom
+
+public constant PLATING_BOOTS_ID = compiletime(ITEM_ID_GEN.next())
+public constant PLATING_BOOTS_RECIEPT_ID = compiletime(ITEM_ID_GEN.next())
+public constant PLATING_BOOTS_NAME = "Plating Boots"
+
+@compiletime function gen()
+	new BaseItemDefinition(PLATING_BOOTS_ID, 'rst1', ItemType.UNCOMMON)
+		..setName(PLATING_BOOTS_NAME)
+		..setIntelligenceBonus(20)
+		..setMaxManaGained(20)
+		..setGoldCost(400)
+		..setLumberCost(0)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")
+
+		..makeReciept(PLATING_BOOTS_RECIEPT_ID, 10, false)
+		..addRequiredItem(ITEM_HURRY_BOOTS_NAME)
+		..addRequiredItem(ITEM_SHOULDER_NAME)
+		..addRequiredItem(ITEM_BREAKER_OF_VENOM_NAME)
+		..finish()
+
+init
+	new DefineItemReceipt()
+		..setResultItem(PLATING_BOOTS_ID)
+		..addRequiredItem(ITEM_HURRY_BOOTS_ID)
+		..addRequiredItem(ITEM_SHOULDER_ID)
+		..addRequiredItem(ITEM_BREAKER_OF_VENOM_ID)

@@ -1,8 +1,6 @@
 package Belt
 
 import ObjectIdGenerator
-import ItemObjEditing
-
 import ItemDefinition
 
 public constant ITEM_BELT_ID = compiletime(ITEM_ID_GEN.next())

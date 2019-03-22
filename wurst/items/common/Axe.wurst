@@ -1,8 +1,6 @@
 package Axe
 
 import ObjectIdGenerator
-import ItemObjEditing
-
 import ItemDefinition
 
 public constant ITEM_AXE_ID = compiletime(ITEM_ID_GEN.next())

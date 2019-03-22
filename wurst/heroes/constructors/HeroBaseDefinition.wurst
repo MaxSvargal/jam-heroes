@@ -15,13 +15,14 @@ public class HeroBaseDefinition extends HeroDefinition
 		setRequirements("")
 		setGoldCost(0)
 		setLumberCost(0)
-		setLevel(100)
+		setLevel(200)
 		setStockMaximum(1)
 
 		onMapUnit = new UnitDefinition(onMapId, UnitIds.peasant)
 			..setScalingValue(.8)
 			..setSpeedBase(70)
 			..setAnimationWalkSpeed(400)
+			..setCollisionSize(90)
 			..setNormalAbilities(commaList(MOVE_TO_CASTLE_ID))
 			..setStructuresBuilt("")
 

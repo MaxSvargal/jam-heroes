@@ -1,0 +1,18 @@
+package MagicCrown
+
+import ObjectIdGenerator
+import ItemDefinition
+
+public constant ITEM_MAGIC_CROWN_ID = compiletime(ITEM_ID_GEN.next())
+public constant ITEM_MAGIC_CROWN_NAME = "Magic Crown"
+
+@compiletime function gen()
+	new BaseItemDefinition(ITEM_MAGIC_CROWN_ID, 'rst1', ItemType.COMMON)
+		..setName(ITEM_MAGIC_CROWN_NAME)
+		..setChancetoCriticalStrike(3, 2, 0)
+		..setGoldCost(100)
+		..setLumberCost(0)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")

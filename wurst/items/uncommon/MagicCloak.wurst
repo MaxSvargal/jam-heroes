@@ -1,21 +1,38 @@
 package MagicCloak
 
 import ObjectIdGenerator
-import ItemObjEditing
-
 import ItemDefinition
+import ItemReceipt
+
+import Mantie
+import MageBracers
+import MageCape
 
 public constant MAGIC_CLOAK_ID = compiletime(ITEM_ID_GEN.next())
-public constant MAGIC_CLOAK_NAME = "Gloves"
+public constant MAGIC_CLOAK_RECIEPT_ID = compiletime(ITEM_ID_GEN.next())
+public constant MAGIC_CLOAK_NAME = "Magic Cloak"
 
 @compiletime function gen()
-	new BaseItemDefinition(MAGIC_CLOAK_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(MAGIC_CLOAK_ID, 'rst1', ItemType.UNCOMMON)
+		..setName(MAGIC_CLOAK_NAME)
+		..setIntelligenceBonus(20)
+		..setMaxManaGained(600)
 		..setGoldCost(400)
 		..setLumberCost(0)
-		..setIntelligenceBonus(20)
-		..setMaxManaGained(20)
-		..setName(MAGIC_CLOAK_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")
 		..setIcon("BTNHasteTier1")
+
+		..makeReciept(MAGIC_CLOAK_RECIEPT_ID, 10, false)
+		..addRequiredItem(ITEM_MANTIE_NAME)
+		..addRequiredItem(ITEM_MAGE_BRACERS_NAME)
+		..addRequiredItem(ITEM_MAGE_CAPE_NAME)
+		..finish()
+
+init
+	new DefineItemReceipt()
+		..setResultItem(MAGIC_CLOAK_ID)
+		..addRequiredItem(ITEM_MANTIE_ID)
+		..addRequiredItem(ITEM_MAGE_BRACERS_ID)
+		..addRequiredItem(ITEM_MAGE_CAPE_ID)

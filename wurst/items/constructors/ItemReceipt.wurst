@@ -1,0 +1,33 @@
+package ItemReceipt
+
+import HashList
+import ClosureEvents
+
+public class DefineItemReceipt
+	HashList<int> required = new HashList<int>()
+	int resultItem
+
+	construct()
+		EventListener.add(EVENT_PLAYER_UNIT_PICKUP_ITEM) ->
+			let u = GetTriggerUnit()
+			int requiresConfirmed = required.size()
+
+			let iterator = required.iterator()
+			for itmId from iterator
+				if u.hasItemById(itmId)
+					requiresConfirmed--
+			iterator.close()
+
+			if requiresConfirmed == 0
+				let iterator2 = required.iterator()
+				for itmId from iterator2
+					let itm = u.getItemById(itmId)
+					itm.remove()
+				u.addItemById(resultItem)
+				iterator2.close()
+
+	function addRequiredItem(int i)
+		required.add(i)
+
+	function setResultItem(int i)
+		resultItem = i

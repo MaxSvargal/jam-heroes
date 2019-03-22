@@ -1,8 +1,6 @@
 package MageCape
 
 import ObjectIdGenerator
-import ItemObjEditing
-
 import ItemDefinition
 
 public constant ITEM_MAGE_CAPE_ID = compiletime(ITEM_ID_GEN.next())

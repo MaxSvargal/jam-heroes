@@ -1,0 +1,15 @@
+package CommonShop
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+
+import DropTables
+
+public constant COMMON_SHOP_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new BuildingDefinition(COMMON_SHOP_ID, UnitIds.goblinmerchant)
+		..setName("Common Shop")
+		..setNeutralBuildingShowsMinimapIcon(false)
+		..setItemsSold(commonDropTable.asString())

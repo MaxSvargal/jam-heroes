@@ -15,6 +15,24 @@ public enum ItemType
 	RARE
 	EPIC
 	LEGENDARY
+	UNIQUE
+
+function getColorOfItemType(ItemType itemType) returns string
+	switch itemType
+		case COMMON
+			return ""
+		case UNCOMMON
+			return color(31,191,0).toColorString()
+		case RARE
+			return color(60, 110, 255).toColorString()
+		case EPIC
+			return color(190, 0, 254).toColorString()
+		case LEGENDARY
+			return color(254,137,13).toColorString()
+		case UNIQUE
+			return color(236, 220, 0).toColorString()
+		default
+			return ""
 
 public class BaseItemDefinition extends ItemDefinition
 	LinkedList<int> abilities = new LinkedList<int>()
@@ -69,19 +87,7 @@ public class BaseItemDefinition extends ItemDefinition
 		return tooltip
 
 	protected function getColorOfCurrentType() returns string
-		switch itemType
-			case COMMON
-				return ""
-			case UNCOMMON
-				return color(31,191,0).toColorString()
-			case RARE
-				return color(60, 110, 255).toColorString()
-			case EPIC
-				return color(190, 0, 254).toColorString()
-			case LEGENDARY
-				return color(254,137,13).toColorString()
-			default
-				return ""
+		return getColorOfItemType(itemType)
 	
 	override function setTooltipExtended(string desc)
 		this.desc = desc
@@ -94,7 +100,9 @@ public class BaseItemDefinition extends ItemDefinition
 
 	protected function _makeReciept(int id, int goldCost, boolean isNeeded) returns ItemDefinition
 		recieptItem = new ItemDefinition(id, 'rst1')
-		recieptItem.setGoldCost(goldCost)
+		recieptItem
+			..setGoldCost(goldCost)
+			..setCanBeSoldByMerchants(isNeeded)
 		isRecieptNeeded = isNeeded
 		return recieptItem
 
@@ -157,6 +165,13 @@ public class BaseItemDefinition extends ItemDefinition
 				..setAttackSpeedIncrease(1, val)
 				.getNewId())
 
+	function setChancetoEvade(real val)
+		addProp("evade chance", (val * 100).toString() + "%")
+		addAbility(
+			new AbilityDefinitionEvasion(ABIL_ID_GEN.next())
+				..setChancetoEvade(1, val)
+				.getNewId())
+
 	function setDefenceBonus(int val)
 		addProp("defence bonus", val.toString())
 		addAbility(
@@ -196,14 +211,49 @@ public class BaseItemDefinition extends ItemDefinition
 				..setStrengthBonus(1, val)
 				.getNewId())
 
-	function setLifeRegenerationIncrease(real val)
+	// function setLifeRegenerationIncrease(real val)
+	// 	addProp("life regeneration", val.toString() + "%")
+	// 	addAbility(
+	// 		new AbilityDefinitionDeathKnightUnholyAura(ABIL_ID_GEN.next())
+	// 			..setLifeRegenerationIncrease(1, val)
+	// 			..setMovementSpeedIncrease(1, 0)
+	// 			..setAreaofEffect(1, 1)
+	// 			..setArtTarget("")
+	// 			.getNewId())
+	
+	function setHitPointsRegeneratedPerSecond(int val)
 		addProp("life regeneration", val.toString() + " hp/s")
 		addAbility(
-			new AbilityDefinitionDeathKnightUnholyAura(ABIL_ID_GEN.next())
-				..setLifeRegenerationIncrease(1, val)
-				..setMovementSpeedIncrease(1, 0)
-				..setAreaofEffect(1, 1)
-				..setArtTarget("")
+			new AbilityDefinitionRegenLife(ABIL_ID_GEN.next())
+				..setHitPointsRegeneratedPerSecond(1, val)
+				.getNewId())
+	
+	function setManaRegenerationBonus(real val)
+		addProp("mana regeneration", val.toString() + "%")
+		addAbility(
+			new AbilityDefinitionItemRegenMana(ABIL_ID_GEN.next())
+				..setManaRegenerationBonusasfractionofnormal(1, val)
+				.getNewId())
+	
+	function setSpellDamageReduction(real val)
+		addProp("spell damage reduction", val.toString() + "%")
+		addAbility(
+			new AbilityDefinitionRunedBracers(ABIL_ID_GEN.next())
+				..setDamageBonus(1, 0)
+				..setDamageReduction(1, val)
+				.getNewId())
+	
+	function setChancetoCriticalStrike(real chance, real multiplier, real damageBonus)
+		addProp(
+			"crit chance",
+			chance.toString() + "%" +
+				(multiplier != 2 ? " to deal x" + multiplier.toString() : "") +
+				(damageBonus == 0 ? "" : " and additional " + damageBonus.toString()) + " damage")
+		addAbility(
+			new AbilityDefinitionCriticalStrikecreep(ABIL_ID_GEN.next())
+				..setDamageMultiplier(1, multiplier)
+				..setChancetoCriticalStrike(1, chance)
+				..setDamageBonus(1, damageBonus)
 				.getNewId())
 
 	function setPoisonAttack(real damagePerSecond, real attackSpeedFactor, real movementSpeedFactor)

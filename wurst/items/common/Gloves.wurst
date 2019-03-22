@@ -1,8 +1,6 @@
 package Gloves
 
 import ObjectIdGenerator
-import ItemObjEditing
-
 import ItemDefinition
 
 public constant ITEM_GLOVES_ID = compiletime(ITEM_ID_GEN.next())

@@ -1,8 +1,6 @@
 package Pants
 
 import ObjectIdGenerator
-import ItemObjEditing
-
 import ItemDefinition
 
 public constant ITEM_PANTS_ID = compiletime(ITEM_ID_GEN.next())

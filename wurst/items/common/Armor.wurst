@@ -2,8 +2,6 @@ package Armor
 // TODO: rename
 
 import ObjectIdGenerator
-import ItemObjEditing
-
 import ItemDefinition
 
 public constant ITEM_ARMOR_ID = compiletime(ITEM_ID_GEN.next())

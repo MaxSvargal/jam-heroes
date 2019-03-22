@@ -1,8 +1,6 @@
 package BreakerOfVenom
 
 import ObjectIdGenerator
-import ItemObjEditing
-
 import ItemDefinition
 
 public constant ITEM_BREAKER_OF_VENOM_ID = compiletime(ITEM_ID_GEN.next())

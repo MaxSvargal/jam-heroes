@@ -1,8 +1,6 @@
 package MageBracers
 
 import ObjectIdGenerator
-import ItemObjEditing
-
 import ItemDefinition
 
 public constant ITEM_MAGE_BRACERS_ID = compiletime(ITEM_ID_GEN.next())

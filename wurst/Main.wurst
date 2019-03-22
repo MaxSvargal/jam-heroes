@@ -2,11 +2,18 @@ package Main
 
 import Players
 import CreepsOnMap
-import Multiboard
 
 init
-  initPlayers()
-  new CreepsOnMap()
-  CreateMultiboardBJ(1, 1, "Difficulity")
-    .getItem(0, 0)
-    .setValue("0")
+	initPlayers()
+	new CreepsOnMap()
+	let multi = CreateMultiboard()
+	multi
+		..setRowCount(1)
+		..setColumnCount(1)
+		..setTitle("Difficulity")
+		..setItemsValue("0")
+		..display(true)
+
+	multi.getItem(0, 0)
+		..setValue("1")
+		..release()
