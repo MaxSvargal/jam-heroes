@@ -22,7 +22,7 @@ public class CreepCamp
 					GetAttackedUnitBJ().getOwner(),
 					this,
 					campGroup,
-					firstBattleArea)
+					getRandomBattleArea())
 
 	function createNewCampGroup()
 		// need to make other one instantly?
