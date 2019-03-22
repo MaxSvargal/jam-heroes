@@ -4,38 +4,87 @@ import OrderIds
 import ClosureTimers
 import BattleArea
 import Players
-import DropTables
 import CreepCampGroup
 import CreepCamp
+import DropTables
+import HashSet
+import PlayerConfigurator
+import LinkedList
 
 public class Battle
-	construct(player triggeredPlayer, CreepCamp creepCamp, CreepCampGroup campGroup, BattleArea battleArea)
-		let pl = playersInstances
-			.get(triggeredPlayer.getId())
-			..startBattleAt(battleArea.heroStartPoint)
+	BattleArea battleArea
+	CreepCampGroup campGroup
+	CreepCamp creepCamp
+	player triggerPlayer
+	constant players = new HashSet<PlayerConfigurator>()
 
+	construct(player triggerPlayer, CreepCamp creepCamp, CreepCampGroup campGroup, BattleArea battleArea)
+		this.battleArea = battleArea
+		this.campGroup = campGroup
+		this.creepCamp = creepCamp
+		this.triggerPlayer = triggerPlayer
+		playerEnterInBattle(triggerPlayer)
+		createCampGroup()
+		listenForState()
+
+	function createCampGroup()
 		// TODO: get battle area by tile under creep
 		campGroup
 			.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
 			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
 
+	function listenForState()
+		// Then other player comed?
 		doPeriodically(2) cb ->
-			if not campGroup.isGroupAlive()
-				pl.battleVictory()
-				battleArea.clean()
-				// TODO: drop items on the map and hero needs to move to exit
-				// TODO: move method to player instead of droptable?
-				commonDropTable.dropRandomItemAtPos(pl.castleHeroPoint)
-				creepCamp.toRestore()
-				destroy cb
-				destroy campGroup
-				destroy this
+			// TODO: Check allies and enemies, wait for ending of theirs battle
+			// Only then only allies on the map - check campGroup alive
+			let isAllAllies = new LinkedList<bool>()
+			let playersIterator = players.iterator()
+			for p from playersIterator
+				isAllAllies.add(triggerPlayer.isAllyOf(p.getPlayer()))
+			playersIterator.close()
 
-			else if not pl.isGroupAlive() and not pl.isHeroAlive()
-				pl.battleDefeat()
-				battleArea.clean()
-				creepCamp.toRestore()
-				destroy cb
-				destroy campGroup
-				destroy this
-				// TODO: store current state?
+			if not isAllAllies.has(false)
+				if not campGroup.isGroupAlive()
+					let playersIterator2 = players.iterator()
+					for p from playersIterator2
+						p.battleVictory()
+						// TODO: drop items on the map and hero needs to move to exit
+						// TODO: move method to player instead of droptable?
+						dropRandomItemAtPos(p.castleHeroPoint)
+						dropRandomItemAtPos(campGroup.warlord.getPos())
+					playersIterator2.close()
+
+					destroy cb
+					destroy this
+				else
+					let playersIterator3 = players.iterator()
+					for p from playersIterator3
+						if not p.isAllGroupAlive()
+						p.battleDefeat()
+					playersIterator3.close()
+
+					destroy cb
+					destroy this
+					// TODO: store current state?
+
+	function dropRandomItemAtPos(vec2 pos) returns item
+		let itemId = new GenerateDropTable().getDropTable().getRandomItem()
+		if itemId != 0
+			return createItem(itemId, pos)
+		else
+			return null
+
+	function playerEnterInBattle(player p)
+		let playerInstance = getPlayerConfigurator(p)
+			..startBattleAt(battleArea.heroStartPoint)
+		players.add(playerInstance)
+
+	function getPlayerConfigurator(player p) returns PlayerConfigurator
+		return playersInstances.get(p.getId())
+
+	ondestroy
+		battleArea.clean()
+		creepCamp.toRestore()
+		destroy campGroup
+		destroy players
