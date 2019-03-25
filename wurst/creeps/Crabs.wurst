@@ -2,7 +2,7 @@ package Crabs
 
 import UnitIds
 import ObjectIdGenerator
-import AbilityObjEditing
+import UnitObjEditing
 
 import CreepDefinition
 import CreepOnMapDefinition

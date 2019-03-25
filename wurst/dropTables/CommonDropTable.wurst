@@ -1,0 +1,50 @@
+package CommonDropTable
+
+import DropTable
+
+import Armor
+import Axe
+import Belt
+import BreakerOfVenom
+import Brigandine
+import Gloves
+import HightBoots
+import HurryBoots
+import Knife
+import LuckyBracers
+import MageBracers
+import MageCape
+import MagicCrown
+import ManaShield
+import Mantie
+import MarvelousRing
+import MisleadingCloak
+import Pants
+import RescueShirt
+import RingOfHaste
+import Shoulder
+import Staff
+
+public constant commonDropTable = new DropTable()
+	..addDropItem(ARMOR_ID)
+	..addDropItem(AXE_ID)
+	..addDropItem(BELT_ID)
+	..addDropItem(BREAKER_OF_VENOM_ID)
+	..addDropItem(BRIGANDINE_ID)
+	..addDropItem(GLOVES_ID)
+	..addDropItem(HIGHT_BOOTS_ID)
+	..addDropItem(HURRY_BOOTS_ID)
+	..addDropItem(KNIFE_ID)
+	..addDropItem(LUCKY_BRACERS_ID)
+	..addDropItem(MAGE_BRACERS_ID)
+	..addDropItem(MAGE_CAPE_ID)
+	..addDropItem(MAGIC_CROWN_ID)
+	..addDropItem(MANA_SHIELD_ID)
+	..addDropItem(MANTIE_ID)
+	..addDropItem(MARVELOUS_RING_ID)
+	..addDropItem(MISLEADING_CLOAK_ID)
+	..addDropItem(PANTS_ID)
+	..addDropItem(RESCUE_SHIRT_ID)
+	..addDropItem(RING_OF_HASTE_ID)
+	..addDropItem(SHOULDER_ID)
+	..addDropItem(STAFF_ID)

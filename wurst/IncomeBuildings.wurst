@@ -1,0 +1,53 @@
+package IncomeBuildings
+
+import ClosureEvents
+import UnitIds
+import IncomeGoldMine
+import HashMap
+import Battle
+import CreepCampGroup
+import BattleArea
+
+public class IncomeBuilding
+  constant unit building
+  vec2 pos
+  Battle currBattle
+
+  construct(vec2 pos)
+    this.pos = pos
+    building = createUnit(players[PLAYER_NEUTRAL_AGGRESSIVE], INCOME_GOLD_MINE_ID, pos, angle(200))
+
+  function getUnit() returns unit
+    return building
+  
+  function getPos() returns vec2
+    return pos
+
+  function setOwner(player p)
+    building.setOwner(p, true)
+
+  function setBattle(Battle battle)
+    currBattle = battle
+
+
+public class IncomeBuildings
+  constant buildings = new HashMap<unit, IncomeBuilding>()
+
+  construct()
+    let g = GetUnitsOfTypeIdAll(UnitIds.goldmine)
+    for u from g
+      let pos = u.getPos()
+      u.remove()
+      let newOne = new IncomeBuilding(pos)
+      buildings.put(newOne.getUnit(), newOne)
+
+    EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
+      if buildings.has(GetAttackedUnitBJ())
+        let incomeBuilding = buildings.get(GetAttackedUnitBJ())
+        let campGroup = new CreepCampGroup(incomeBuilding.getPos())
+        let battle = new Battle(
+          GetAttacker().getOwner(),
+          campGroup,
+          getRandomBattleArea(),
+          incomeBuilding)
+        incomeBuilding.setBattle(battle)

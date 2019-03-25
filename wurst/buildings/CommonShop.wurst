@@ -3,8 +3,7 @@ package CommonShop
 import UnitObjEditing
 import UnitIds
 import ObjectIdGenerator
-
-import DropTables
+import CommonDropTable
 
 public constant COMMON_SHOP_ID = compiletime(UNIT_ID_GEN.next())
 

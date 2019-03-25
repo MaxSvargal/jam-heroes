@@ -4,7 +4,7 @@ import LinkedList
 import CreepsList
 import MapState
 import RegionsList
-import CreepCamp
+import CreepAbilities
 
 public class CreepCampGroup
 	constant p = players[PLAYER_NEUTRAL_AGGRESSIVE]
@@ -12,15 +12,13 @@ public class CreepCampGroup
 	int warlordId
 	int onMapWarlordId
 	unit onMapWarlord
+	unit warlord
 	group units
-	CreepCamp creepCamp
 
-	construct(CreepCamp creepCamp)
-		let pos = creepCamp.getPos()
+	construct(vec2 pos)
 		// get pos distance and set level increased by distance
 		let lvlIncrease = calcLevelIncByDistance(pos)
 		let lvl = mapState.getIncreasedLevel().toInt() + lvlIncrease
-		print("selected level: " + lvl.toString() + " increased " + lvlIncrease.toString())
 		warlordId = getRandomWarlordIdOfLevel(lvl)
 		onMapWarlordId = getOnMapUnitIdByBattleId(warlordId)
 		onMapWarlord = createUnit(p, onMapWarlordId, pos, angle(220))
@@ -30,7 +28,7 @@ public class CreepCampGroup
 		for i = 0 to GetRandomInt(2, 8)
 			unitIds.add(creepId)
 	
-	function calcLevelIncByDistance(vec2 pos) returns int
+	private function calcLevelIncByDistance(vec2 pos) returns int
 		let min = -bottomOfMap.y
 		let max = topOfMap.y
 		let distance = pos.distanceTo(bottomOfMap)
@@ -39,11 +37,15 @@ public class CreepCampGroup
 	function createGroupAtRect(rect r) returns group
 		let iterator = unitIds.iterator()
 		let g = CreateGroup()
+
+		warlord = createUnit(p, warlordId, r.randomPoint(), angle(220))
+			..addAbility(getRandomCreepAbility())
+		g.addUnit(warlord)
+
 		for u from iterator
 			g.addUnit(createUnit(p, u, r.randomPoint(), angle(220)))
-		g.addUnit(createUnit(p, warlordId, r.randomPoint(), angle(220)))
-
 		iterator.close()
+
 		units = g
 		return g
 

@@ -4,69 +4,83 @@ import OrderIds
 import ClosureTimers
 import BattleArea
 import Players
-import CreepCampGroup
 import CreepCamp
+import CreepCampGroup
 import DropTables
 import HashSet
 import PlayerConfigurator
 import LinkedList
+import initlater IncomeBuildings
 
 public class Battle
-	BattleArea battleArea
-	CreepCampGroup campGroup
-	CreepCamp creepCamp
+	constant playersInBattle = new HashSet<PlayerConfigurator>()
 	player triggerPlayer
-	constant players = new HashSet<PlayerConfigurator>()
+	BattleArea battleArea
+	CreepCamp creepCamp
+	IncomeBuilding incomeBuilding
+	CreepCampGroup campGroup
 
-	construct(player triggerPlayer, CreepCamp creepCamp, CreepCampGroup campGroup, BattleArea battleArea)
+	construct(player triggerPlayer, CreepCampGroup campGroup, BattleArea battleArea, CreepCamp creepCamp)
+		_construct(triggerPlayer, campGroup, battleArea, creepCamp, null)
+
+	construct(player triggerPlayer, CreepCampGroup campGroup, BattleArea battleArea, IncomeBuilding incomeBuilding)
+		_construct(triggerPlayer, campGroup, battleArea, null, incomeBuilding)
+
+	protected function _construct(
+		player triggerPlayer,
+		CreepCampGroup campGroup,
+		BattleArea battleArea,
+		CreepCamp creepCamp,
+		IncomeBuilding incomeBuilding
+	)
 		this.battleArea = battleArea
 		this.campGroup = campGroup
-		this.creepCamp = creepCamp
 		this.triggerPlayer = triggerPlayer
+		this.creepCamp = creepCamp
+		this.incomeBuilding = incomeBuilding
 		playerEnterInBattle(triggerPlayer)
 		createCampGroup()
 		listenForState()
+
+	private function isAllPlayersAllies() returns bool
+		let alliesStates = new LinkedList<bool>()
+		let playersIterator = playersInBattle.iterator()
+		for p from playersIterator
+			alliesStates.add(triggerPlayer.isAllyOf(p.getPlayer()))
+		playersIterator.close()
+		let isNotAllAllies = alliesStates.has(false)
+		destroy alliesStates
+		return not isNotAllAllies
+
+	private function checkAndSetPlayersStates() returns bool
+		let playersIterator = playersInBattle.iterator()
+		for p from playersIterator
+			if not p.isAllGroupAlive()
+				print("battle defeat")
+				p.battleDefeat()
+				playersInBattle.remove(p)
+			else if isAllPlayersAllies()
+			and not campGroup.isGroupAlive()
+				p.battleVictory()
+				playersInBattle.remove(p)
+				// TODO: drop items on the map and hero needs to move to exit
+				// TODO: move method to player instead of droptable?
+				dropRandomItemAtPos(p.castleHeroPoint)
+				dropRandomItemAtPos(campGroup.warlord.getPos())
+		playersIterator.close()
+		return playersInBattle.size() == 0
+
+	private function listenForState()
+		doPeriodically(2) cb ->
+			if checkAndSetPlayersStates()
+				destroy cb
+				destroy this
 
 	function createCampGroup()
 		// TODO: get battle area by tile under creep
 		campGroup
 			.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
 			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
-
-	function listenForState()
-		// Then other player comed?
-		doPeriodically(2) cb ->
-			// TODO: Check allies and enemies, wait for ending of theirs battle
-			// Only then only allies on the map - check campGroup alive
-			let isAllAllies = new LinkedList<bool>()
-			let playersIterator = players.iterator()
-			for p from playersIterator
-				isAllAllies.add(triggerPlayer.isAllyOf(p.getPlayer()))
-			playersIterator.close()
-
-			if not isAllAllies.has(false)
-				if not campGroup.isGroupAlive()
-					let playersIterator2 = players.iterator()
-					for p from playersIterator2
-						p.battleVictory()
-						// TODO: drop items on the map and hero needs to move to exit
-						// TODO: move method to player instead of droptable?
-						dropRandomItemAtPos(p.castleHeroPoint)
-						dropRandomItemAtPos(campGroup.warlord.getPos())
-					playersIterator2.close()
-
-					destroy cb
-					destroy this
-				else
-					let playersIterator3 = players.iterator()
-					for p from playersIterator3
-						if not p.isAllGroupAlive()
-						p.battleDefeat()
-					playersIterator3.close()
-
-					destroy cb
-					destroy this
-					// TODO: store current state?
 
 	function dropRandomItemAtPos(vec2 pos) returns item
 		let itemId = new GenerateDropTable().getDropTable().getRandomItem()
@@ -76,15 +90,20 @@ public class Battle
 			return null
 
 	function playerEnterInBattle(player p)
-		let playerInstance = getPlayerConfigurator(p)
-			..startBattleAt(battleArea.heroStartPoint)
-		players.add(playerInstance)
-
-	function getPlayerConfigurator(player p) returns PlayerConfigurator
-		return playersInstances.get(p.getId())
+		print("player enter " + p.getName() + p.getId().toString())
+		print("playersInstances " + playersInstances.size().toString())
+		let playerInstance = playersInstances.get(p.getId())
+		print("playerEnterInBattle " + playerInstance.getPlayer().getName())
+		if playerInstance != null
+			playerInstance.startBattleAt(battleArea.heroStartPoint)
+			playersInBattle.add(playerInstance)
 
 	ondestroy
+		if creepCamp != null
+			creepCamp.toRestore()
+		if incomeBuilding != null
+			incomeBuilding.setOwner(triggerPlayer)
+			// incomeBuilding.setOwner(players[1])
 		battleArea.clean()
-		creepCamp.toRestore()
 		destroy campGroup
-		destroy players
+		destroy playersInBattle

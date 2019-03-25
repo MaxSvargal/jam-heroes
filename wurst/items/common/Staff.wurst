@@ -8,10 +8,10 @@ public constant STAFF_NAME = "Staff"
 
 @compiletime function gen()
 	new BaseItemDefinition(STAFF_ID, 'rst1', ItemType.COMMON)
+		..setName(STAFF_NAME)
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setAttackBonus(15)
-		..setName(STAFF_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

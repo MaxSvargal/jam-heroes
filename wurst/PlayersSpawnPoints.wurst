@@ -1,0 +1,15 @@
+package PlayersSpawnPoints
+
+import HashSet
+
+class SpawnPoint
+	vec2 pos
+	construct(vec2 pos)
+		this.pos = pos
+
+let spawnPoints = new HashSet<SpawnPoint>()
+	..add(new SpawnPoint(gg_rct_Spawn1.getCenter()))
+	..add(new SpawnPoint(gg_rct_Spawn2.getCenter()))
+
+public function getRandomSpawnPoint() returns vec2
+	return spawnPoints.get(GetRandomInt(0, spawnPoints.size() - 1)).pos

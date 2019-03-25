@@ -18,15 +18,18 @@ public class CreepCamp
 			if currBattle == null
 			and campGroup != null
 			and campGroup.getOnMapUnit() == GetAttacker()
-				currBattle = new Battle(
-					GetAttackedUnitBJ().getOwner(),
-					this,
-					campGroup,
-					getRandomBattleArea())
+				if currBattle != null
+					currBattle.playerEnterInBattle(GetAttacker().getOwner())
+				else
+					currBattle = new Battle(
+						GetAttackedUnitBJ().getOwner(),
+						campGroup,
+						getRandomBattleArea(),
+						this)
 
 	function createNewCampGroup()
 		// need to make other one instantly?
-		campGroup = new CreepCampGroup(this)
+		campGroup = new CreepCampGroup(pos)
 
 	function getPos() returns vec2
 		return pos

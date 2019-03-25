@@ -65,7 +65,9 @@ public class BaseItemDefinition extends ItemDefinition
 
 	override function setName(string name)
 		this.name = name
-		super.setName(getColorOfCurrentType() + name + "|r")
+		let str = getColorOfCurrentType() + name + "|r"
+		super.setName(str)
+		super.setTooltipBasic("Buy " + str)
 
 	function setIcon(string name)
 		string s = name
@@ -92,6 +94,7 @@ public class BaseItemDefinition extends ItemDefinition
 	override function setTooltipExtended(string desc)
 		this.desc = desc
 		super.setTooltipExtended(desc + "\n\n" + generateProps())
+		super.setDescription(desc)
 	
 	function addAbility(int id)
 		abilities.add(id)
@@ -159,14 +162,14 @@ public class BaseItemDefinition extends ItemDefinition
 				.getNewId())
 
 	function setAttackSpeedIncrease(real val)
-		addProp("attack speed", (val * 100).toString() + "%")
+		addProp("attack speed", val.toString() + "%")
 		addAbility(
 			new AbilityDefinitionAttackSpeedIncrease(ABIL_ID_GEN.next())
 				..setAttackSpeedIncrease(1, val)
 				.getNewId())
 
 	function setChancetoEvade(real val)
-		addProp("evade chance", (val * 100).toString() + "%")
+		addProp("evade chance", val.toString() + "%")
 		addAbility(
 			new AbilityDefinitionEvasion(ABIL_ID_GEN.next())
 				..setChancetoEvade(1, val)
@@ -187,6 +190,7 @@ public class BaseItemDefinition extends ItemDefinition
 				.getNewId())
 
 	function setMaxLifeGained(int val)
+		// TODO: does not work
 		addProp("life gained", val.toString())
 		addAbility(
 			new AbilityDefinitionAImi(ABIL_ID_GEN.next())
@@ -201,6 +205,8 @@ public class BaseItemDefinition extends ItemDefinition
 				.getNewId())
 
 	function setMovementSpeedIncrease(real val)
+		// aura?
+		print(val)
 
 	function setAllStatsBonus(int val)
 		addProp("all stats", val.toString())

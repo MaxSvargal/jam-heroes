@@ -20,8 +20,8 @@ public class HeroBaseDefinition extends HeroDefinition
 
 		onMapUnit = new UnitDefinition(onMapId, UnitIds.peasant)
 			..setScalingValue(.8)
-			..setSpeedBase(70)
-			..setAnimationWalkSpeed(400)
+			..setSpeedBase(120)
+			..setAnimationWalkSpeed(200)
 			..setCollisionSize(90)
 			..setNormalAbilities(commaList(MOVE_TO_CASTLE_ID))
 			..setStructuresBuilt("")

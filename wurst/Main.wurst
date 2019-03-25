@@ -2,10 +2,13 @@ package Main
 
 import Players
 import CreepsOnMap
+import IncomeBuildings
 
 init
 	initPlayers()
 	new CreepsOnMap()
+	new IncomeBuildings()
+
 	let multi = CreateMultiboard()
 	multi
 		..setRowCount(1)

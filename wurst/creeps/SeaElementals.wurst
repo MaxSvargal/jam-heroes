@@ -2,7 +2,7 @@ package SeaElementals
 
 import UnitIds
 import ObjectIdGenerator
-import AbilityObjEditing
+import UnitObjEditing
 
 import CreepOnMapDefinition
 import CreepDefinition
@@ -15,15 +15,15 @@ public constant BLACKWATER_ELEMENTAL_ID_ONMAP = compiletime(UNIT_ID_GEN.next())
 @compiletime function gen()
   new CreepDefinition(REEF_ELEMENTAL_ID, UnitIds.reefelemental, 5)
     ..setAttack(30, 2, 6, 1.2)
-    ..setDefence(ArmorType.Medium, 350, 2, 1)
+    ..setDefence(ArmorType.Small, 350, 2, 1)
 
   new CreepDefinition(SEA_ELEMENTAL_ID, UnitIds.seaelemental, 6)
     ..setAttack(45, 2, 12, 1.1)
     ..setDefence(ArmorType.Medium, 550, 3, 1)
 
   new CreepDefinition(BLACKWATER_ELEMENTAL_ID, UnitIds.seaelemental, 7)
-    ..setAttack(80, 2, 25, .9)
-    ..setDefence(ArmorType.Large, 900, 6, 2)
+    ..setAttack(50, 2, 20, .9)
+    ..setDefence(ArmorType.Large, 700, 4, 2)
     ..setColor(32, 12, 0)
 
   new CreepOnMapDefinition(BLACKWATER_ELEMENTAL_ID_ONMAP, UnitIds.seaelemental, 7)

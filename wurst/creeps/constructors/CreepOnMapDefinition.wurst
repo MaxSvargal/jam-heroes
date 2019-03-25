@@ -8,7 +8,7 @@ public class CreepOnMapDefinition extends UnitDefinition
 		super(newId, origId)
 		setUpgradesUsed(commaList(""))
 		setLevel(level)
-		setSpeedBase(30)
+		setSpeedBase(60)
 		setScalingValue(.7 + (level * .01))
 		setAttack(1, 1, 1, 1)
 		setAttacksEnabled(1)
@@ -16,6 +16,7 @@ public class CreepOnMapDefinition extends UnitDefinition
 		setAttack1Range(100)
 		setSightRadiusNight(200)
 		setSightRadiusDay(300)
+		setAttack1TargetsAllowed(commaList(TargetsAllowed.organic))
 
 	function setAttack(int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
 		setAttack1DamageBase(damageBase)

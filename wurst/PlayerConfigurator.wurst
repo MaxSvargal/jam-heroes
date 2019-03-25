@@ -15,8 +15,11 @@ import UnitBuildPlaceLarge
 import RecoveryDebuff
 import MoveToCastle
 
+import CommonShop
+import PlayersSpawnPoints
+
 public class PlayerConfigurator
-	constant player p
+	protected constant player p
 	group groupInBattle
 	unit hero
 	unit heroOnMap
@@ -25,21 +28,23 @@ public class PlayerConfigurator
 	vec2 castleHeroPoint
 	
 	construct(player pl)
+		print("initiate player " + pl.getName())
 		p = pl
 		selectHeroArea = p.getStartLocation()
 		initBuildingPlaces()
 		createUnit(p, TAVERN_ID, selectHeroArea, angle(220))
 		p.panCameraTo(selectHeroArea)
-		p.addGold(1000)
-		p.addLumber(1000)
+		p.addGold(1500)
+		p.addLumber(100)
 
+		// store last pos
+		onGlobalMapPos = getRandomSpawnPoint()
 		castleHeroPoint = vec2(14779, -12470)
 		let castleRect = Rect(13115, -13290, 15166, -11460)
 
-		CreateFogModifierRectBJ(true, p, FOG_OF_WAR_VISIBLE, castleRect)
+		createUnit(p, COMMON_SHOP_ID, castleHeroPoint, angle(0))
 
-		// store last pos
-		onGlobalMapPos = vec2(-3315, -15100)
+		CreateFogModifierRectBJ(true, p, FOG_OF_WAR_VISIBLE, castleRect)
 
 		EventListener.add(EVENT_PLAYER_UNIT_SELL) ->
 			onHeroBought(GetSellingUnit(), GetSoldUnit())
@@ -151,12 +156,21 @@ public class PlayerConfigurator
 			createUnit(p, UNIT_BUILD_PLACE_LARGE_ID, pos, angle(0))
 		large.destr()
 
-	function isGroupAlive() returns boolean
+	function isGroupAlive() returns bool
 		var isAnyAlive = false
 		for u in groupInBattle
 			if u.isAlive()
 				isAnyAlive = true
 		return isAnyAlive
 
-	function isHeroAlive() returns boolean
+	function isHeroAlive() returns bool
 		return hero.isAlive()
+
+	function isAllGroupAlive() returns bool
+		return isGroupAlive() or isHeroAlive()
+
+	function isAllyOf(player pl) returns bool
+		return p.isAllyOf(pl)
+
+	function getPlayer() returns player
+		return p
