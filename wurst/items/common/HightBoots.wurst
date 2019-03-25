@@ -13,6 +13,6 @@ public constant HIGHT_BOOTS_NAME = "Hight Boots"
 		..setMaxLifeGained(200)
 		..setName(HIGHT_BOOTS_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

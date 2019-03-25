@@ -20,8 +20,6 @@ public constant GREAT_AXE_NAME = "Great Axe"
 		..setGoldCost(380)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(GREAT_AXE_RECIEPT_ID, 10, false)

@@ -16,7 +16,7 @@ public constant MOVE_TO_GLOBAL_MAP_ID = compiletime(ABIL_ID_GEN.next())
     ..setButtonPositionNormalX(0)
     ..setButtonPositionNormalY(2)
 
-  new AbilityDefinitionTaurenChieftainWarStomp(MOVE_TO_GLOBAL_MAP_ID)
+  new AbilityDefinitionWarStomphydra(MOVE_TO_GLOBAL_MAP_ID)
     ..setHeroAbility(false)
     ..presetHotkey("T")
     ..setName("Move To Global Map [T]")

@@ -37,8 +37,9 @@ public class CreepsOnMap
 				campToRestore.createNewCampGroup()
 				mapState.creepCampsToRestore.remove(campToRestore)
 
-			let lvl = mapState.getIncreasedLevel().toInt()
+			let lvl = mapState.getIncreasedLevel()
+			let upgradeLvl = (lvl / 2).toInt()
 			let p = players[PLAYER_NEUTRAL_AGGRESSIVE]
-			SetPlayerTechResearched(p, CREEP_HP_UPGRADE_ID, lvl)
-			SetPlayerTechResearched(p, CREEP_DEFENCE_UPGRADE_ID, lvl)
-			SetPlayerTechResearched(p, CREEP_DAMAGE_UPGRADE_ID, lvl)
+			SetPlayerTechResearched(p, CREEP_HP_UPGRADE_ID, upgradeLvl)
+			SetPlayerTechResearched(p, CREEP_DEFENCE_UPGRADE_ID, upgradeLvl)
+			SetPlayerTechResearched(p, CREEP_DAMAGE_UPGRADE_ID, upgradeLvl)

@@ -13,6 +13,6 @@ public constant MARVELOUS_RING_NAME = "Marvelous Ring"
 		..setAllStatsBonus(3)
 		..setName(MARVELOUS_RING_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

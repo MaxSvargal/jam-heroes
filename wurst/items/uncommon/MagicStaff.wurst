@@ -22,8 +22,8 @@ public constant MAGIC_STAFF_NAME = "Magic Staff"
 		..setGoldCost(400)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(MAGIC_STAFF_RECIEPT_ID, 10, false)

@@ -20,8 +20,8 @@ public constant QUALITY_CHEST_ARMOR_NAME = "Plating "
 		..setGoldCost(380)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(QUALITY_CHEST_ARMOR_RECIEPT_ID, 10, false)

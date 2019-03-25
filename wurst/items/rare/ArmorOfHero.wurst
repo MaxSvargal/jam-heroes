@@ -21,8 +21,8 @@ public constant ARMOR_OF_HERO_NAME = "Armor Of Hero"
 		..setGoldCost(1230)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(ARMOR_OF_HERO_RECIEPT_ID, 50)

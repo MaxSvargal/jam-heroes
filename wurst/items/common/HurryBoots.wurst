@@ -13,6 +13,6 @@ public constant HURRY_BOOTS_NAME = "Hurry Boots"
 		..setMovementSpeedBonus(40)
 		..setName(HURRY_BOOTS_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

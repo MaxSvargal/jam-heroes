@@ -13,6 +13,6 @@ public constant STAFF_NAME = "Staff"
 		..setLumberCost(0)
 		..setAttackBonus(15)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

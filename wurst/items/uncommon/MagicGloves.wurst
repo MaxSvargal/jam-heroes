@@ -20,8 +20,8 @@ public constant MAGIC_GLOVES_NAME = "Magic Gloves"
 		..setGoldCost(400)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(MAGIC_GLOVES_RECIEPT_ID, 10, false)

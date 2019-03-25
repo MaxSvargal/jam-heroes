@@ -16,13 +16,13 @@ public constant ASASSINS_BLADES_NAME = "Asassin's Blades"
 	new BaseItemDefinition(ASASSINS_BLADES_ID, 'rst1', ItemType.RARE)
 		..setName(ASASSINS_BLADES_NAME)
 		..setAttackBonus(45)
-		..setAttackSpeedIncrease(20)
+		..setAttackSpeedIncrease(0.2)
 		..setPoisonAttack(16, .8, .8)
 		..setGoldCost(380)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(ASASSINS_BLADES_RECIEPT_ID, 50)

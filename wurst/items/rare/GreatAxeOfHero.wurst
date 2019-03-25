@@ -21,8 +21,8 @@ public constant GREAT_AXE_OF_HERO_NAME = "Great Axe Of Hero"
 		..setGoldCost(1230)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(GREAT_AXE_OF_HERO_RECIEPT_ID, 50)

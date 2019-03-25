@@ -13,6 +13,6 @@ public constant BREAKER_OF_VENOM_NAME = "Breaker Of Venom"
 		..setPoisonAttack(4, 0, 0)
 		..setName(BREAKER_OF_VENOM_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

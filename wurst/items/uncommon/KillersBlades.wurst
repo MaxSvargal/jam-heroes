@@ -20,8 +20,8 @@ public constant KILLERS_BLADES_NAME = "Killer's Blades"
 		..setGoldCost(380)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(KILLERS_BLADES_RECIEPT_ID, 10, false)

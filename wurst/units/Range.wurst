@@ -1,0 +1,138 @@
+package Range
+
+import Icons
+import Units
+import UnitIds
+import ObjectIdGenerator
+import UnitObjEditing
+
+import UnitTowerDefinition
+import BuildingToUnitRelations
+
+public constant ARCHER_ID = compiletime(UNIT_ID_GEN.next())
+public constant ARCHER_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant NIGHT_ARCHER_ID = compiletime(UNIT_ID_GEN.next())
+public constant NIGHT_ARCHER_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant SCOUT_ID = compiletime(UNIT_ID_GEN.next())
+public constant SCOUT_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant DRYAD_ID = compiletime(UNIT_ID_GEN.next())
+public constant DRYAD_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+// ...
+
+public constant HUNTRESS_ID = compiletime(UNIT_ID_GEN.next())
+public constant HUNTRESS_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant HUNTRESS_SPIRIT_ID = compiletime(UNIT_ID_GEN.next())
+public constant HUNTRESS_SPIRIT_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+public constant AVATAR_ID = compiletime(UNIT_ID_GEN.next())
+public constant AVATAR_ID_BUILDING = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+  new UnitTowerDefinition(
+    ARCHER_ID,
+    ARCHER_ID_BUILDING,
+    UnitIds.highelvenarcher)
+    ..setName("Archer")
+    ..setDescription("Basic range unit")
+    ..setModelFile(Units.highElfArcher1)
+    ..setIconGameInterface(Icons.bTNHighElvenArcher)
+    ..setUpgradesTo(NIGHT_ARCHER_ID)
+    ..setCost(60, 0)
+    ..setAttack(30, 2, 15, 1.3)
+    ..setDefence(ArmorType.Unarmored, 400, 1, 1)
+
+  new UnitTowerDefinition(
+    NIGHT_ARCHER_ID,
+    NIGHT_ARCHER_ID_BUILDING,
+    UnitIds.highelvenarcher)
+    ..setName("Night Archer")
+    ..setDescription("Advanced range unit")
+    ..setModelFile(Units.archer)
+    ..setIconGameInterface(Icons.bTNArcher)
+    ..setUpgradesTo(SCOUT_ID_BUILDING)
+    ..setCost(120, 5)
+    ..setAttack(130, 3, 25, 1.2)
+    ..setDefence(ArmorType.Small, 700, 2, 1)
+
+  new UnitTowerDefinition(
+    SCOUT_ID,
+    SCOUT_ID_BUILDING,
+    UnitIds.huntress)
+    ..setName("Scout")
+    ..setDescription("Advanced range unit")
+    ..setModelFile(Units.runner)
+    ..setIconGameInterface(Icons.bTNNightElfRunner)
+    ..setUpgradesTo(HUNTRESS_ID_BUILDING, DRYAD_ID_BUILDING)
+    ..setCost(240, 10)
+    ..setAttack(180, 3, 46, 1)
+    ..setDefence(ArmorType.Small, 1500, 3, 1)
+
+  new UnitTowerDefinition(
+    DRYAD_ID,
+    DRYAD_ID_BUILDING,
+    UnitIds.dryad)
+    ..setName("Dryad")
+    ..setDescription("Advanced range unit")
+    ..setModelFile(Units.dryad1)
+    ..setIconGameInterface(Icons.bTNDryad)
+    ..setUpgradesTo()
+    ..setCost(520, 20)
+    ..setAttack(370, 4, 80, 1.1)
+    ..setDefence(ArmorType.Small, 3000, 4, 1)
+
+  new UnitTowerDefinition(
+    HUNTRESS_ID,
+    HUNTRESS_ID_BUILDING,
+    UnitIds.huntress)
+    ..setName("Huntress")
+    ..setDescription("Advanced range unit")
+    ..setModelFile(Units.huntress)
+    ..setIconGameInterface(Icons.bTNHuntress)
+    ..setUpgradesTo(HUNTRESS_SPIRIT_ID_BUILDING)
+    ..setUpgradesNone()
+    ..setCost(480, 20)
+    ..setAttack(370, 4, 80, 1.2)
+    ..setDefence(ArmorType.Medium, 3000, 4, 1)
+
+  new UnitTowerDefinition(
+    HUNTRESS_SPIRIT_ID,
+    HUNTRESS_SPIRIT_ID_BUILDING,
+    UnitIds.vengeance)
+    ..setName("Huntress Spirit")
+    ..setDescription("Advanced range unit with chaos attack")
+    ..setModelFile(Units.vengeance)
+    ..setIconGameInterface(Icons.bTNVengeanceIncarnate)
+    ..setUpgradesTo(AVATAR_ID_BUILDING)
+    ..setUpgradesNone()
+    ..setCost(990, 40)
+    ..setAttack(1200, 5, 70, .9)
+    ..setScalingValue(1.1)
+    ..setAttack1AttackType(AttackType.Chaos)
+    ..setDefence(ArmorType.Small, 10000, 6, 2)
+
+  new UnitTowerDefinition(
+    AVATAR_ID,
+    AVATAR_ID_BUILDING,
+    UnitIds.spiritofvengeance)
+    ..setName("Avatar")
+    ..setDescription("Advanced range unit with increased chaos attack")
+    ..setModelFile(Units.spiritOfVengeance)
+    ..setIconGameInterface(Icons.bTNSpiritOfVengeance)
+    ..setUpgradesNone()
+    ..setCost(2000, 50)
+    ..setAttack(2200, 6, 70, .8)
+    ..setAttack1AttackType(AttackType.Chaos)
+    ..setDefence(ArmorType.Medium, 20000, 8, 3)
+
+init
+  buildingToUnitRelations
+    ..put(ARCHER_ID_BUILDING, ARCHER_ID)
+    ..put(NIGHT_ARCHER_ID_BUILDING, NIGHT_ARCHER_ID)
+    ..put(SCOUT_ID_BUILDING, SCOUT_ID)
+    ..put(DRYAD_ID_BUILDING, DRYAD_ID)
+    ..put(HUNTRESS_ID_BUILDING, HUNTRESS_ID)
+    ..put(HUNTRESS_SPIRIT_ID_BUILDING, HUNTRESS_SPIRIT_ID)

@@ -13,7 +13,7 @@ public constant RESCUE_SHIRT_NAME = "Rescue Shirt"
 		..setGoldCost(150)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 

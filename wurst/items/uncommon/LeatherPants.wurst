@@ -20,8 +20,8 @@ public constant LEATHER_PANTS_NAME = "Leather Pants"
 		..setGoldCost(380)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(LEATHER_PANTS_RECIEPT_ID, 10, false)

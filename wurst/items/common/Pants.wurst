@@ -13,6 +13,6 @@ public constant PANTS_NAME = "Pants"
 		..setDefenceBonus(3)
 		..setName(PANTS_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

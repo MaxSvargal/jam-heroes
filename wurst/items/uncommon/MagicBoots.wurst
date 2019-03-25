@@ -15,13 +15,13 @@ public constant MAGIC_BOOTS_NAME = "Magic "
 @compiletime function gen()
 	new BaseItemDefinition(MAGIC_BOOTS_ID, 'rst1', ItemType.UNCOMMON)
 		..setName(MAGIC_BOOTS_NAME)
-		..setChancetoEvade(15)
+		..setChancetoEvade(.15)
 		..setMovementSpeedBonus(80)
 		..setGoldCost(400)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(MAGIC_BOOTS_RECIEPT_ID, 10, false)

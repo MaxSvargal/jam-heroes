@@ -24,8 +24,18 @@ public class UnitTowerDefinition extends UnitDefinition
 		this.buildingId = buildingId
 		building = new BuildingDefinition(buildingId, UnitIds.scouttower)
 			..setBuildTime(1)
+			..setAttacksEnabled(1)
 			..setNormalAbilities("")
 			..setGroundTexture("")
+	
+	override function setName(string data)
+		super.setName(data)
+		building.setName(data)
+		building.setTooltipBasic(data)
+	
+	override function setDescription(string data)
+		super.setTooltipExtended(data)
+		building.setTooltipExtended(data)
 	
 	override function setModelFile(string data)
 		super.setModelFile(data)
@@ -62,12 +72,20 @@ public class UnitTowerDefinition extends UnitDefinition
 		setAttack1DamageNumberofDice(numberofDice)
 		setAttack1DamageSidesperDie(sidesperDie)
 		setAttack1CooldownTime(cooldownTime)
+		building.setAttack1DamageBase(damageBase)
+		building.setAttack1DamageNumberofDice(numberofDice)
+		building.setAttack1DamageSidesperDie(sidesperDie)
+		building.setAttack1CooldownTime(cooldownTime)
 	
 	function setDefence(ArmorType armorType, int hitPoints, int defenceBase, int upgradeBonus)
 		setArmorType(armorType)
 		setHitPointsMaximumBase(hitPoints)
 		setDefenseBase(defenceBase)
 		setDefenseUpgradeBonus(upgradeBonus) // Required for defence upgrades
+		building.setArmorType(armorType)
+		building.setHitPointsMaximumBase(hitPoints)
+		building.setDefenseBase(defenceBase)
+		building.setDefenseUpgradeBonus(upgradeBonus)
 
 	function setGoldBounty(int base, int numberOfDice, int sideperDie)
 		setGoldBountyAwardedBase(base)

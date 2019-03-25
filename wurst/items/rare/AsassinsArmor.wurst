@@ -16,13 +16,13 @@ public constant ASASSINS_ARMOR_NAME = "Asassin's Armor"
 	new BaseItemDefinition(ASASSINS_ARMOR_ID, 'rst1', ItemType.RARE)
 		..setName(ASASSINS_ARMOR_NAME)
 		..setAgilityBonus(20)
-		..setChancetoEvade(25)
+		..setChancetoEvade(.25)
 		..setMovementSpeedBonus(160)
 		..setGoldCost(380)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(ASASSINS_ARMOR_RECIEPT_ID, 50)

@@ -13,6 +13,6 @@ public constant MANA_SHIELD_NAME = "Mana Shield"
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

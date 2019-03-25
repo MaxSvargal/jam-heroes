@@ -13,6 +13,6 @@ public constant MANTIE_NAME = "Mantie"
 		..setMaxManaGained(150)
 		..setName(MANTIE_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

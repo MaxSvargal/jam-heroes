@@ -14,7 +14,5 @@ public constant ARMOR_NAME = "Armor"
 		..setDefenceBonus(3)
 		..setName(ARMOR_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
 		..setIcon("BTNArmorTier1")
 

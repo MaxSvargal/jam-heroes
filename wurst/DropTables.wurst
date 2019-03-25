@@ -15,7 +15,7 @@ public class GenerateDropTable
 	construct()
 		let lvl = mapState.getIncreasedLevel().toInt()
 		dropTable = new DropTable()
-		for i = 0 to 22 - 23 // 23 -> lvl
+		for i = 0 to 22 - lvl
 			dropTable.addDropNothing()
 		for i = 0 to lvl
 			dropTable.addDropItem(commonDropTable.getRandomItem())

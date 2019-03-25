@@ -13,6 +13,6 @@ public constant AXE_NAME = "Axe"
 		..setAttackBonus(15)
 		..setName(AXE_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

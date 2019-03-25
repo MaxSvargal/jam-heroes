@@ -16,6 +16,7 @@ import RecoveryDebuff
 import MoveToCastle
 
 import CommonShop
+import RecieptsShop
 import PlayersSpawnPoints
 
 public class PlayerConfigurator
@@ -28,21 +29,21 @@ public class PlayerConfigurator
 	vec2 castleHeroPoint
 	
 	construct(player pl)
-		print("initiate player " + pl.getName())
 		p = pl
 		selectHeroArea = p.getStartLocation()
 		initBuildingPlaces()
 		createUnit(p, TAVERN_ID, selectHeroArea, angle(220))
 		p.panCameraTo(selectHeroArea)
-		p.addGold(1500)
-		p.addLumber(100)
+		// p.addGold(1500)
+		// p.addLumber(100)
 
 		// store last pos
 		onGlobalMapPos = getRandomSpawnPoint()
-		castleHeroPoint = vec2(14779, -12470)
+		castleHeroPoint = gg_rct_Player0CastleHero.getCenter()
 		let castleRect = Rect(13115, -13290, 15166, -11460)
 
-		createUnit(p, COMMON_SHOP_ID, castleHeroPoint, angle(0))
+		createUnit(p, COMMON_SHOP_ID, gg_rct_Player0CastleShop0.getCenter(), angle(0))
+		createUnit(p, RECIEPTS_SHOP_ID, gg_rct_Player0CastleShop1.getCenter(), angle(0))
 
 		CreateFogModifierRectBJ(true, p, FOG_OF_WAR_VISIBLE, castleRect)
 
@@ -75,6 +76,7 @@ public class PlayerConfigurator
 			hero
 				..setPos(castleHeroPoint)
 				..addAbility(MOVE_TO_GLOBAL_MAP_ID)
+			listenForHeroDies()
 			p.setCameraPosition(castleHeroPoint)
 			// make a hero on a map
 			let onMapHero = heroesOnMapAndInBattleRelations.get(hero.getTypeId())
@@ -124,12 +126,12 @@ public class PlayerConfigurator
 		pauseHeroOnMap(false)
 		hero.queueAnimation("Cast")
 		moveToGlobalMap()
+		p.addLumber(1)
 		for u in groupInBattle
 			u.remove()
 
 	function battleDefeat()
 		moveToCastle()
-		hero.revive(castleHeroPoint, true)
 		p.selectSingle(hero)
 		for u in groupInBattle
 			u.remove()
@@ -174,3 +176,11 @@ public class PlayerConfigurator
 
 	function getPlayer() returns player
 		return p
+
+	function listenForHeroDies()
+		EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
+			if GetTriggerUnit() == hero
+				hero.revive(castleHeroPoint, true)
+
+	function moveToTreasury() // TODO: Use it!
+		hero.setPos(gg_rct_Player0Treasury.getCenter())

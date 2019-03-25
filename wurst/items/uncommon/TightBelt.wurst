@@ -16,11 +16,11 @@ public constant TIGHT_BELT_NAME = "Tight Belt"
 	new BaseItemDefinition(TIGHT_BELT_ID, 'rst1', ItemType.UNCOMMON)
 		..setName(TIGHT_BELT_NAME)
 		..setAgilityBonus(10)
-		..setAttackSpeedIncrease(10)
+		..setAttackSpeedIncrease(0.1)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(TIGHT_BELT_RECIEPT_ID, 10, false)

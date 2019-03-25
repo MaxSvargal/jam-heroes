@@ -1,4 +1,4 @@
-package Reciepts
+package RareRecieptsDropTable
 
 import DropTable
 
@@ -9,7 +9,7 @@ import GreatAxeOfHero
 import GreatMageRobe
 import GreatMageStaff
 
-public constant recieptsDropTable = new DropTable()
+public constant rareRecieptsDropTable = new DropTable()
   ..addDropItem(ARMOR_OF_HERO_RECIEPT_ID)
   ..addDropItem(ASASSINS_ARMOR_RECIEPT_ID)
   ..addDropItem(ASASSINS_BLADES_RECIEPT_ID)

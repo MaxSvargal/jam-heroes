@@ -13,6 +13,6 @@ public constant BELT_NAME = "Belt"
 		..setAgilityBonus(10)
 		..setName(BELT_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

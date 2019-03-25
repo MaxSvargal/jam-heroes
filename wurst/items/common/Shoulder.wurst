@@ -13,6 +13,6 @@ public constant SHOULDER_NAME = "Shoulder"
 		..setStrengthBonus(10)
 		..setName(SHOULDER_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

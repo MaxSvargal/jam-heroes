@@ -55,7 +55,7 @@ public class BaseItemDefinition extends ItemDefinition
 		setDefaultProps()
 
 	protected function setDefaultProps()
-		setDroppedWhenCarrierDies(true)
+		// setDroppedWhenCarrierDies(true)
 		setStockMaximum(1)
 		setStockReplenishInterval(30)
 		setStrengthBonus(0)
@@ -68,6 +68,11 @@ public class BaseItemDefinition extends ItemDefinition
 		let str = getColorOfCurrentType() + name + "|r"
 		super.setName(str)
 		super.setTooltipBasic("Buy " + str)
+
+	override function setDescription(string desc)
+		this.desc = desc
+		super.setTooltipExtended(desc + "\n\n" + generateProps())
+		super.setDescription(desc)
 
 	function setIcon(string name)
 		string s = name
@@ -90,12 +95,7 @@ public class BaseItemDefinition extends ItemDefinition
 
 	protected function getColorOfCurrentType() returns string
 		return getColorOfItemType(itemType)
-	
-	override function setTooltipExtended(string desc)
-		this.desc = desc
-		super.setTooltipExtended(desc + "\n\n" + generateProps())
-		super.setDescription(desc)
-	
+
 	function addAbility(int id)
 		abilities.add(id)
 		let result = abilities.joinBy((int i) -> i.toRawCode(), ",")
@@ -162,14 +162,14 @@ public class BaseItemDefinition extends ItemDefinition
 				.getNewId())
 
 	function setAttackSpeedIncrease(real val)
-		addProp("attack speed", val.toString() + "%")
+		addProp("attack speed", (val * 100).toString() + "%")
 		addAbility(
 			new AbilityDefinitionAttackSpeedIncrease(ABIL_ID_GEN.next())
 				..setAttackSpeedIncrease(1, val)
 				.getNewId())
 
 	function setChancetoEvade(real val)
-		addProp("evade chance", val.toString() + "%")
+		addProp("evade chance", (val * 100).toString() + "%")
 		addAbility(
 			new AbilityDefinitionEvasion(ABIL_ID_GEN.next())
 				..setChancetoEvade(1, val)
@@ -183,6 +183,7 @@ public class BaseItemDefinition extends ItemDefinition
 				.getNewId())
 
 	function setMaxManaGained(int val)
+		// does not work!
 		addProp("mana gained", val.toString())
 		addAbility(
 			new AbilityDefinitionAImm(ABIL_ID_GEN.next())
@@ -193,7 +194,7 @@ public class BaseItemDefinition extends ItemDefinition
 		// TODO: does not work
 		addProp("life gained", val.toString())
 		addAbility(
-			new AbilityDefinitionAImi(ABIL_ID_GEN.next())
+			new AbilityDefinitionMaxLifeBonusGreater(ABIL_ID_GEN.next())
 				..setMaxLifeGained(1, val)
 				.getNewId())
 

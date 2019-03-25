@@ -13,6 +13,6 @@ public constant BRIGANDINE_NAME = "Brigandine"
 		..setMaxLifeGained(400)
 		..setName(BRIGANDINE_NAME)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")

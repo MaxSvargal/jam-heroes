@@ -3,20 +3,22 @@ package Main
 import Players
 import CreepsOnMap
 import IncomeBuildings
+import ClosureTimers
+import MapState
 
 init
 	initPlayers()
 	new CreepsOnMap()
 	new IncomeBuildings()
 
-	let multi = CreateMultiboard()
-	multi
-		..setRowCount(1)
-		..setColumnCount(1)
-		..setTitle("Difficulity")
-		..setItemsValue("0")
-		..display(true)
+	doAfter(1) ->
+		let multi = CreateMultiboard()
+		multi
+			..setRowCount(1)
+			..setColumnCount(1)
+			..setTitle("Difficulity")
+			..setItemsValue("0")
+			..display(true)
 
-	multi.getItem(0, 0)
-		..setValue("1")
-		..release()
+		doPeriodically(30) cb ->
+			multi.setTitle("Difficulity: " + mapState.getIncreasedLevel().toString(2) + "%")

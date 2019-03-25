@@ -39,7 +39,8 @@ public class CreepCampGroup
 		let g = CreateGroup()
 
 		warlord = createUnit(p, warlordId, r.randomPoint(), angle(220))
-			..addAbility(getRandomCreepAbility())
+		if mapState.getIncreasedLevel() > 5
+			warlord.addAbility(getRandomCreepAbility())
 		g.addUnit(warlord)
 
 		for u from iterator

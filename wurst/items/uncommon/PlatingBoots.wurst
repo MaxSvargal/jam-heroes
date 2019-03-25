@@ -20,8 +20,8 @@ public constant PLATING_BOOTS_NAME = "Plating Boots"
 		..setGoldCost(400)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(PLATING_BOOTS_RECIEPT_ID, 10, false)

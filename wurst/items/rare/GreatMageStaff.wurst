@@ -21,8 +21,8 @@ public constant GREAT_MAGE_STAFF_NAME = "Great Mage Staff"
 		..setGoldCost(1290)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(GREAT_MAGE_STAFF_RECIEPT_ID, 50)

@@ -20,8 +20,8 @@ public constant KILLERS_GLOVES_NAME = "Killer's Gloves"
 		..setGoldCost(380)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(KILLERS_GLOVES_RECIEPT_ID, 10, false)

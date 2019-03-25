@@ -63,10 +63,13 @@ public class Battle
 			and not campGroup.isGroupAlive()
 				p.battleVictory()
 				playersInBattle.remove(p)
+				// TODO: check for that works
+				if creepCamp != null
+					creepCamp.toRestore()
 				// TODO: drop items on the map and hero needs to move to exit
 				// TODO: move method to player instead of droptable?
 				dropRandomItemAtPos(p.castleHeroPoint)
-				dropRandomItemAtPos(campGroup.warlord.getPos())
+				//dropRandomItemAtPos(campGroup.warlord.getPos())
 		playersIterator.close()
 		return playersInBattle.size() == 0
 
@@ -99,8 +102,6 @@ public class Battle
 			playersInBattle.add(playerInstance)
 
 	ondestroy
-		if creepCamp != null
-			creepCamp.toRestore()
 		if incomeBuilding != null
 			incomeBuilding.setOwner(triggerPlayer)
 			// incomeBuilding.setOwner(players[1])

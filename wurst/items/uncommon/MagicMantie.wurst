@@ -20,8 +20,8 @@ public constant MAGIC_MANTIE_NAME = "Magic Mantie"
 		..setGoldCost(400)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(MAGIC_MANTIE_RECIEPT_ID, 10, false)

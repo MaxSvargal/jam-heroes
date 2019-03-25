@@ -5,12 +5,13 @@ import UnitIds
 import ObjectIdGenerator
 import ObjectIds
 
-import Footman
+import Mellee
+import Range
 
 public constant UNIT_BUILD_PLACE_SMALL_ID = compiletime(UNIT_ID_GEN.next())
 
 @compiletime function gen()
 	new BuildingDefinition(UNIT_BUILD_PLACE_SMALL_ID, UnitIds.circleofpower)
 		..setName("Unit Build Place Small")
-		..setUpgradesTo(commaList(FOOTMAN_ID_BUILDING))
+		..setUpgradesTo(commaList(FOOTMAN_ID_BUILDING, ARCHER_ID_BUILDING))
 		..setNormalAbilities("")

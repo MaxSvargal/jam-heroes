@@ -16,12 +16,12 @@ public constant UNSIMPLE_STEEL_SHIELD_NAME = "Plating "
 	new BaseItemDefinition(UNSIMPLE_STEEL_SHIELD_ID, 'rst1', ItemType.UNCOMMON)
 		..setName(UNSIMPLE_STEEL_SHIELD_NAME)
     ..setDefenceBonus(6)
-    ..setAttackSpeedIncrease(10)
+    ..setAttackSpeedIncrease(0.08)
 		..setGoldCost(570)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(UNSIMPLE_STEEL_SHIELD_RECIEPT_ID, 10, false)

@@ -20,8 +20,8 @@ public constant MAIL_PANTS_NAME = "Plating "
 		..setGoldCost(400)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(MAIL_PANTS_RECIEPT_ID, 10, false)

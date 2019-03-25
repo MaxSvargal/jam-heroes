@@ -16,12 +16,12 @@ public constant MERCENARY_JACKET_NAME = "Mercenary Jacket"
 	new BaseItemDefinition(MERCENARY_JACKET_ID, 'rst1', ItemType.UNCOMMON)
 		..setName(MERCENARY_JACKET_NAME)
 		..setMaxLifeGained(400)
-		..setChancetoEvade(10)
+		..setChancetoEvade(.1)
 		..setGoldCost(380)
 		..setLumberCost(0)
 		..setDescription("desc")
-		..setTooltipBasic("tooltip basic")
-		..setTooltipExtended("tooltip extended")
+	
+	
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(MERCENARY_JACKET_RECIEPT_ID, 10, false)
