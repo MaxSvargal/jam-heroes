@@ -3,12 +3,12 @@ package RescueShirt
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_RESCUE_SHIRT_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_RESCUE_SHIRT_NAME = "Rescue Shirt"
+public constant RESCUE_SHIRT_ID = compiletime(ITEM_ID_GEN.next())
+public constant RESCUE_SHIRT_NAME = "Rescue Shirt"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_RESCUE_SHIRT_ID, 'rst1', ItemType.COMMON)
-		..setName(ITEM_RESCUE_SHIRT_NAME)
+	new BaseItemDefinition(RESCUE_SHIRT_ID, 'rst1', ItemType.COMMON)
+		..setName(RESCUE_SHIRT_NAME)
 		..setHitPointsRegeneratedPerSecond(1)
 		..setGoldCost(150)
 		..setLumberCost(0)

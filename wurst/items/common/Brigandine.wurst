@@ -3,15 +3,15 @@ package Brigandine
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_BRIGANDINE_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_BRIGANDINE_NAME = "Brigandine"
+public constant BRIGANDINE_ID = compiletime(ITEM_ID_GEN.next())
+public constant BRIGANDINE_NAME = "Brigandine"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_BRIGANDINE_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(BRIGANDINE_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setMaxLifeGained(400)
-		..setName(ITEM_BRIGANDINE_NAME)
+		..setName(BRIGANDINE_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

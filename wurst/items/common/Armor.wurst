@@ -4,15 +4,15 @@ package Armor
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_ARMOR_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_ARMOR_NAME = "Armor"
+public constant ARMOR_ID = compiletime(ITEM_ID_GEN.next())
+public constant ARMOR_NAME = "Armor"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_ARMOR_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(ARMOR_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(250)
 		..setLumberCost(0)
 		..setDefenceBonus(3)
-		..setName(ITEM_ARMOR_NAME)
+		..setName(ARMOR_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

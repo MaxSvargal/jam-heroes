@@ -3,15 +3,15 @@ package Gloves
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_GLOVES_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_GLOVES_NAME = "Gloves"
+public constant GLOVES_ID = compiletime(ITEM_ID_GEN.next())
+public constant GLOVES_NAME = "Gloves"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_GLOVES_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(GLOVES_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setDefenceBonus(1)
-		..setName(ITEM_GLOVES_NAME)
+		..setName(GLOVES_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

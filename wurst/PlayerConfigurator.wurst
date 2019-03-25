@@ -1,21 +1,22 @@
 package PlayerConfigurator
 
 import ClosureEvents
-import HashMap
-import HashList
 import UnitIds
+import InstantDummyCaster
+import Orders
+
+import BuildingToUnitRelations
+import HeroesList
 
 import Tavern
 import UnitBuildPlaceSmall
 import UnitBuildPlaceLarge
 
+import RecoveryDebuff
 import MoveToCastle
-import BuildingToUnitRelations
-import HeroesList
 
 public class PlayerConfigurator
 	constant player p
-	constant heroGroup = new HashList<unit>()
 	group groupInBattle
 	unit hero
 	unit heroOnMap
@@ -48,7 +49,21 @@ public class PlayerConfigurator
 				moveToCastle()
 			if GetSpellAbilityId() == MOVE_TO_GLOBAL_MAP_ID
 				moveToGlobalMap()
-				
+
+		// Debuff logic
+		EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
+			addDebuffToBuildOnUnitDeath(GetTriggerUnit())
+
+	private function addDebuffToBuildOnUnitDeath(unit u)
+		if u.getOwner() == p and groupInBattle.contains(u)
+			let iterator = buildingToUnitRelations.iterator()
+			for buildingId from iterator
+				if buildingToUnitRelations.get(buildingId) == u.getTypeId()
+					let building = GetUnitsOfPlayerAndTypeId(p, buildingId).next()
+					InstantDummyCaster.castTarget(players[PLAYER_NEUTRAL_AGGRESSIVE], RECOVERY_DEBUFF_ID, 1, Orders.tornado, building)
+					break
+			iterator.close()
+
 	private function onHeroBought(unit selling, unit sold)
 		if selling.getTypeId() == TAVERN_ID and selling.getOwner() == p
 			hero = sold
@@ -56,7 +71,7 @@ public class PlayerConfigurator
 				..setPos(castleHeroPoint)
 				..addAbility(MOVE_TO_GLOBAL_MAP_ID)
 			p.setCameraPosition(castleHeroPoint)
-			// make hero on map
+			// make a hero on a map
 			let onMapHero = heroesOnMapAndInBattleRelations.get(hero.getTypeId())
 			heroOnMap = createUnit(p, onMapHero, onGlobalMapPos, angle(220))
 				..hide()

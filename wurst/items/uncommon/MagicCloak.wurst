@@ -25,14 +25,14 @@ public constant MAGIC_CLOAK_NAME = "Magic Cloak"
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(MAGIC_CLOAK_RECIEPT_ID, 10, false)
-		..addRequiredItem(ITEM_MANTIE_NAME)
-		..addRequiredItem(ITEM_MAGE_BRACERS_NAME)
-		..addRequiredItem(ITEM_MAGE_CAPE_NAME)
+		..addRequiredItem(MANTIE_NAME)
+		..addRequiredItem(MAGE_BRACERS_NAME)
+		..addRequiredItem(MAGE_CAPE_NAME)
 		..finish()
 
 init
 	new DefineItemReceipt()
 		..setResultItem(MAGIC_CLOAK_ID)
-		..addRequiredItem(ITEM_MANTIE_ID)
-		..addRequiredItem(ITEM_MAGE_BRACERS_ID)
-		..addRequiredItem(ITEM_MAGE_CAPE_ID)
+		..addRequiredItem(MANTIE_ID)
+		..addRequiredItem(MAGE_BRACERS_ID)
+		..addRequiredItem(MAGE_CAPE_ID)

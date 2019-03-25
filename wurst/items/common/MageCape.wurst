@@ -3,15 +3,15 @@ package MageCape
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_MAGE_CAPE_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_MAGE_CAPE_NAME = "Mage Cape"
+public constant MAGE_CAPE_ID = compiletime(ITEM_ID_GEN.next())
+public constant MAGE_CAPE_NAME = "Mage Cape"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_MAGE_CAPE_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(MAGE_CAPE_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setIntelligenceBonus(10)
-		..setName(ITEM_MAGE_CAPE_NAME)
+		..setName(MAGE_CAPE_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

@@ -3,15 +3,15 @@ package MageBracers
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_MAGE_BRACERS_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_MAGE_BRACERS_NAME = "Mage Bracers"
+public constant MAGE_BRACERS_ID = compiletime(ITEM_ID_GEN.next())
+public constant MAGE_BRACERS_NAME = "Mage Bracers"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_MAGE_BRACERS_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(MAGE_BRACERS_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(150)
 		..setLumberCost(0)
 		..setMaxManaGained(150)
-		..setName(ITEM_MAGE_BRACERS_NAME)
+		..setName(MAGE_BRACERS_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

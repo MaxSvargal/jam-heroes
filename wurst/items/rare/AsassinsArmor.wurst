@@ -1,0 +1,39 @@
+package AsassinsArmor
+
+import ObjectIdGenerator
+import ItemDefinition
+import ItemReceipt
+
+import MercenaryJacket
+import LeatherPants
+import TightBelt
+
+public constant ASASSINS_ARMOR_ID = compiletime(ITEM_ID_GEN.next())
+public constant ASASSINS_ARMOR_RECIEPT_ID = compiletime(ITEM_ID_GEN.next())
+public constant ASASSINS_ARMOR_NAME = "Asassin's Armor"
+
+@compiletime function gen()
+	new BaseItemDefinition(ASASSINS_ARMOR_ID, 'rst1', ItemType.RARE)
+		..setName(ASASSINS_ARMOR_NAME)
+		..setAgilityBonus(20)
+		..setChancetoEvade(25)
+		..setMovementSpeedBonus(160)
+		..setGoldCost(380)
+		..setLumberCost(0)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")
+
+		..makeReciept(ASASSINS_ARMOR_RECIEPT_ID, 50)
+		..addRequiredItem(MERCENARY_JACKET_NAME)
+		..addRequiredItem(LEATHER_PANTS_NAME)
+		..addRequiredItem(TIGHT_BELT_NAME)
+		..finish()
+
+init
+	new DefineItemReceipt()
+		..setResultItem(ASASSINS_ARMOR_ID)
+		..addRequiredItem(MERCENARY_JACKET_ID)
+		..addRequiredItem(LEATHER_PANTS_ID)
+		..addRequiredItem(TIGHT_BELT_ID)

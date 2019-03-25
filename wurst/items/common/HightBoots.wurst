@@ -3,15 +3,15 @@ package HightBoots
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_HIGHT_BOOTS_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_HIGHT_BOOTS_NAME = "Hight Boots"
+public constant HIGHT_BOOTS_ID = compiletime(ITEM_ID_GEN.next())
+public constant HIGHT_BOOTS_NAME = "Hight Boots"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_HIGHT_BOOTS_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(HIGHT_BOOTS_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setMaxLifeGained(200)
-		..setName(ITEM_HIGHT_BOOTS_NAME)
+		..setName(HIGHT_BOOTS_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

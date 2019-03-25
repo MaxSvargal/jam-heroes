@@ -1,0 +1,38 @@
+package MagicGloves
+
+import ObjectIdGenerator
+import ItemDefinition
+import ItemReceipt
+
+import Knife
+import Gloves
+import LuckyBracers
+
+public constant MAGIC_GLOVES_ID = compiletime(ITEM_ID_GEN.next())
+public constant MAGIC_GLOVES_RECIEPT_ID = compiletime(ITEM_ID_GEN.next())
+public constant MAGIC_GLOVES_NAME = "Magic Gloves"
+
+@compiletime function gen()
+	new BaseItemDefinition(MAGIC_GLOVES_ID, 'rst1', ItemType.UNCOMMON)
+		..setName(MAGIC_GLOVES_NAME)
+		..setIntelligenceBonus(20)
+		..setMaxManaGained(600)
+		..setGoldCost(400)
+		..setLumberCost(0)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")
+
+		..makeReciept(MAGIC_GLOVES_RECIEPT_ID, 10, false)
+		..addRequiredItem(KNIFE_NAME)
+		..addRequiredItem(GLOVES_NAME)
+		..addRequiredItem(LUCKY_BRACERS_NAME)
+		..finish()
+
+init
+	new DefineItemReceipt()
+		..setResultItem(MAGIC_GLOVES_ID)
+		..addRequiredItem(KNIFE_ID)
+		..addRequiredItem(GLOVES_ID)
+		..addRequiredItem(LUCKY_BRACERS_ID)

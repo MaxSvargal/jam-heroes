@@ -1,0 +1,39 @@
+package ArmorOfHero
+
+import ObjectIdGenerator
+import ItemDefinition
+import ItemReceipt
+
+import GreatAxe
+import MailPants
+import QualityChestArmor
+
+public constant ARMOR_OF_HERO_ID = compiletime(ITEM_ID_GEN.next())
+public constant ARMOR_OF_HERO_RECIEPT_ID = compiletime(ITEM_ID_GEN.next())
+public constant ARMOR_OF_HERO_NAME = "Armor Of Hero"
+
+@compiletime function gen()
+	new BaseItemDefinition(ARMOR_OF_HERO_ID, 'rst1', ItemType.RARE)
+		..setName(ARMOR_OF_HERO_NAME)
+		..setMaxLifeGained(1500)
+		..setDefenceBonus(12)
+		..setHitPointsRegeneratedPerSecond(5)
+		..setGoldCost(1230)
+		..setLumberCost(0)
+		..setDescription("desc")
+		..setTooltipBasic("tooltip basic")
+		..setTooltipExtended("tooltip extended")
+		..setIcon("BTNHasteTier1")
+
+		..makeReciept(ARMOR_OF_HERO_RECIEPT_ID, 50)
+		..addRequiredItem(GREAT_AXE_NAME)
+		..addRequiredItem(MAIL_PANTS_NAME)
+		..addRequiredItem(QUALITY_CHEST_ARMOR_NAME)
+		..finish()
+
+init
+	new DefineItemReceipt()
+		..setResultItem(ARMOR_OF_HERO_ID)
+		..addRequiredItem(GREAT_AXE_ID)
+		..addRequiredItem(MAIL_PANTS_ID)
+		..addRequiredItem(QUALITY_CHEST_ARMOR_ID)

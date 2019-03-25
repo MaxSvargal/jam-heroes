@@ -25,14 +25,14 @@ public constant PLATING_BOOTS_NAME = "Plating Boots"
 		..setIcon("BTNHasteTier1")
 
 		..makeReciept(PLATING_BOOTS_RECIEPT_ID, 10, false)
-		..addRequiredItem(ITEM_HURRY_BOOTS_NAME)
-		..addRequiredItem(ITEM_SHOULDER_NAME)
-		..addRequiredItem(ITEM_BREAKER_OF_VENOM_NAME)
+		..addRequiredItem(HURRY_BOOTS_NAME)
+		..addRequiredItem(SHOULDER_NAME)
+		..addRequiredItem(BREAKER_OF_VENOM_NAME)
 		..finish()
 
 init
 	new DefineItemReceipt()
 		..setResultItem(PLATING_BOOTS_ID)
-		..addRequiredItem(ITEM_HURRY_BOOTS_ID)
-		..addRequiredItem(ITEM_SHOULDER_ID)
-		..addRequiredItem(ITEM_BREAKER_OF_VENOM_ID)
+		..addRequiredItem(HURRY_BOOTS_ID)
+		..addRequiredItem(SHOULDER_ID)
+		..addRequiredItem(BREAKER_OF_VENOM_ID)

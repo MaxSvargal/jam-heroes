@@ -3,15 +3,15 @@ package MarvelousRing
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_MARVELOUS_RING_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_MARVELOUS_RING_NAME = "Marvelous Ring"
+public constant MARVELOUS_RING_ID = compiletime(ITEM_ID_GEN.next())
+public constant MARVELOUS_RING_NAME = "Marvelous Ring"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_MARVELOUS_RING_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(MARVELOUS_RING_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(150)
 		..setLumberCost(0)
 		..setAllStatsBonus(3)
-		..setName(ITEM_MARVELOUS_RING_NAME)
+		..setName(MARVELOUS_RING_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

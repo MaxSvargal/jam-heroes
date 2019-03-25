@@ -3,15 +3,15 @@ package Knife
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_KNIFE_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_KNIFE_NAME = "Knife"
+public constant KNIFE_ID = compiletime(ITEM_ID_GEN.next())
+public constant KNIFE_NAME = "Knife"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_KNIFE_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(KNIFE_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setAttackBonus(15)
-		..setName(ITEM_KNIFE_NAME)
+		..setName(KNIFE_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

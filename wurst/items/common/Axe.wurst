@@ -3,15 +3,15 @@ package Axe
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_AXE_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_AXE_NAME = "Axe"
+public constant AXE_ID = compiletime(ITEM_ID_GEN.next())
+public constant AXE_NAME = "Axe"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_AXE_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(AXE_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setAttackBonus(15)
-		..setName(ITEM_AXE_NAME)
+		..setName(AXE_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

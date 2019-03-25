@@ -3,15 +3,15 @@ package Belt
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_BELT_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_BELT_NAME = "Belt"
+public constant BELT_ID = compiletime(ITEM_ID_GEN.next())
+public constant BELT_NAME = "Belt"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_BELT_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(BELT_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setAgilityBonus(10)
-		..setName(ITEM_BELT_NAME)
+		..setName(BELT_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")

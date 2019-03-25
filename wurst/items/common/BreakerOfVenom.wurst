@@ -3,15 +3,15 @@ package BreakerOfVenom
 import ObjectIdGenerator
 import ItemDefinition
 
-public constant ITEM_BREAKER_OF_VENOM_ID = compiletime(ITEM_ID_GEN.next())
-public constant ITEM_BREAKER_OF_VENOM_NAME = "Breaker Of Venom"
+public constant BREAKER_OF_VENOM_ID = compiletime(ITEM_ID_GEN.next())
+public constant BREAKER_OF_VENOM_NAME = "Breaker Of Venom"
 
 @compiletime function gen()
-	new BaseItemDefinition(ITEM_BREAKER_OF_VENOM_ID, 'rst1', ItemType.COMMON)
+	new BaseItemDefinition(BREAKER_OF_VENOM_ID, 'rst1', ItemType.COMMON)
 		..setGoldCost(100)
 		..setLumberCost(0)
 		..setPoisonAttack(4, 0, 0)
-		..setName(ITEM_BREAKER_OF_VENOM_NAME)
+		..setName(BREAKER_OF_VENOM_NAME)
 		..setDescription("desc")
 		..setTooltipBasic("tooltip basic")
 		..setTooltipExtended("tooltip extended")
