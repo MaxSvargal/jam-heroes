@@ -8,16 +8,16 @@ import GreatAxe
 import PlatingBoots
 import UnsimpleSteelShield
 
-public constant GREAT_MAGE_ROBE_ID = compiletime(ITEM_ID_GEN.next())
-public constant GREAT_MAGE_ROBE_RECIEPT_ID = compiletime(ITEM_ID_GEN.next())
-public constant GREAT_MAGE_ROBE_NAME = "Great Axe Of Hero"
+public constant GREAT_AXE_OF_HERO_ID = compiletime(ITEM_ID_GEN.next())
+public constant GREAT_AXE_OF_HERO_RECIEPT_ID = compiletime(ITEM_ID_GEN.next())
+public constant GREAT_AXE_OF_HERO_NAME = "Great Axe Of Hero"
 
 @compiletime function gen()
-	new BaseItemDefinition(GREAT_MAGE_ROBE_ID, 'rst1', ItemType.RARE)
-		..setName(GREAT_MAGE_ROBE_NAME)
-    ..setAttackBonus(80)
-    ..setStrengthBonus(20)
-    ..setChancetoCriticalStrike(20, 2, 10)
+	new BaseItemDefinition(GREAT_AXE_OF_HERO_ID, 'rst1', ItemType.RARE)
+		..setName(GREAT_AXE_OF_HERO_NAME)
+		..setAttackBonus(80)
+		..setStrengthBonus(20)
+		..setChancetoCriticalStrike(20, 2, 10)
 		..setGoldCost(1230)
 		..setLumberCost(0)
 		..setDescription("desc")
@@ -25,7 +25,7 @@ public constant GREAT_MAGE_ROBE_NAME = "Great Axe Of Hero"
 		..setTooltipExtended("tooltip extended")
 		..setIcon("BTNHasteTier1")
 
-		..makeReciept(GREAT_MAGE_ROBE_RECIEPT_ID, 50)
+		..makeReciept(GREAT_AXE_OF_HERO_RECIEPT_ID, 50)
 		..addRequiredItem(GREAT_AXE_NAME)
 		..addRequiredItem(PLATING_BOOTS_NAME)
 		..addRequiredItem(UNSIMPLE_STEEL_SHIELD_NAME)
@@ -33,7 +33,7 @@ public constant GREAT_MAGE_ROBE_NAME = "Great Axe Of Hero"
 
 init
 	new DefineItemReceipt()
-		..setResultItem(GREAT_MAGE_ROBE_ID)
+		..setResultItem(GREAT_AXE_OF_HERO_ID)
 		..addRequiredItem(GREAT_AXE_ID)
 		..addRequiredItem(PLATING_BOOTS_ID)
 		..addRequiredItem(UNSIMPLE_STEEL_SHIELD_ID)

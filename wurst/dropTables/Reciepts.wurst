@@ -1,0 +1,18 @@
+package Reciepts
+
+import DropTable
+
+import ArmorOfHero
+import AsassinsArmor
+import AsassinsBlades
+import GreatAxeOfHero
+import GreatMageRobe
+import GreatMageStaff
+
+public constant recieptsDropTable = new DropTable()
+  ..addDropItem(ARMOR_OF_HERO_RECIEPT_ID)
+  ..addDropItem(ASASSINS_ARMOR_RECIEPT_ID)
+  ..addDropItem(ASASSINS_BLADES_RECIEPT_ID)
+  ..addDropItem(GREAT_AXE_OF_HERO_RECIEPT_ID)
+  ..addDropItem(GREAT_MAGE_ROBE_RECIEPT_ID)
+  ..addDropItem(GREAT_MAGE_STAFF_RECIEPT_ID)

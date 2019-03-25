@@ -2,21 +2,12 @@ package DropTables
 
 import DropTable
 import MapState
+
 import CommonDropTable
-
-import MagicCloak
-
-public constant uncommonDropTable = new DropTable()
-	..addDropItem(MAGIC_CLOAK_ID)
-
-public constant rareDropTable = new DropTable()
-	..addDropItem(MAGIC_CLOAK_ID)
-
-public constant epicDropTable = new DropTable()
-	..addDropItem(MAGIC_CLOAK_ID)
-
-public constant uniqueDropTable = new DropTable()
-	..addDropItem(MAGIC_CLOAK_ID)
+import UncommonDropTable
+import RareDropTable
+import EpicDropTable
+import UniqueDropTable
 
 public class GenerateDropTable
 	DropTable dropTable

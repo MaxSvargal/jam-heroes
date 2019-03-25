@@ -1,0 +1,5 @@
+package EpicDropTable
+
+import DropTable
+
+public constant epicDropTable = new DropTable()
