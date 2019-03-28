@@ -1,15 +1,22 @@
 package PlayersSpawnPoints
 
-import HashSet
+import HashList
 
-class SpawnPoint
-	vec2 pos
-	construct(vec2 pos)
-		this.pos = pos
-
-let spawnPoints = new HashSet<SpawnPoint>()
+let spawnPoints = new HashList<SpawnPoint>()
 	..add(new SpawnPoint(gg_rct_Spawn1.getCenter()))
 	..add(new SpawnPoint(gg_rct_Spawn2.getCenter()))
 
+class SpawnPoint
+	vec2 pos
+	bool alreadyEngaged = false
+	construct(vec2 pos)
+		this.pos = pos
+	function setEngaged(bool state)
+		alreadyEngaged = state
+
 public function getRandomSpawnPoint() returns vec2
-	return spawnPoints.get(GetRandomInt(0, spawnPoints.size() - 1)).pos
+	let index = GetRandomInt(0, spawnPoints.size() - 1)
+	if spawnPoints.get(index).alreadyEngaged == true
+		return getRandomSpawnPoint()
+	else
+		return spawnPoints.get(index).pos
