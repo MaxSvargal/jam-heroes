@@ -31,3 +31,6 @@ public class GenerateDropTable
 
 	function getDropTable() returns DropTable
 		return dropTable
+
+	ondestroy
+		destroy dropTable

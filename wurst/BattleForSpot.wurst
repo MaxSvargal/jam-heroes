@@ -1,0 +1,18 @@
+package BattleForSpot
+
+import Battle
+import BattleArea
+import CreepCampGroup
+import PlayerConfigurator
+import IncomeBuildings
+
+public class BattleForSpot extends Battle
+	IncomeBuilding incomeBuilding
+
+	construct(CreepCampGroup campGroup, BattleArea battleArea, IncomeBuilding incomeBuilding)
+		super(campGroup, battleArea)
+		this.incomeBuilding = incomeBuilding
+
+	override function onVictory(PlayerConfigurator p)
+		super.onVictory(p)
+		incomeBuilding.setOwner(p.getPlayer())

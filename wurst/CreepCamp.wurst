@@ -4,28 +4,24 @@ import ClosureEvents
 import BattleArea
 import MapState
 import initlater CreepCampGroup
-import initlater Battle
+import initlater BattleForCamp
 
 public class CreepCamp
 	vec2 pos
 	CreepCampGroup campGroup
-	Battle currBattle = null
+	BattleForCamp currBattle = null
 
 	construct(vec2 initPos)
 		pos = initPos
 		createNewCampGroup()
 		EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
-			if currBattle == null
-			and campGroup != null
+			if campGroup != null
 			and campGroup.getOnMapUnit() == GetAttacker()
 				if currBattle != null
-					currBattle.playerEnterInBattle(GetAttacker().getOwner())
+					currBattle.enterPlayerIntoBattle(GetAttacker().getOwner())
 				else
-					currBattle = new Battle(
-						GetAttackedUnitBJ().getOwner(),
-						campGroup,
-						getRandomBattleArea(),
-						this)
+					currBattle = new BattleForCamp(campGroup, getRandomBattleArea(), this)
+						..enterPlayerIntoBattle(GetAttackedUnitBJ().getOwner())
 
 	function createNewCampGroup()
 		// need to make other one instantly?

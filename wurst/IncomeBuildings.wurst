@@ -4,14 +4,14 @@ import ClosureEvents
 import UnitIds
 import IncomeGoldMine
 import HashMap
-import Battle
 import CreepCampGroup
 import BattleArea
+import initlater BattleForSpot
 
 public class IncomeBuilding
   constant unit building
   vec2 pos
-  Battle currBattle
+  BattleForSpot currBattle
 
   construct(vec2 pos)
     this.pos = pos
@@ -26,7 +26,7 @@ public class IncomeBuilding
   function setOwner(player p)
     building.setOwner(p, true)
 
-  function setBattle(Battle battle)
+  function setBattle(BattleForSpot battle)
     currBattle = battle
 
 
@@ -45,7 +45,7 @@ public class IncomeBuildings
       if buildings.has(GetAttackedUnitBJ())
         let incomeBuilding = buildings.get(GetAttackedUnitBJ())
         let campGroup = new CreepCampGroup(incomeBuilding.getPos())
-        let battle = new Battle(
+        let battle = new BattleForSpot(
           GetAttacker().getOwner(),
           campGroup,
           getRandomBattleArea(),
