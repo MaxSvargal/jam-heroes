@@ -18,16 +18,13 @@ public class Battle
 	construct(CreepsGroup creepGroup, BattleArea battleArea)
 		this.battleArea = battleArea
 		this.creepsGroup = creepGroup
-		createCreepsGroup()
-
-	function setEntityBattleFor(EntityBattleFor entity)
-		entityBattleFor = entity
-
-	function createCreepsGroup()
 		// TODO: get battle area by tile under creep
 		creepsGroup
 			.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
 			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
+
+	function setEntityBattleFor(EntityBattleFor entity)
+		entityBattleFor = entity
 
 	function dropRandomItemAtPos(vec2 pos) returns item
 		return new DropTableGenerator().getDropTable().dropRandomItemAtPos(pos)
@@ -39,6 +36,9 @@ public class Battle
 			playersInBattle.add(playerInstance)
 		else
 			printLog(Loglevel.ERROR, "Player class instance does not found for player " + p.getName() + " and id " + p.getId().toString())
+
+	function exitPlayerFromBattle(PlayerInstance p)
+		playersInBattle.remove(p)
 
 	ondestroy
 		battleArea.clean()
