@@ -64,11 +64,13 @@ public class PlayerInstance
 		return p.getId()
 
 	private function addDebuffToBuildOnUnitDeath(unit u)
-		if u.getOwner() == p and groupInBattle.contains(u)
+	// TODO: does not work
+		if groupInBattle.contains(u)
 			let iterator = buildingToUnitRelations.iterator()
 			for buildingId from iterator
 				if buildingToUnitRelations.get(buildingId) == u.getTypeId()
 					let building = GetUnitsOfPlayerAndTypeId(p, buildingId).next()
+					print("building name: " + building.getName())
 					InstantDummyCaster.castTarget(players[PLAYER_NEUTRAL_AGGRESSIVE], RECOVERY_DEBUFF_ID, 1, Orders.tornado, building)
 					break
 			iterator.close()
