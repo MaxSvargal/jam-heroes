@@ -1,0 +1,13 @@
+package EntityBattleFor
+
+import CreepsGroup
+import PlayerInstance
+import initlater Battle
+
+public interface EntityBattleFor
+	function getPos() returns vec2
+	function getCreepsGroup() returns CreepsGroup
+	function setCreepsGroup(CreepsGroup creepsGroup)
+	function getCurrentBattle() returns Battle
+	function setCurrentBattle(Battle battle)
+	function defeat(PlayerInstance p)

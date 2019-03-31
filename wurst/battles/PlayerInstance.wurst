@@ -1,4 +1,4 @@
-package PlayerConfigurator
+package PlayerInstance
 
 import ClosureEvents
 import UnitIds
@@ -19,7 +19,7 @@ import CommonShop
 import RecieptsShop
 import PlayersSpawnPoints
 
-public class PlayerConfigurator
+public class PlayerInstance
 	protected constant player p
 	group groupInBattle
 	unit hero
@@ -59,6 +59,9 @@ public class PlayerConfigurator
 		// Debuff logic
 		EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
 			addDebuffToBuildOnUnitDeath(GetTriggerUnit())
+			
+	function getId() returns int
+		return p.getId()
 
 	private function addDebuffToBuildOnUnitDeath(unit u)
 		if u.getOwner() == p and groupInBattle.contains(u)

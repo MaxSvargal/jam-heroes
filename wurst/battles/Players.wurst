@@ -1,0 +1,32 @@
+package Players
+
+import HashSet
+import HashMap
+import LinkedList
+import PlayerInstance
+
+public class Players
+	constant HashMap<int, PlayerInstance> instances = new HashMap<int, PlayerInstance>()
+	constant HashList<PlayerInstance> instancesList = new HashList<PlayerInstance>()
+
+	construct()
+		for i = 0 to bj_MAX_PLAYER_SLOTS - 1
+			let instance = new PlayerInstance(players[i])
+			instances.put(players[i].getId(), instance)
+			instancesList.add(instance)
+
+	static function isAllPlayersAllies(HashSet<PlayerInstance> playersInstances) returns bool
+		let alliesStates = new LinkedList<bool>()
+		let firstPlayer = playersInstances.get(0)
+		let playersIterator = playersInstances.iterator()..next()
+		for p from playersIterator
+			alliesStates.add(firstPlayer.isAllyOf(p.getPlayer()))
+		playersIterator.close()
+		let isNotAllAllies = alliesStates.has(false)
+		destroy alliesStates
+		return not isNotAllAllies
+
+	function get(int playerId) returns PlayerInstance
+		return instances.get(playerId)
+
+public constant playersInstances = new Players()

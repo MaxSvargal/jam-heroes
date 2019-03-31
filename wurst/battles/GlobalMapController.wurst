@@ -1,0 +1,140 @@
+package GlobalMapController
+
+import ClosureTimers
+import HashMap
+import UnitIds
+import ClosureEvents
+
+import CreepCamp
+import CreepsGroup
+import Battle
+import BattleArea
+import RegionsList // TODO: replace with map bounds
+import MapState
+import IncomeBuilding
+import BattlesController
+import Players
+import EntityBattleFor
+
+import CreepDefenceUpgrade
+import CreepDamageUpgrade
+import CreepHPUpgrade
+import IncomeGoldMine
+
+public class GlobalMapController
+	constant creepCamps = new HashMap<unit, CreepCamp>()
+	constant incomeBuildings = new HashMap<unit, IncomeBuilding>()
+
+	construct()
+		createCreepCamps()
+		listenForCreepCampAttack()
+		createIncomeBuildings()
+		listenForIncomeBuildingAttack()
+		restoreCampsIterator()
+		giveIncomeIterator()
+
+	function createCreepCamps()
+		let g = GetUnitsOfTypeIdAll(UnitIds.lavaspawn)
+		for u in g
+			let pos = u.getPos()
+			u.remove()
+			let creepCamp = new CreepCamp(pos)
+			createGroupForCamp(creepCamp)
+		g.destr()
+
+	function createIncomeBuildings()
+		let g = GetUnitsOfTypeIdAll(UnitIds.goldmine)
+		for u from g
+			let pos = u.getPos()
+			u.remove()
+			let incomeBuilding = new IncomeBuilding(pos)
+			createGroupForIncomeBuilding(incomeBuilding)
+		g.destr()
+
+	private function calcLevelIncByDistance(vec2 pos) returns int
+		let min = -bottomOfMap.y
+		let max = topOfMap.y
+		let distance = pos.distanceTo(bottomOfMap)
+		return ((min + max) * ((distance / 2) * 0.000000001)).toInt()
+
+	function listenForCreepCampAttack()
+		EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
+			if creepCamps.has(GetAttacker())
+				let creepCamp = creepCamps.get(GetAttacker())
+
+				if creepCamp.getCurrentBattle() != null
+					let enterPlayer = GetAttackedUnitBJ().getOwner()
+					creepCamp.getCurrentBattle().enterPlayerIntoBattle(enterPlayer)
+				else
+					let battle = battlesController.create(creepCamp.getCreepsGroup(), getRandomBattleArea())
+					creepCamp.setCurrentBattle(battle)
+
+	function listenForIncomeBuildingAttack()	
+		EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
+			if incomeBuildings.has(GetAttackedUnitBJ())
+				let incomeBuilding = incomeBuildings.get(GetAttackedUnitBJ())
+				if incomeBuilding.getCurrentBattle() != null
+					let enterPlayer = GetAttacker().getOwner()
+					incomeBuilding.getCurrentBattle().enterPlayerIntoBattle(enterPlayer)
+				else
+					let battle = battlesController.create(incomeBuilding.getCreepsGroup(), getRandomBattleArea()) // TODO: Not random!
+					incomeBuilding.setCurrentBattle(battle)
+				
+	function restoreCampsIterator()
+		doPeriodically(60) cb ->
+			let camps = mapState.creepCampsToRestore
+			if camps.size() > 0
+				real minDistance = 99999
+				CreepCamp campToRestore = camps.get(0)
+				let iterator = camps.iterator()
+				for camp from iterator
+					let distance = camp.getPos().distanceTo(bottomOfMap) // TODO: centerOfMap instead?
+					if distance < minDistance
+						minDistance = distance
+						campToRestore = camp
+				iterator.close()
+				createGroupForCamp(campToRestore)
+				mapState.creepCampsToRestore.remove(campToRestore)
+				setCreepsUpgradesLevel()
+
+	private function createGroupForEntity(EntityBattleFor entity) returns CreepsGroup
+		let pos = entity.getPos()
+		let lvl = getCampLevel(pos)
+		let creepsGroup = new CreepsGroup(lvl)
+		entity.setCreepsGroup(creepsGroup)
+		return creepsGroup
+
+	private function createGroupForCamp(CreepCamp creepCamp)
+		let creepsGroup = createGroupForEntity(creepCamp)
+		let unitOnMap = creepsGroup.createWarlordOnMapAtPos(creepCamp.getPos())
+		creepCamps.put(unitOnMap, creepCamp)
+
+	private function createGroupForIncomeBuilding(IncomeBuilding incomeBuilding)
+		createGroupForEntity(incomeBuilding)
+		let unitOnMap = incomeBuilding.getUnit()
+		incomeBuildings.put(unitOnMap, incomeBuilding)
+
+	private function getCampLevel(vec2 pos) returns int
+		let lvlIncrease = calcLevelIncByDistance(pos)
+		return mapState.getIncreasedLevel().toInt() + lvlIncrease
+
+	private function setCreepsUpgradesLevel()
+		let lvl = mapState.getIncreasedLevel()
+		let upgradeLvl = (lvl / 2).toInt()
+		let p = players[PLAYER_NEUTRAL_AGGRESSIVE]
+		SetPlayerTechResearched(p, CREEP_HP_UPGRADE_ID, upgradeLvl)
+		SetPlayerTechResearched(p, CREEP_DEFENCE_UPGRADE_ID, upgradeLvl)
+		SetPlayerTechResearched(p, CREEP_DAMAGE_UPGRADE_ID, upgradeLvl)
+
+	function giveIncomeIterator()
+		let goldPerGoldMine = 10
+		doPeriodically(10) cb ->
+			let iterator = playersInstances.instancesList.iterator()
+			for pi from iterator
+				let p = pi.getPlayer()
+				let g = GetUnitsOfPlayerAndTypeId(p, INCOME_GOLD_MINE_ID)
+				let goldAmount = g.size() * goldPerGoldMine
+				if goldAmount > 0
+					p.addGold(goldAmount)
+					printTimedToPlayer("Gold income +" + goldAmount.toString(), 3, p)
+			iterator.close()

@@ -1,15 +1,11 @@
 package Main
 
-import Players
-import CreepsOnMap
-import IncomeBuildings
 import ClosureTimers
 import MapState
+import GlobalMapController
 
 init
-	initPlayers()
-	new CreepsOnMap()
-	new IncomeBuildings()
+	new GlobalMapController()
 
 	doAfter(1) ->
 		let multi = CreateMultiboard()

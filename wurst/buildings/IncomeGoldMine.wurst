@@ -3,7 +3,6 @@ package IncomeGoldMine
 import UnitObjEditing
 import UnitIds
 import ObjectIdGenerator
-import ClosureTimers
 import ObjectIds
 
 public constant INCOME_GOLD_MINE_ID = compiletime(UNIT_ID_GEN.next())
@@ -19,12 +18,3 @@ public constant INCOME_GOLD_MINE_ID = compiletime(UNIT_ID_GEN.next())
 		..setUnitClassification(TargetsAllowed.mechanical)
 		..setSightRadiusDay(700)
 		..setSightRadiusNight(400)
-init
-	doPeriodically(30) cb ->
-		for i = 0 to bj_MAX_PLAYER_SLOTS - 1
-			let p = players[i]
-			let g = GetUnitsOfPlayerAndTypeId(p, INCOME_GOLD_MINE_ID)
-			let goldAmount = g.size() * 10
-			if goldAmount > 0
-				p.addGold(goldAmount)
-				printTimedToPlayer("Gold income +" + goldAmount.toString(), 10, p)

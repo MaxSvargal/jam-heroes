@@ -1,0 +1,36 @@
+package CreepCamp
+
+import MapState
+import CreepsGroup
+import PlayerInstance
+import Battle
+import EntityBattleFor
+
+public class CreepCamp implements EntityBattleFor
+	private vec2 pos
+	private CreepsGroup creepsGroup = null
+	private Battle currentBattle = null
+
+	construct(vec2 initPos)
+		pos = initPos
+
+	override function getPos() returns vec2
+		return pos
+
+	override function getCreepsGroup() returns CreepsGroup
+		return creepsGroup
+
+	override function setCreepsGroup(CreepsGroup creepsGroup)
+		this.creepsGroup = creepsGroup
+
+	override function getCurrentBattle() returns Battle
+		return currentBattle
+
+	override function setCurrentBattle(Battle battle)
+		currentBattle = battle
+
+	override function defeat(PlayerInstance p)
+		// TODO: add points to player?
+		mapState.increaseLevel(1) // .25 orig
+		mapState.addCreepCampToRestoreQueue(this)
+		creepsGroup = null

@@ -18,6 +18,13 @@ public class DropTable
 		let i = GetRandomInt(0, items.size() - 1)
 		return items.get(i)
 
+	function dropRandomItemAtPos(vec2 pos) returns item
+		let itemId = getRandomItem()
+		if itemId != 0
+			return createItem(itemId, pos)
+		else
+			return null
+
 	function asString() returns string
 		let list = new LinkedList<int>
 		let iterator = items.iterator()

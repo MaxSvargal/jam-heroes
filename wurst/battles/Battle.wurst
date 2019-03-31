@@ -1,0 +1,46 @@
+package Battle
+
+import OrderIds
+import BattleArea
+import Players
+import CreepsGroup
+import DropTables
+import HashSet
+import PlayerInstance
+import EntityBattleFor
+
+public class Battle
+	constant playersInBattle = new HashSet<PlayerInstance>()
+	BattleArea battleArea
+	CreepsGroup creepsGroup
+	EntityBattleFor entityBattleFor
+
+	construct(CreepsGroup creepGroup, BattleArea battleArea)
+		this.battleArea = battleArea
+		this.creepsGroup = creepGroup
+		createCreepsGroup()
+
+	function setEntityBattleFor(EntityBattleFor entity)
+		entityBattleFor = entity
+
+	function createCreepsGroup()
+		// TODO: get battle area by tile under creep
+		creepsGroup
+			.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
+			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
+
+	function dropRandomItemAtPos(vec2 pos) returns item
+		return new DropTableGenerator().getDropTable().dropRandomItemAtPos(pos)
+
+	function enterPlayerIntoBattle(player p)
+		let playerInstance = playersInstances.get(p.getId())
+		if playerInstance != null
+			playerInstance.startBattleAt(battleArea.heroStartPoint)
+			playersInBattle.add(playerInstance)
+		else
+			printLog(Loglevel.ERROR, "Player class instance does not found for player " + p.getName() + " and id " + p.getId().toString())
+
+	ondestroy
+		battleArea.clean()
+		// destroy campGroup
+		destroy playersInBattle

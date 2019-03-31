@@ -9,7 +9,7 @@ import RareDropTable
 import EpicDropTable
 import UniqueDropTable
 
-public class GenerateDropTable
+public class DropTableGenerator
 	DropTable dropTable
 
 	construct()

@@ -1,0 +1,52 @@
+package CreepsGroup
+
+import LinkedList
+import CreepsList
+import MapState
+import CreepAbilities
+
+public class CreepsGroup
+	constant p = players[PLAYER_NEUTRAL_AGGRESSIVE]
+	constant LinkedList<int> unitIds = new LinkedList<int>()
+	constant group units = CreateGroup()
+	int warlordId
+	unit warlord
+
+	construct(int lvl)
+		warlordId = getRandomWarlordIdOfLevel(lvl)
+		let creepId = getRandomRegularIdOfLevel(lvl)
+		for i = 0 to GetRandomInt(2, 8)
+			unitIds.add(creepId)
+
+	function createGroupAtRect(rect r) returns group
+		// Make a warlord
+		let warlord = createUnit(p, warlordId, r.randomPoint(), angle(220))
+		if mapState.getIncreasedLevel() > 5
+			warlord.addAbility(getRandomCreepAbility())
+		units.addUnit(warlord)
+		// Make other creeps
+		let iterator = unitIds.iterator()
+		for uId from iterator
+			units.addUnit(createUnit(p, uId, r.randomPoint(), angle(220)))
+		iterator.close()
+		return units
+
+	function getWarlordId() returns int
+		return warlordId
+
+	function createWarlordOnMapAtPos(vec2 pos) returns unit
+		return createUnit(p, getWarlordId(), pos, angle(200))
+
+	function isGroupAlive() returns boolean
+		var isAnyAlive = false
+		for u in units
+			if u.isAlive()
+				isAnyAlive = true
+		return isAnyAlive
+
+	function defeat()
+		destroy this
+
+	ondestroy
+		units.destr()
+		destroy unitIds
