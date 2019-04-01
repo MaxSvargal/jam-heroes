@@ -1,0 +1,19 @@
+package BattleForIncomeBuilding
+
+import Battle
+import BattleArea
+import IncomeBuilding
+import CreepsGroup
+
+public class BattleForIncomeBuilding extends Battle
+	IncomeBuilding incomeBuilding = null
+
+	construct(CreepsGroup creepsGroup, BattleArea battleArea, IncomeBuilding incomeBuilding)
+		super(creepsGroup, battleArea)
+		this.incomeBuilding = incomeBuilding
+		incomeBuilding.setCurrentBattle(this)
+
+	override function creepsDefeat(player p)
+		incomeBuilding
+			..setOwner(p)
+			..setCurrentBattle(null)

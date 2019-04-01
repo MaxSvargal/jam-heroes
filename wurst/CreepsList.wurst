@@ -26,8 +26,7 @@ public let creepsBattleOnMapRelations = new IterableMap<int, int>()
 	..put(MURLOC_MUTANT_ID, MURLOC_MUTANT_ID_ONMAP)
 	..put(BLACKWATER_ELEMENTAL_ID, BLACKWATER_ELEMENTAL_ID_ONMAP)
 
-
- function getRandomUnitOfLevel(IterableMap<int, int> hMap, int level, int min, int max) returns int
+function getRandomUnitOfLevel(IterableMap<int, int> hMap, int level, int min, int max) returns int
 	let iterator = hMap.iterator()
 	let minLvl = level + min
 	let maxLvl = level + max

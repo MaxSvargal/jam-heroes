@@ -9,6 +9,7 @@ import BuildingToUnitRelations
 import HeroesList
 
 import Tavern
+import Selector
 import UnitBuildPlaceSmall
 import UnitBuildPlaceLarge
 
@@ -30,13 +31,10 @@ public class PlayerInstance
 	
 	construct(player pl)
 		p = pl
-		selectHeroArea = p.getStartLocation()
 		initBuildingPlaces()
-		createUnit(p, TAVERN_ID, selectHeroArea, angle(220))
-		p.panCameraTo(selectHeroArea)
 		// p.addGold(1500)
 		// p.addLumber(100)
-
+		createUnit(p, SELECTOR_ID, gg_rct_InitialPos.getCenter(), angle(200))
 		// store last pos
 		onGlobalMapPos = getRandomSpawnPoint()
 		castleHeroPoint = gg_rct_Player0CastleHero.getCenter()
@@ -76,17 +74,18 @@ public class PlayerInstance
 			iterator.close()
 
 	private function onHeroBought(unit selling, unit sold)
-		if selling.getTypeId() == TAVERN_ID and selling.getOwner() == p
+		if selling.getTypeId() == TAVERN_ID and sold.getOwner() == p
 			hero = sold
 			hero
 				..setPos(castleHeroPoint)
 				..addAbility(MOVE_TO_GLOBAL_MAP_ID)
 			listenForHeroDies()
 			p.setCameraPosition(castleHeroPoint)
-			// make a hero on a map
-			let onMapHero = heroesOnMapAndInBattleRelations.get(hero.getTypeId())
-			heroOnMap = createUnit(p, onMapHero, onGlobalMapPos, angle(220))
-				..hide()
+			createHeroOnMap(onGlobalMapPos)
+
+	private function createHeroOnMap(vec2 pos)
+		let forMapHero = heroesOnMapAndInBattleRelations.get(hero.getTypeId())
+		heroOnMap = createUnit(p, forMapHero, pos, angle(220))
 
 	private function moveToCastle()
 		pauseHeroOnMap(true)
@@ -186,6 +185,9 @@ public class PlayerInstance
 		EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
 			if GetTriggerUnit() == hero
 				hero.revive(castleHeroPoint, true)
+				hero.addAbility(MOVE_TO_GLOBAL_MAP_ID)
+			if GetTriggerUnit() == heroOnMap
+				createHeroOnMap(GetTriggerUnit().getPos())
 
 	function moveToTreasury() // TODO: Use it!
 		hero.setPos(gg_rct_Player0Treasury.getCenter())

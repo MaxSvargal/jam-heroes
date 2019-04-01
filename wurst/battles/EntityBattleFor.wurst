@@ -1,7 +1,6 @@
 package EntityBattleFor
 
 import CreepsGroup
-import PlayerInstance
 import initlater Battle
 
 public interface EntityBattleFor
@@ -10,4 +9,4 @@ public interface EntityBattleFor
 	function setCreepsGroup(CreepsGroup creepsGroup)
 	function getCurrentBattle() returns Battle
 	function setCurrentBattle(Battle battle)
-	function defeat(PlayerInstance p)
+	function defeat()

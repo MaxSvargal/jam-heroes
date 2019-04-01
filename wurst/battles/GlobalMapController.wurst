@@ -7,7 +7,8 @@ import ClosureEvents
 
 import CreepCamp
 import CreepsGroup
-import Battle
+import BattleForCreepsCamp
+import BattleForIncomeBuilding
 import BattleArea
 import RegionsList // TODO: replace with map bounds
 import MapState
@@ -60,25 +61,29 @@ public class GlobalMapController
 	function listenForCreepCampAttack()
 		EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
 			if creepCamps.has(GetAttacker())
+			and GetAttackedUnitBJ().getTypeId() != INCOME_GOLD_MINE_ID // TODO: remove later
+				let enterPlayer = GetAttackedUnitBJ().getOwner()
 				let creepCamp = creepCamps.get(GetAttacker())
 
 				if creepCamp.getCurrentBattle() != null
-					let enterPlayer = GetAttackedUnitBJ().getOwner()
 					creepCamp.getCurrentBattle().enterPlayerIntoBattle(enterPlayer)
 				else
-					let battle = battlesController.create(creepCamp.getCreepsGroup(), getRandomBattleArea())
-					creepCamp.setCurrentBattle(battle)
+					let battle = new BattleForCreepsCamp(creepCamp.getCreepsGroup(), getRandomBattleArea(), creepCamp)
+					battlesController.add(battle)
+					battle.enterPlayerIntoBattle(enterPlayer)
 
 	function listenForIncomeBuildingAttack()	
 		EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
 			if incomeBuildings.has(GetAttackedUnitBJ())
+				let enterPlayer = GetAttacker().getOwner()
 				let incomeBuilding = incomeBuildings.get(GetAttackedUnitBJ())
+
 				if incomeBuilding.getCurrentBattle() != null
-					let enterPlayer = GetAttacker().getOwner()
 					incomeBuilding.getCurrentBattle().enterPlayerIntoBattle(enterPlayer)
 				else
-					let battle = battlesController.create(incomeBuilding.getCreepsGroup(), getRandomBattleArea()) // TODO: Not random!
-					incomeBuilding.setCurrentBattle(battle)
+					let battle = new BattleForIncomeBuilding(incomeBuilding.getCreepsGroup(), getRandomBattleArea(), incomeBuilding) // TODO: Not random!
+					battlesController.add(battle)
+					battle.enterPlayerIntoBattle(enterPlayer)
 				
 	function restoreCampsIterator()
 		doPeriodically(60) cb ->

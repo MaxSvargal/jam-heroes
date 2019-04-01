@@ -13,7 +13,7 @@ public constant TAVERN_ID = compiletime(UNIT_ID_GEN.next())
 @compiletime function gen()
 	new BuildingDefinition(TAVERN_ID, UnitIds.cantina)
 		..setName("Tavern")
-		..setNormalAbilities("")
+		//..setNormalAbilities("")
 		..setUnitsSold(commaList(
 			GROM_HELLSCREAM_ID,
 			ANTONIDAS_ID

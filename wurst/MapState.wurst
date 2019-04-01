@@ -24,7 +24,7 @@ class MapState
     increasedLevel += increase
 
   function addCreepCampToRestoreQueue(CreepCamp creepCamp)
-    creepCampsToRestore.add(creepCamp)
-    
+    if not creepCampsToRestore.has(creepCamp)
+      creepCampsToRestore.add(creepCamp)
 
 public let mapState = new MapState()

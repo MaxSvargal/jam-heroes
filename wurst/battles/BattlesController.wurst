@@ -2,7 +2,6 @@ package BattlesController
 
 import Battle
 import CreepsGroup
-import BattleArea
 import HashList
 import ClosureTimers
 import Players
@@ -13,42 +12,36 @@ class BattlesController
 	construct()
 		listenForBattlesStates()
 
-	function create(CreepsGroup creepsGroup, BattleArea battleArea) returns Battle
-		let battle = new Battle(creepsGroup, battleArea)
+	function add(Battle battle)
 		activeBattles.add(battle)
-		return battle
 
 	function listenForBattlesStates()
 		doPeriodically(2) cb ->
 			let battlesIterator = activeBattles.iterator()
 			for battle from battlesIterator
-				// When no players in battle
 				if battle.playersInBattle.size() == 0
 					activeBattles.remove(battle)
 					destroy battle
 				else
 					let playersIterator = battle.playersInBattle.iterator()
-					// When all players is allies, just victory all
-					if Players.isAllPlayersAllies(battle.playersInBattle)
-					and not battle.creepsGroup.isGroupAlive()
-						battle.creepsGroup.defeat()
-						for p from playersIterator
+					for p from playersIterator
+						// When all players is allies, just victory all
+						if Players.isAllPlayersAllies(battle.playersInBattle)
+						and not battle.creepsGroup.isGroupAlive()
 							p.battleVictory()
 							battle.exitPlayerFromBattle(p)
 							// TODO: bug? That ally player will be an owner?
-							battle.entityBattleFor.defeat(p)
+							// battle.entityBattleFor.defeat()
 							// TODO: drop items on the map and hero needs to move to exit
 							// TODO: move method to player instead of droptable?
 							battle.dropRandomItemAtPos(p.castleHeroPoint)
+							battle.creepsDefeat(p.getPlayer())
 							//dropRandomItemAtPos(campGroup.warlord.getPos())
-					// When enemies players in battle
-					else
-						for p from playersIterator
-							if not p.isAllGroupAlive()
-								// player defeat
-								p.battleDefeat()
-								battle.exitPlayerFromBattle(p)
-
+						// When enemies players in battle
+						else if not p.isAllGroupAlive()
+							// player defeat
+							p.battleDefeat()
+							battle.exitPlayerFromBattle(p)
 					playersIterator.close()
 			battlesIterator.close()
 

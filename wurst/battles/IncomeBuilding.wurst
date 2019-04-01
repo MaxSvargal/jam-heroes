@@ -3,9 +3,7 @@ package IncomeBuilding
 import Battle
 import CreepsGroup
 import IncomeGoldMine
-import PlayerInstance
 import EntityBattleFor
-import MapState
 
 public class IncomeBuilding implements EntityBattleFor
   private constant unit building
@@ -16,6 +14,9 @@ public class IncomeBuilding implements EntityBattleFor
   construct(vec2 pos)
     this.pos = pos
     building = createUnit(players[PLAYER_NEUTRAL_AGGRESSIVE], INCOME_GOLD_MINE_ID, pos, angle(200))
+
+  function setOwner(player p)
+    building.setOwner(p, true)
 
   function getUnit() returns unit
     return building
@@ -35,7 +36,5 @@ public class IncomeBuilding implements EntityBattleFor
   override function setCreepsGroup(CreepsGroup creepsGroup)
     this.creepsGroup = creepsGroup
 
-  override function defeat(PlayerInstance p)
-    building.setOwner(p.getPlayer(), true)
-    mapState.increaseLevel(1) // .25 orig
+  override function defeat()
     creepsGroup = null

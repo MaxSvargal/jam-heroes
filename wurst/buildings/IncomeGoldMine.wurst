@@ -4,17 +4,18 @@ import UnitObjEditing
 import UnitIds
 import ObjectIdGenerator
 import ObjectIds
+import AbilityIds
 
 public constant INCOME_GOLD_MINE_ID = compiletime(UNIT_ID_GEN.next())
 
 @compiletime function gen()
 	new BuildingDefinition(INCOME_GOLD_MINE_ID, UnitIds.goldmine)
 		..setName("Gold Mine")
-		..setNormalAbilities("")
 		..setPathingMap("\\PathTextures\\4x4SimpleSolid.tga")
 		..setScalingValue(.9)
 		..setHideMinimapDisplay(true)
-		..setTargetedAs(commaList(TargetsAllowed.mechanical, TargetsAllowed.structure))
-		..setUnitClassification(TargetsAllowed.mechanical)
 		..setSightRadiusDay(700)
 		..setSightRadiusNight(400)
+		..setNormalAbilities(commaList(AbilityIds.inventory))
+		// ..setTargetedAs(TargetsAllowed.mechanical)
+		// ..setUnitClassification(TargetsAllowed.structure)

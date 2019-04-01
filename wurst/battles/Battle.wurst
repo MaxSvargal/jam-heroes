@@ -7,13 +7,12 @@ import CreepsGroup
 import DropTables
 import HashSet
 import PlayerInstance
-import EntityBattleFor
+import MapState
 
 public class Battle
 	constant playersInBattle = new HashSet<PlayerInstance>()
 	BattleArea battleArea
 	CreepsGroup creepsGroup
-	EntityBattleFor entityBattleFor
 
 	construct(CreepsGroup creepGroup, BattleArea battleArea)
 		this.battleArea = battleArea
@@ -22,9 +21,6 @@ public class Battle
 		creepsGroup
 			.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
 			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
-
-	function setEntityBattleFor(EntityBattleFor entity)
-		entityBattleFor = entity
 
 	function dropRandomItemAtPos(vec2 pos) returns item
 		return new DropTableGenerator().getDropTable().dropRandomItemAtPos(pos)
@@ -40,7 +36,12 @@ public class Battle
 	function exitPlayerFromBattle(PlayerInstance p)
 		playersInBattle.remove(p)
 
+	function creepsDefeat(player p)
+		//
+
 	ondestroy
+		// TODO: add points to player?
+		mapState.increaseLevel(1) // .25 orig
 		battleArea.clean()
-		// destroy campGroup
+		destroy creepsGroup
 		destroy playersInBattle

@@ -1,0 +1,21 @@
+package BattleForCreepsCamp
+
+import Battle
+import BattleArea
+import CreepCamp
+import CreepsGroup
+import MapState
+
+public class BattleForCreepsCamp extends Battle
+	CreepCamp creepCamp = null
+
+	construct(CreepsGroup creepsGroup, BattleArea battleArea, CreepCamp creepCamp)
+		super(creepsGroup, battleArea)
+		this.creepCamp = creepCamp
+		creepCamp.setCurrentBattle(this)
+
+	override function creepsDefeat(player p)
+		if creepCamp.getCreepsGroup().unitOnMap != null
+			creepCamp.getCreepsGroup().unitOnMap.remove()
+		creepCamp.setCurrentBattle(null)
+		mapState.addCreepCampToRestoreQueue(creepCamp)

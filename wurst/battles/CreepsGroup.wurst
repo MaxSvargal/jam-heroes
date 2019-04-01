@@ -11,6 +11,7 @@ public class CreepsGroup
 	constant group units = CreateGroup()
 	int warlordId
 	unit warlord
+	unit unitOnMap
 
 	construct(int lvl)
 		warlordId = getRandomWarlordIdOfLevel(lvl)
@@ -31,11 +32,10 @@ public class CreepsGroup
 		iterator.close()
 		return units
 
-	function getWarlordId() returns int
-		return warlordId
-
 	function createWarlordOnMapAtPos(vec2 pos) returns unit
-		return createUnit(p, getWarlordId(), pos, angle(200))
+		let unitOnMapId = creepsBattleOnMapRelations.get(warlordId)
+		unitOnMap = createUnit(p, unitOnMapId, pos, angle(200))
+		return unitOnMap
 
 	function isGroupAlive() returns boolean
 		var isAnyAlive = false
@@ -44,9 +44,7 @@ public class CreepsGroup
 				isAnyAlive = true
 		return isAnyAlive
 
-	function defeat()
-		destroy this
-
 	ondestroy
+		unitOnMap.remove()
 		units.destr()
 		destroy unitIds

@@ -1,0 +1,13 @@
+package Selector
+
+import UnitObjEditing
+import ObjectIdGenerator
+import UnitIds
+
+public constant SELECTOR_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+  new UnitDefinition(SELECTOR_ID, UnitIds.wisp)
+    ..setModelFile("")
+    ..setShadowImageUnit("")
+    ..setSelectionScale(0.01)

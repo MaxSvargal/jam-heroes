@@ -10,7 +10,7 @@ public class Players
 	constant HashList<PlayerInstance> instancesList = new HashList<PlayerInstance>()
 
 	construct()
-		for i = 0 to bj_MAX_PLAYER_SLOTS - 1
+		for i = 0 to 11
 			let instance = new PlayerInstance(players[i])
 			instances.put(players[i].getId(), instance)
 			instancesList.add(instance)

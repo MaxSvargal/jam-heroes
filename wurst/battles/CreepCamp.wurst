@@ -1,8 +1,6 @@
 package CreepCamp
 
-import MapState
 import CreepsGroup
-import PlayerInstance
 import Battle
 import EntityBattleFor
 
@@ -29,8 +27,5 @@ public class CreepCamp implements EntityBattleFor
 	override function setCurrentBattle(Battle battle)
 		currentBattle = battle
 
-	override function defeat(PlayerInstance p)
-		// TODO: add points to player?
-		mapState.increaseLevel(1) // .25 orig
-		mapState.addCreepCampToRestoreQueue(this)
+	override function defeat()
 		creepsGroup = null
