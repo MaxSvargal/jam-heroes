@@ -8,12 +8,14 @@ import UncommonDropTable
 import RareDropTable
 import EpicDropTable
 import UniqueDropTable
+import GuardsDropTable
 
 public class DropTableGenerator
+	constant lvl = mapState.getIncreasedLevel().toInt()
 	DropTable dropTable
 
 	construct()
-		let lvl = mapState.getIncreasedLevel().toInt()
+		print("LEVEL OF DROP TABLE" + lvl.toString())
 		dropTable = new DropTable()
 		for i = 0 to 22 - lvl
 			dropTable.addDropNothing()
@@ -31,6 +33,12 @@ public class DropTableGenerator
 
 	function getDropTable() returns DropTable
 		return dropTable
+
+	function addGuardToDrop(int unitId)
+		if unitIdToGuardRelations.has(unitId)
+			let guardItemId = unitIdToGuardRelations.get(unitId)
+			for i = 0 to 2 + (lvl / 3).toInt()
+				dropTable.addDropItem(guardItemId)
 
 	ondestroy
 		destroy dropTable

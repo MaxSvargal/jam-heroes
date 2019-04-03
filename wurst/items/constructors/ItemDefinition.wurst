@@ -82,7 +82,7 @@ public class BaseItemDefinition extends ItemDefinition
 			s += ".blp"
 		setInterfaceIcon(s)
 
-	protected function generateProps() returns string
+	private function generateProps() returns string
 		if props.size() == 0
 			return ""
 		let itemColor = getColorOfCurrentType()

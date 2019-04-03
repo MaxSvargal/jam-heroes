@@ -1,6 +1,7 @@
 package MapState
 
 import HashSet
+import Players
 import initlater CreepCamp
 
 class MapState
@@ -18,7 +19,7 @@ class MapState
     return increasedLevel
   
   function increaseLevel()
-    increasedLevel++
+    increasedLevel += 1 / playersInstances.getAlivePlayersNum()
   
   function increaseLevel(real increase)
     increasedLevel += increase

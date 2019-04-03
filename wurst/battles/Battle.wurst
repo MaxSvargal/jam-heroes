@@ -23,7 +23,10 @@ public class Battle
 			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
 
 	function dropRandomItemAtPos(vec2 pos) returns item
-		return new DropTableGenerator().getDropTable().dropRandomItemAtPos(pos)
+		return new DropTableGenerator()
+			..addGuardToDrop(creepsGroup.warlordId)
+			.getDropTable()
+			.dropRandomItemAtPos(pos)
 
 	function enterPlayerIntoBattle(player p)
 		let playerInstance = playersInstances.get(p.getId())
@@ -36,7 +39,7 @@ public class Battle
 	function exitPlayerFromBattle(PlayerInstance p)
 		playersInBattle.remove(p)
 
-	function creepsDefeat(player p)
+	function creepsDefeat(player _p)
 		//
 
 	ondestroy

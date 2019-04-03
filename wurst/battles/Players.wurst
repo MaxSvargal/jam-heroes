@@ -26,6 +26,15 @@ public class Players
 		destroy alliesStates
 		return not isNotAllAllies
 
+	function getAlivePlayersNum() returns int
+		int inGame = 0
+		let itr = instancesList.iterator()
+		for i from itr
+			if i.getPlayer().isIngame()
+				inGame++
+		itr.close()
+		return inGame
+
 	function get(int playerId) returns PlayerInstance
 		return instances.get(playerId)
 

@@ -1,6 +1,32 @@
 ---
-projectName: JAM-heroes
+projectName: JAMHeroes
+dependencies:
+  - https://github.com/wurstscript/wurstStdlib2
 buildMapData:
-  name: JAM (Just Another Map)
+  name: JAM Heroes
   fileName: Main.w3x
   author: MaxSvargal
+  scenarioData:
+    description: WurstScript powered!
+  # optionsFlags:
+  # 	hideMinimapPreview: false
+  # 	maskedAreasPartiallyVisible: true
+  # 	showWavesOnCliffShores: true
+  # 	showWavesOnRollingShores: true
+  # 	useItemClassificationSystem: true
+  # players:
+  # - id: 0
+  # 	name: DefaultPlayer
+  #   race: NIGHTELF
+  # 	controller: USER
+  #   fixedStartLoc: false
+  # forces:
+  #   - name: DefaultForce
+  #   playerIds:
+  #   - 0
+  # 	flags:
+  # 	  allied: true
+  # 	  alliedVictory: true
+  # 	  sharedVision: true
+  # 	  sharedControl: false
+  # 	  sharedControlAdvanced: false
