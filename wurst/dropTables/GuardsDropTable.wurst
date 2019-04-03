@@ -1,0 +1,5 @@
+package GuardsDropTable
+
+import HashMap
+
+public constant unitIdToGuardRelations = new HashMap<int, int>()

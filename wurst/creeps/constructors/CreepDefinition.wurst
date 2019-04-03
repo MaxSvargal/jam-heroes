@@ -13,7 +13,8 @@ public class CreepDefinition extends UnitDefinition
 		setUpgradesUsed(commaList(CREEP_DAMAGE_UPGRADE_ID, CREEP_DEFENCE_UPGRADE_ID, CREEP_HP_UPGRADE_ID))
 		setLevel(level)
 
-	function setAttack(int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
+	function setAttack(AttackType attackType, int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
+		setAttack1AttackType(attackType)
 		setAttack1DamageBase(damageBase)
 		setAttack1DamageNumberofDice(numberofDice)
 		setAttack1DamageSidesperDie(sidesperDie)

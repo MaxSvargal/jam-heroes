@@ -5,17 +5,29 @@ import HashSet
 
 public constant AURA_COMMAND_CREEP_ID = compiletime(ABIL_ID_GEN.next())
 public constant AURA_DEVOTION_CREEP_ID = compiletime(ABIL_ID_GEN.next())
+public constant AURA_ENDURANCE_CREEP_ID = compiletime(ABIL_ID_GEN.next())
+public constant AURA_PLAGUE_CREEP_ID = compiletime(ABIL_ID_GEN.next())
+public constant AURA_REGENERATION_CREEP_ID = compiletime(ABIL_ID_GEN.next())
+public constant AURA_TRUESHOT_CREEP_ID = compiletime(ABIL_ID_GEN.next())
+public constant AURA_SLOW_CREEP_ID = compiletime(ABIL_ID_GEN.next())
 
 @compiletime function gen()
   new AbilityDefinitionAuraCommandCreep(AURA_COMMAND_CREEP_ID)
-    ..setManaCost(1, 0)
-
   new AbilityDefinitionAuraDevotionCreep(AURA_DEVOTION_CREEP_ID)
-    ..setManaCost(1, 0)
+  new AbilityDefinitionAuraEnduranceCreep(AURA_ENDURANCE_CREEP_ID)
+  new AbilityDefinitionAuraPlagueCreep(AURA_PLAGUE_CREEP_ID)
+  new AbilityDefinitionAuraRegenerationHealingWard(AURA_REGENERATION_CREEP_ID)
+  new AbilityDefinitionAuraTrueshotCreep(AURA_TRUESHOT_CREEP_ID)
+  new AbilityDefinitionAuraSlow(AURA_SLOW_CREEP_ID)
 
 public let creepAbilities = new HashSet<int>()
   ..add(AURA_COMMAND_CREEP_ID)
   ..add(AURA_DEVOTION_CREEP_ID)
+  ..add(AURA_ENDURANCE_CREEP_ID)
+  ..add(AURA_PLAGUE_CREEP_ID)
+  ..add(AURA_REGENERATION_CREEP_ID)
+  ..add(AURA_TRUESHOT_CREEP_ID)
+  ..add(AURA_SLOW_CREEP_ID)
 
 public function getRandomCreepAbility() returns int
   return creepAbilities.get(GetRandomInt(0, creepAbilities.size() - 1))
