@@ -56,7 +56,7 @@ public class GlobalMapController
 		let min = -bottomOfMap.y
 		let max = topOfMap.y
 		let distance = pos.distanceTo(bottomOfMap)
-		return ((min + max) * ((distance / 2) * 0.000000001)).toInt()
+		return ((min + max) * (distance * 0.00000001)).toInt()
 
 	function listenForCreepCampAttack()
 		EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
