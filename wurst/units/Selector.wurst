@@ -7,7 +7,10 @@ import UnitIds
 public constant SELECTOR_ID = compiletime(UNIT_ID_GEN.next())
 
 @compiletime function gen()
-  new UnitDefinition(SELECTOR_ID, UnitIds.wisp)
+  new UnitDefinition(SELECTOR_ID, UnitIds.footman)
+    ..setAttacksEnabled(0)
     ..setModelFile("")
     ..setShadowImageUnit("")
     ..setSelectionScale(0.01)
+    ..setSightRadiusDay(200)
+    ..setSightRadiusNight(200)
