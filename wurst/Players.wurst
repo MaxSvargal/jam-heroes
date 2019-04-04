@@ -5,6 +5,18 @@ import HashMap
 import LinkedList
 import PlayerInstance
 
+constant playerToCastleRect = new HashMap<int, rect>()
+	..put(1, Rect(13115, -13290, 15166, -11460))
+
+constant playerToCastleHeroPosRect = new HashMap<int, rect>()
+	..put(1, gg_rct_Player0CastleHero)
+
+constant playerToCastleCommonShopsRect = new HashMap<int, rect>()
+	..put(1, gg_rct_Player0CastleShop0)
+
+constant playerToCastleRecieptsShopsRect = new HashMap<int, rect>()
+	..put(1, gg_rct_Player0CastleShop1)
+
 public class Players
 	constant HashMap<int, PlayerInstance> instances = new HashMap<int, PlayerInstance>()
 	constant HashList<PlayerInstance> instancesList = new HashList<PlayerInstance>()
@@ -12,6 +24,10 @@ public class Players
 	construct()
 		for i = 0 to 11
 			let instance = new PlayerInstance(players[i])
+				..setVisibleRect(playerToCastleRect.get(i))
+				..setPositionOfHeroInCastle(playerToCastleHeroPosRect.get(i))
+				..createShopsOnRects(playerToCastleCommonShopsRect.get(i), playerToCastleRecieptsShopsRect.get(i))
+
 			instances.put(players[i].getId(), instance)
 			instancesList.add(instance)
 
