@@ -10,7 +10,6 @@ import CreepsGroup
 import BattleForCreepsCamp
 import BattleForIncomeBuilding
 import BattleArea
-import RegionsList // TODO: replace with map bounds
 import MapState
 import IncomeBuilding
 import BattlesController
@@ -21,6 +20,10 @@ import CreepDefenceUpgrade
 import CreepDamageUpgrade
 import CreepHPUpgrade
 import IncomeGoldMine
+
+// TODO: replace with map bounds
+public let topOfMap = vec2(-3500, 4400)
+public let bottomOfMap = vec2(-3500, -14900)
 
 public class GlobalMapController
 	constant creepCamps = new HashMap<unit, CreepCamp>()
