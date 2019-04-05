@@ -3,7 +3,7 @@ package ItemGuardDefinition
 import HashMap
 import ItemObjEditing
 import UnitObjEditing
-import GuardsDropTable
+import GuardUnitsRelations
 
 public class ItemGuardDefinition extends ItemDefinition
 	constant IterableMap<string, string> props = new IterableMap<string, string>()

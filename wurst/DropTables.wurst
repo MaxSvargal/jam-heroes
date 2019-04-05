@@ -8,7 +8,7 @@ import UncommonDropTable
 import RareDropTable
 import EpicDropTable
 import UniqueDropTable
-import GuardsDropTable
+import GuardUnitsRelations
 
 public class DropTableGenerator
 	constant lvl = mapState.getIncreasedLevel().toInt()
