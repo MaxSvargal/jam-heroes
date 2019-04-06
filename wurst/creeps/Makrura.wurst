@@ -8,7 +8,7 @@ import Icons
 import CreepDefinition
 import CreepOnMapDefinition
 import ItemGuardDefinition
-import GuardsDropTable
+import GuardUnitsRelations
 
 public constant MAKRURA_PRAWN_ID = compiletime(UNIT_ID_GEN.next())
 public constant MAKRURA_TIDECALLER_ID = compiletime(UNIT_ID_GEN.next())
