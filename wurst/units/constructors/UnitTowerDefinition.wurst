@@ -56,9 +56,10 @@ public class UnitTowerDefinition extends UnitDefinition
 		destroy list
 		building.setUpgradesTo(result)
 
-	function setCost(int gold, int lumber)
+	function setCost(int gold, int lumber, int food)
 		building.setGoldCost(gold)
 		building.setLumberCost(lumber)
+		building.setFoodCost(food)
 
 	function setUnitSize(UnitSize unitSize)
 		switch unitSize
