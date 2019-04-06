@@ -3,3 +3,4 @@ package GuardUnitsRelations
 import HashMap
 
 public constant unitIdToGuardRelations = new HashMap<int, int>()
+public constant itemIdToGuardUnitRelations = new HashMap<int, int>()

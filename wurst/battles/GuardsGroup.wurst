@@ -1,0 +1,46 @@
+package GuardsGroup
+
+import LinkedList
+import GuardsDropTable
+import BattleGroup
+
+public class GuardsGroup implements BattleGroup
+	constant LinkedList<int> unitIds = new LinkedList<int>()
+	constant LinkedList<item> itemsInBuilding = new LinkedList<item>()
+	constant group units = CreateGroup()
+	player owner
+	unit building
+
+	construct(unit building)
+		this.building = building
+		this.owner = building.getOwner()
+		for i = 0 to 5
+			let itm = building.itemInSlot(i)
+			let id = itm.getTypeId()
+			if itemIdToGuardUnitRelations.has(id)
+				let unitId = itemIdToGuardUnitRelations.get(id)
+				unitIds.add(unitId)
+				itemsInBuilding.add(itm)
+
+	override function createGroupAtRect(rect r) returns group
+		let iterator = unitIds.iterator()
+		for uId from iterator
+			units.addUnit(createUnit(owner, uId, r.randomPoint(), angle(220)))
+		iterator.close()
+		return units
+	
+	override function isGroupAlive() returns boolean
+		var isAnyAlive = false
+		for u in units
+			if u.isAlive()
+				isAnyAlive = true
+		return isAnyAlive
+
+	ondestroy
+		let itr = itemsInBuilding.iterator()
+		for itm from itr
+			itm.remove()
+		itr.close()
+		units.destr()
+		destroy unitIds
+		destroy itemsInBuilding

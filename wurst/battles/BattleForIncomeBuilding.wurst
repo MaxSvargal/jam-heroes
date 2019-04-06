@@ -3,13 +3,13 @@ package BattleForIncomeBuilding
 import Battle
 import BattleArea
 import IncomeBuilding
-import CreepsGroup
+import BattleGroup
 
 public class BattleForIncomeBuilding extends Battle
 	IncomeBuilding incomeBuilding = null
 
-	construct(CreepsGroup creepsGroup, BattleArea battleArea, IncomeBuilding incomeBuilding)
-		super(creepsGroup, battleArea)
+	construct(BattleGroup battleGroup, BattleArea battleArea, IncomeBuilding incomeBuilding)
+		super(battleGroup, battleArea)
 		this.incomeBuilding = incomeBuilding
 		incomeBuilding.setCurrentBattle(this)
 

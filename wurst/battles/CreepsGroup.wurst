@@ -4,8 +4,9 @@ import LinkedList
 import CreepsLists
 import MapState
 import CreepAbilities
+import BattleGroup
 
-public class CreepsGroup
+public class CreepsGroup implements BattleGroup
 	constant p = players[PLAYER_NEUTRAL_AGGRESSIVE]
 	constant LinkedList<int> unitIds = new LinkedList<int>()
 	constant group units = CreateGroup()
@@ -19,7 +20,7 @@ public class CreepsGroup
 		for i = 0 to GetRandomInt(2, 8)
 			unitIds.add(creepId)
 
-	function createGroupAtRect(rect r) returns group
+	override function createGroupAtRect(rect r) returns group
 		// Make a warlord
 		let warlord = createUnit(p, warlordId, r.randomPoint(), angle(220))
 		if mapState.getIncreasedLevel() > 5
@@ -37,7 +38,7 @@ public class CreepsGroup
 		unitOnMap = createUnit(p, unitOnMapId, pos, angle(200))
 		return unitOnMap
 
-	function isGroupAlive() returns boolean
+	override function isGroupAlive() returns boolean
 		var isAnyAlive = false
 		for u in units
 			if u.isAlive()

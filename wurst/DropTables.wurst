@@ -15,7 +15,6 @@ public class DropTableGenerator
 	DropTable dropTable
 
 	construct()
-		print("LEVEL OF DROP TABLE" + lvl.toString())
 		dropTable = new DropTable()
 		for i = 0 to 22 - lvl
 			dropTable.addDropNothing()

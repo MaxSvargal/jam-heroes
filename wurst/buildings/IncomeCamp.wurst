@@ -1,4 +1,4 @@
-package IncomeGoldMine
+package IncomeCamp
 
 import UnitObjEditing
 import UnitIds
@@ -6,12 +6,13 @@ import ObjectIdGenerator
 import ObjectIds
 import AbilityIds
 
-public constant INCOME_GOLD_MINE_ID = compiletime(UNIT_ID_GEN.next())
+public constant INCOME_CAMP_ID = compiletime(UNIT_ID_GEN.next())
 
 @compiletime function gen()
-	new BuildingDefinition(INCOME_GOLD_MINE_ID, UnitIds.goldmine)
-		..setName("Gold Mine")
+	new BuildingDefinition(INCOME_CAMP_ID, UnitIds.mercenarycampz)
+		..setName("Camp")
 		..setPathingMap("\\PathTextures\\4x4SimpleSolid.tga")
+		..setUnitsSold("")
 		..setScalingValue(.9)
 		..setHideMinimapDisplay(true)
 		..setSightRadiusDay(700)

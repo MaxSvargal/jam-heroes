@@ -3,7 +3,7 @@ package Battle
 import OrderIds
 import BattleArea
 import Players
-import CreepsGroup
+import BattleGroup
 import DropTables
 import HashSet
 import PlayerInstance
@@ -12,19 +12,19 @@ import MapState
 public class Battle
 	constant playersInBattle = new HashSet<PlayerInstance>()
 	BattleArea battleArea
-	CreepsGroup creepsGroup
+	BattleGroup battleGroup
 
-	construct(CreepsGroup creepGroup, BattleArea battleArea)
+	construct(BattleGroup battleGroup, BattleArea battleArea)
 		this.battleArea = battleArea
-		this.creepsGroup = creepGroup
+		this.battleGroup = battleGroup
 		// TODO: get battle area by tile under creep
-		creepsGroup
+		battleGroup
 			.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
 			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
 
-	function dropRandomItemAtPos(vec2 pos) returns item
+	function dropRandomItemAtPos(vec2 pos) returns item // TODO: Move to other class
 		return new DropTableGenerator()
-			..addGuardToDrop(creepsGroup.warlordId)
+			// ..addGuardToDrop(creepsGroup.warlordId)
 			.getDropTable()
 			.dropRandomItemAtPos(pos)
 
@@ -44,7 +44,7 @@ public class Battle
 
 	ondestroy
 		// TODO: add points to player?
-		mapState.increaseLevel(1) // .25 orig
+		mapState.increaseLevel(.5) // .25 orig
 		battleArea.clean()
-		destroy creepsGroup
+		destroy battleGroup
 		destroy playersInBattle

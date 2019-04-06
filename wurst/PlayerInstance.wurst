@@ -20,6 +20,10 @@ import CommonShop
 import RecieptsShop
 import PlayersSpawnPoints
 
+import SeaElementals
+import Murlocs
+import Treasure
+
 public class PlayerInstance
 	protected constant player p
 	group groupInBattle
@@ -82,12 +86,18 @@ public class PlayerInstance
 				..setPos(castleHeroPoint)
 				..addAbility(MOVE_TO_GLOBAL_MAP_ID)
 			listenForHeroDies()
+			p.selectSingle(hero)
 			p.setCameraPosition(castleHeroPoint)
 			createHeroOnMap(onGlobalMapPos)
 
 	private function createHeroOnMap(vec2 pos)
 		let forMapHero = heroesOnMapAndInBattleRelations.get(hero.getTypeId())
 		heroOnMap = createUnit(p, forMapHero, pos, angle(220))
+		// TODO: DEV
+		createItem(BLACKWATER_ELEMENTAL_ID_ITEM, pos)
+		createItem(MURLOC_MUTANT_ID_ITEM, pos)
+		createItem(TREASURE_ID, pos)
+		createItem(TREASURE_ID, pos)
 
 	private function moveToCastle()
 		pauseHeroOnMap(true)

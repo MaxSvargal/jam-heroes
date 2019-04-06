@@ -1,7 +1,6 @@
 package BattlesController
 
 import Battle
-import CreepsGroup
 import HashList
 import ClosureTimers
 import Players
@@ -27,7 +26,7 @@ class BattlesController
 					for p from playersIterator
 						// When all players is allies, just victory all
 						if Players.isAllPlayersAllies(battle.playersInBattle)
-						and not battle.creepsGroup.isGroupAlive()
+						and not battle.battleGroup.isGroupAlive()
 							p.battleVictory()
 							battle.exitPlayerFromBattle(p)
 							// TODO: bug? That ally player will be an owner?

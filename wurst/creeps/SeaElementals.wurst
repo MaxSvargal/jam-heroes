@@ -8,6 +8,7 @@ import Icons
 import CreepOnMapDefinition
 import CreepDefinition
 import ItemGuardDefinition
+import GuardsDropTable
 
 public constant REEF_ELEMENTAL_ID = compiletime(UNIT_ID_GEN.next())
 public constant SEA_ELEMENTAL_ID = compiletime(UNIT_ID_GEN.next())
@@ -15,29 +16,35 @@ public constant BLACKWATER_ELEMENTAL_ID = compiletime(UNIT_ID_GEN.next())
 public constant BLACKWATER_ELEMENTAL_ID_ONMAP = compiletime(UNIT_ID_GEN.next())
 public constant BLACKWATER_ELEMENTAL_ID_ITEM = compiletime(ITEM_ID_GEN.next())
 
+constant levels = [ 8, 9, 10 ]
+
 @compiletime function gen()
-	new CreepDefinition(REEF_ELEMENTAL_ID, UnitIds.reefelemental, 5)
-		..setAttack(AttackType.Normal, 30, 2, 6, 1.2)
-		..setDefence(ArmorType.Small, 350, 2, 1)
+	new CreepDefinition(REEF_ELEMENTAL_ID, UnitIds.reefelemental, levels[0])
+		..setAttack(AttackType.Normal, 101, 3, 20, 1.2) // 110 DPS
+		..setDefence(ArmorType.Small, 1350, 2, 1)
 		..setGoldBounty(2, 1, 2)
 
-	new CreepDefinition(SEA_ELEMENTAL_ID, UnitIds.seaelemental, 6)
-		..setAttack(AttackType.Normal, 45, 2, 12, 1.1)
-		..setDefence(ArmorType.Medium, 550, 3, 1)
+	new CreepDefinition(SEA_ELEMENTAL_ID, UnitIds.seaelemental, levels[1])
+		..setAttack(AttackType.Normal, 151, 3, 20, 1.1) // 165 DPS
+		..setDefence(ArmorType.Medium, 2000, 3, 1)
 		..setGoldBounty(2, 1, 3)
 
-	new CreepDefinition(BLACKWATER_ELEMENTAL_ID, UnitIds.seaelemental, 7)
-		..setAttack(AttackType.Hero, 50, 2, 20, .9)
-		..setDefence(ArmorType.Hero, 700, 4, 2)
+	new CreepDefinition(BLACKWATER_ELEMENTAL_ID, UnitIds.seaelemental, levels[2])
+		..setAttack(AttackType.Hero, 188, 4, 10, .9) // 300 DPS
+		..setDefence(ArmorType.Hero, 4000, 4, 2)
 		..setGoldBounty(5, 2, 4)
 		..setColor(32, 12, 0)
 
-	new ItemGuardDefinition(BLACKWATER_ELEMENTAL_ID_ITEM, BLACKWATER_ELEMENTAL_ID)
+	new ItemGuardDefinition(BLACKWATER_ELEMENTAL_ID_ITEM)
 		..setName("Blackwater Elemental")
 		..setIcon(Icons.bTNSeaElemental)
-		..setLevel(7)
-		..setAttack(AttackType.Hero, 50, 2, 20, .9)
-		..setDefence(ArmorType.Hero, 700, 4, 2)
+		..setLevel(levels[2])
+		..setAttack(AttackType.Hero, 188, 4, 10, .9)
+		..setDefence(ArmorType.Hero, 4000, 4, 2)
 		..updateTooltip()
 
-	new CreepOnMapDefinition(BLACKWATER_ELEMENTAL_ID_ONMAP, UnitIds.seaelemental, 7)
+	new CreepOnMapDefinition(BLACKWATER_ELEMENTAL_ID_ONMAP, UnitIds.seaelemental, levels[2])
+
+init
+	unitIdToGuardRelations.put(BLACKWATER_ELEMENTAL_ID, BLACKWATER_ELEMENTAL_ID_ITEM)
+	itemIdToGuardUnitRelations.put(BLACKWATER_ELEMENTAL_ID_ITEM, BLACKWATER_ELEMENTAL_ID)

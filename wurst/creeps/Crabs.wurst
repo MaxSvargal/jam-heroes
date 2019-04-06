@@ -8,6 +8,7 @@ import Icons
 import CreepDefinition
 import CreepOnMapDefinition
 import ItemGuardDefinition
+import GuardsDropTable
 
 public constant CRAB_CRAWLER_ID = compiletime(UNIT_ID_GEN.next())
 public constant CRAB_LIMBRIPPER_ID = compiletime(UNIT_ID_GEN.next())
@@ -15,28 +16,34 @@ public constant CRAB_BEHEMOTH_ID = compiletime(UNIT_ID_GEN.next())
 public constant CRAB_BEHEMOTH_ID_ONMAP = compiletime(UNIT_ID_GEN.next())
 public constant CRAB_BEHEMOTH_ID_ITEM = compiletime(ITEM_ID_GEN.next())
 
+constant levels = [ 1, 2, 3 ]
+
 @compiletime function gen()
-  new CreepDefinition(CRAB_CRAWLER_ID, UnitIds.spidercrab, 1)
-    ..setAttack(AttackType.Normal, 5, 2, 2, 1.3)
-    ..setDefence(ArmorType.Small, 100, 1, 1)
+  new CreepDefinition(CRAB_CRAWLER_ID, UnitIds.spidercrab, levels[0])
+    ..setAttack(AttackType.Normal, 5, 2, 2, 1.3) // DPS 6
+    ..setDefence(ArmorType.Small, 80, 1, 1)
     ..setGoldBounty(1, 1, 0)
 
-  new CreepDefinition(CRAB_LIMBRIPPER_ID, UnitIds.spidercrab2, 2)
-    ..setAttack(AttackType.Normal, 8, 2, 4, 1.2)
-    ..setDefence(ArmorType.Medium, 250, 2, 1)
+  new CreepDefinition(CRAB_LIMBRIPPER_ID, UnitIds.spidercrab2, levels[1])
+    ..setAttack(AttackType.Normal, 8, 2, 4, 1.2) // DPS 10
+    ..setDefence(ArmorType.Medium, 120, 2, 1)
     ..setGoldBounty(1, 1, 2)
 
-  new CreepDefinition(CRAB_BEHEMOTH_ID, UnitIds.spidercrab3, 3)
-    ..setAttack(AttackType.Hero, 15, 2, 10, 1.1)
-    ..setDefence(ArmorType.Hero, 500, 3, 2)
+  new CreepDefinition(CRAB_BEHEMOTH_ID, UnitIds.spidercrab3, levels[2])
+    ..setAttack(AttackType.Hero, 15, 2, 10, 1.1) // DPS 23
+    ..setDefence(ArmorType.Hero, 300, 3, 2)
     ..setGoldBounty(3, 1, 3)
 
-  new ItemGuardDefinition(CRAB_BEHEMOTH_ID_ITEM, CRAB_BEHEMOTH_ID)
+  new ItemGuardDefinition(CRAB_BEHEMOTH_ID_ITEM)
     ..setName("Crab Behemoth")
     ..setIcon(Icons.bTNHermitCrab)
-    ..setLevel(3)
+    ..setLevel(levels[2])
     ..setAttack(AttackType.Hero, 15, 2, 10, 1.1)
     ..setDefence(ArmorType.Hero, 500, 3, 2)
     ..updateTooltip()
 
-  new CreepOnMapDefinition(CRAB_BEHEMOTH_ID_ONMAP, UnitIds.spidercrab3, 3)
+  new CreepOnMapDefinition(CRAB_BEHEMOTH_ID_ONMAP, UnitIds.spidercrab3, levels[2])
+
+init
+  unitIdToGuardRelations.put(CRAB_BEHEMOTH_ID, CRAB_BEHEMOTH_ID_ITEM)
+  itemIdToGuardUnitRelations.put(CRAB_BEHEMOTH_ID_ITEM, CRAB_BEHEMOTH_ID)

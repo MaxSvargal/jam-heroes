@@ -3,16 +3,14 @@ package ItemGuardDefinition
 import HashMap
 import ItemObjEditing
 import UnitObjEditing
-import GuardUnitsRelations
 
 public class ItemGuardDefinition extends ItemDefinition
 	constant IterableMap<string, string> props = new IterableMap<string, string>()
 	string name
 	string desc
 
-	construct(int newId, int unitId)
+	construct(int newId)
 		super(newId, 'rst1') // TODO: replace to tiny tower
-		unitIdToGuardRelations.put(unitId, newId)
 		setDescription("You can hire this unit for using it in your group or for defend your buildings.")
 
 	function addProp(string name, string val)
@@ -51,7 +49,7 @@ public class ItemGuardDefinition extends ItemDefinition
 		super.setLevel(lvl)
 
 	function setAttack(AttackType attackType, int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
-		let f = damageBase + sidesperDie
+		let f = damageBase + numberofDice
 		let t = damageBase + (numberofDice * sidesperDie)
 		addProp("Attack Type", attackType.toObjectString())
 		addProp("Damage", f.toString() + " - " + t.toString())
