@@ -1,0 +1,7 @@
+package MapItemDefinition
+
+import ItemObjEditing
+
+public class MapItemDefinition extends ItemDefinition
+  construct(int newId)
+    super(newId, 'vddl')

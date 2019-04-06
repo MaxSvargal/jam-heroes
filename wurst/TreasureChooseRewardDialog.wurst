@@ -1,0 +1,23 @@
+package TreasureChooseRewardDialog
+
+import DialogBox
+
+public class TreasureChooseRewardDialog
+	DialogBox dBox
+
+	construct()
+		dBox = new DialogBox("You found a hidden treasure.\rYou can get it or keep on.\rWhat's your choose?")
+		// TODO: random values
+		let coinsAmount = 50
+		let reputationAmount = 1
+
+		dBox.addButton(color(228, 127, 18).toColorString() + "Coins (" + coinsAmount.toString() + ")|r") ->
+			GetTriggerPlayer().addGold(coinsAmount)
+			dBox.display(GetTriggerPlayer(), false)
+
+		dBox.addButton(color(82, 158, 216).toColorString() + "Reputation (" + reputationAmount.toString() + ")|r") ->
+			GetTriggerPlayer().addLumber(reputationAmount)
+			dBox.display(GetTriggerPlayer(), false)
+
+	function display(player whichPlayer, boolean flag)
+		dBox.display(whichPlayer, flag)

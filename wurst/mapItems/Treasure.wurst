@@ -1,0 +1,13 @@
+package Treasure
+
+import ObjectIdGenerator
+import MapItemDefinition
+
+public constant TREASURE_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+  new MapItemDefinition(TREASURE_ID)
+    ..setModelUsed("GoldenHordes3.mdx")
+    ..setScalingValue(0.8)
+    ..setName("Treasure")
+    ..setDescription("Something very interesting")

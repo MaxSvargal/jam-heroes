@@ -7,6 +7,7 @@ import ClosureEvents
 
 import CreepCamp
 import CreepsGroup
+import GuardsGroup
 import BattleForCreepsCamp
 import BattleForIncomeBuilding
 import BattleArea
@@ -15,11 +16,15 @@ import IncomeBuilding
 import BattlesController
 import Players
 import EntityBattleFor
+import BattleGroup
+import Treasure
+import TreasureChooseRewardDialog
 
 import CreepDefenceUpgrade
 import CreepDamageUpgrade
 import CreepHPUpgrade
 import IncomeGoldMine
+import IncomeCamp
 
 // TODO: replace with map bounds
 public let topOfMap = vec2(-3500, 4400)
@@ -32,10 +37,13 @@ public class GlobalMapController
 	construct()
 		createCreepCamps()
 		listenForCreepCampAttack()
-		createIncomeBuildings()
+		createIncomeGoldMineBuildings()
+		createIncomeCampsBuildings()
 		listenForIncomeBuildingAttack()
 		restoreCampsIterator()
 		giveIncomeIterator()
+		initialCreateMapItems()
+		listenForGettingItems()
 
 	function createCreepCamps()
 		let g = GetUnitsOfTypeIdAll(UnitIds.lavaspawn)
@@ -46,12 +54,21 @@ public class GlobalMapController
 			createGroupForCamp(creepCamp)
 		g.destr()
 
-	function createIncomeBuildings()
+	function createIncomeGoldMineBuildings()
 		let g = GetUnitsOfTypeIdAll(UnitIds.goldmine)
 		for u from g
 			let pos = u.getPos()
 			u.remove()
-			let incomeBuilding = new IncomeBuilding(pos)
+			let incomeBuilding = new IncomeBuilding(pos, INCOME_GOLD_MINE_ID)
+			createGroupForIncomeBuilding(incomeBuilding)
+		g.destr()
+
+	function createIncomeCampsBuildings()
+		let g = GetUnitsOfTypeIdAll(UnitIds.mercenarycampz)
+		for u from g
+			let pos = u.getPos()
+			u.remove()
+			let incomeBuilding = new IncomeBuilding(pos, INCOME_CAMP_ID)
 			createGroupForIncomeBuilding(incomeBuilding)
 		g.destr()
 
@@ -84,7 +101,16 @@ public class GlobalMapController
 				if incomeBuilding.getCurrentBattle() != null
 					incomeBuilding.getCurrentBattle().enterPlayerIntoBattle(enterPlayer)
 				else
-					let battle = new BattleForIncomeBuilding(incomeBuilding.getCreepsGroup(), getRandomBattleArea(), incomeBuilding) // TODO: Not random!
+					BattleGroup battleGroup
+					if incomeBuilding.getBuilding().getOwner() == players[PLAYER_NEUTRAL_AGGRESSIVE]
+						let pos = incomeBuilding.getPos()
+						let lvl = getCampLevel(pos)
+						battleGroup = new CreepsGroup(lvl + 2)
+					else
+						let building = incomeBuilding.getBuilding()
+						battleGroup = new GuardsGroup(building)
+		
+					let battle = new BattleForIncomeBuilding(battleGroup, getRandomBattleArea(), incomeBuilding)
 					battlesController.add(battle)
 					battle.enterPlayerIntoBattle(enterPlayer)
 				
@@ -104,6 +130,27 @@ public class GlobalMapController
 				createGroupForCamp(campToRestore)
 				mapState.creepCampsToRestore.remove(campToRestore)
 				setCreepsUpgradesLevel()
+				createNewMapItem()
+
+	private function initialCreateMapItems()
+		let pNum = playersInstances.getAlivePlayersNum()
+		for i = 0 to pNum * 100
+			createNewMapItem()
+
+	private function createNewMapItem()
+		// TODO: optimize it
+		// let r = gg_rct_GlobalMapAreaForDropItems
+		// let rvec = vec2(GetRandomReal(r.getMinX(), r.getMaxX()), GetRandomReal(r.getMinY(), r.getMaxY()))
+		// let rrec = rvec.withRadiusRect(100)
+		// print("wat?")
+		let loc = GetRandomLocInRect(gg_rct_GlobalMapAreaForDropItems)
+		CreateItemLoc(TREASURE_ID, loc)
+		// if IsTerrainPathableBJ(loc, PATHING_TYPE_WALKABILITY)
+		// 	print("create at" + loc.getHandleId().toCharsetString())
+		// 	CreateItemLoc(TREASURE_ID, loc)
+		// else
+		// 	print("reload")
+		// 	createNewMapItem()
 
 	private function createGroupForEntity(EntityBattleFor entity) returns CreepsGroup
 		let pos = entity.getPos()
@@ -119,7 +166,7 @@ public class GlobalMapController
 
 	private function createGroupForIncomeBuilding(IncomeBuilding incomeBuilding)
 		createGroupForEntity(incomeBuilding)
-		let unitOnMap = incomeBuilding.getUnit()
+		let unitOnMap = incomeBuilding.getBuilding()
 		incomeBuildings.put(unitOnMap, incomeBuilding)
 
 	private function getCampLevel(vec2 pos) returns int
@@ -136,13 +183,32 @@ public class GlobalMapController
 
 	function giveIncomeIterator()
 		let goldPerGoldMine = 10
+		let reputationPerCamp = 1
 		doPeriodically(10) cb ->
 			let iterator = playersInstances.instancesList.iterator()
 			for pi from iterator
 				let p = pi.getPlayer()
+				// Gold Mines
 				let g = GetUnitsOfPlayerAndTypeId(p, INCOME_GOLD_MINE_ID)
 				let goldAmount = g.size() * goldPerGoldMine
 				if goldAmount > 0
 					p.addGold(goldAmount)
-					printTimedToPlayer("Gold income +" + goldAmount.toString(), 3, p)
+					printTimedToPlayer(color(228, 127, 18).toColorString() + "Coins income +" + goldAmount.toString() + "|r", 3, p)
+				g.destr()
+
+				// Reputation Camps
+				let c = GetUnitsOfPlayerAndTypeId(p, INCOME_CAMP_ID)
+				let repAmount = c.size() * reputationPerCamp
+				if repAmount > 0
+					p.addLumber(repAmount)
+					printTimedToPlayer(color(82, 158, 216).toColorString() + "Reputation income +" + repAmount.toString() + "|r", 3, p)
+				c.destr()
+
 			iterator.close()
+	
+	private function listenForGettingItems()
+		EventListener.add(EVENT_PLAYER_UNIT_PICKUP_ITEM) ->
+			if GetManipulatedItem().getTypeId() == TREASURE_ID
+				GetManipulatedItem().remove()
+				new TreasureChooseRewardDialog()
+					..display(GetTriggerPlayer(), true)

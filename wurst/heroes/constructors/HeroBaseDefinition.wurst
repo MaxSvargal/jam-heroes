@@ -3,6 +3,7 @@ package HeroBaseDefinition
 import UnitObjEditing
 import UnitIds
 import ObjectIds
+import AbilityIds
 
 import MoveToCastle
 
@@ -11,10 +12,10 @@ public class HeroBaseDefinition extends HeroDefinition
 
 	construct(int origId, int newId, int onMapId)
 		super(newId, origId)
-		setFoodCost(0)
 		setRequirements("")
 		setGoldCost(0)
 		setLumberCost(0)
+		setFoodCost(0)
 		setLevel(200)
 		setStockMaximum(1)
 
@@ -23,9 +24,10 @@ public class HeroBaseDefinition extends HeroDefinition
 			..setSpeedBase(140)
 			..setAnimationWalkSpeed(200)
 			..setCollisionSize(90)
-			..setNormalAbilities(commaList(MOVE_TO_CASTLE_ID))
+			..setNormalAbilities(commaList(MOVE_TO_CASTLE_ID, AbilityIds.inventory))
 			..setStructuresBuilt("")
 			..setName("Hero")
+			..setFoodCost(0)
 
 	function setAttack(int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
 		setAttack1DamageBase(damageBase)
