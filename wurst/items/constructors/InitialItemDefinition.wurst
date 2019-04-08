@@ -228,7 +228,7 @@ public class InitialItemDefinition
 				.getNewId())
 
 	function setMaxManaGained(int val)
-		// does not work!
+		// TODO: does not work!
 		addProp("mana gained", val.toString())
 		addAbility(
 			new AbilityDefinitionAImm(ABIL_ID_GEN.next())
