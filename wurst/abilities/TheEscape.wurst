@@ -1,0 +1,37 @@
+package TheEscape
+
+import ChannelAbilityPreset
+import ClosureEvents
+import ClosureTimers
+import Players
+import Abilities
+
+public constant THE_ESCAPE_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function gen()
+  new AbilityDefinitionWarStomphydra(THE_ESCAPE_ID)
+    ..setTerrainDeformationAmplitude(1, 0)
+    ..setTerrainDeformationDurationms(1, 0)
+    ..setDamage(1, 0)
+    ..setCooldown(0, 60)
+    ..setCooldown(1, 60)
+    ..setBuffs(1, "")
+    ..setEffects(1, "")
+    ..setManaCost(1, 25)
+    ..setButtonPositionNormalX(1)
+    ..setButtonPositionNormalY(1)
+    ..presetIcon("BTNDTeleport")
+    ..setName("The Escape")
+    ..setHotkeyNormal("Y")
+    ..setTooltipNormal(1, "The Escape [Y]")
+    ..setTooltipNormalExtended(1, "Surrend and Teleport to castle.")
+
+init
+  EventListener.onCast(THE_ESCAPE_ID) (unit caster) ->
+    caster.pause()
+    let ef = caster.addEffect(Abilities.massTeleportTo, "origin")
+    doAfter(5) ->
+      ef.destr()
+      caster.unpause()
+      caster.addEffect(Abilities.massTeleportCaster, "origin")
+      playersInstances.get(caster.getOwner().getId()).battleDefeat()

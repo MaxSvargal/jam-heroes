@@ -1,0 +1,26 @@
+package IncreaseLeadership
+
+import UpgradeObjEditing
+import ObjectIdGenerator
+import ClosureEvents
+
+public constant INCREASE_LEADERSHIP_ID = compiletime(UPGD_ID_GEN.next())
+
+@compiletime function gen()
+  new UpgradeDefinition(INCREASE_LEADERSHIP_ID)
+    ..setLevels(50)
+    ..setGoldCostBase(25)
+    ..setGoldCostIncrement(25)
+    ..setLumberCostBase(1)
+    ..setLumberCostIncrement(1)
+    ..setTimeBase(3)
+    ..setTimeIncrement(1)
+    ..presetIcon(_ -> "ReplaceableTextures\\CommandButtons\\BTNLeadership.blp")
+    ..presetName(lvl -> "Increase leadership to " + lvl.toString())
+    ..presetTooltip(lvl -> "Research Leadership Increase to " + lvl.toString())
+    ..presetTooltipExtended(_ -> "Allow your hero to control more units in group.")
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_RESEARCH_FINISH) ->
+    if GetResearched() == INCREASE_LEADERSHIP_ID
+      GetTriggerPlayer().addState(PLAYER_STATE_RESOURCE_FOOD_CAP, 1)

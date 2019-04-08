@@ -1,0 +1,19 @@
+package Laboratory
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+import ObjectIds
+import AbilityIds
+
+import IncreaseLeadership
+
+public constant LABORATORY_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new BuildingDefinition(LABORATORY_ID, UnitIds.arcanesanctum)
+		..setName("Laboratory")
+		..setGroundTexture("")
+		..setNormalAbilities(commaList(AbilityIds.inventory))
+		..setResearchesAvailable(commaList(INCREASE_LEADERSHIP_ID))
+		..setUnitsTrained("")
