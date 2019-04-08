@@ -30,13 +30,8 @@ class BattlesController
 							p.battleVictory()
 							battle.exitPlayerFromBattle(p)
 							// TODO: bug? That ally player will be an owner?
-							// battle.entityBattleFor.defeat()
-							// TODO: drop items on the map and hero needs to move to exit
-							// TODO: move method to player instead of droptable?
-							battle.dropRandomItemAtPos(p.castleHeroPoint)
-							battle.creepsDefeat(p.getPlayer())
-							//dropRandomItemAtPos(campGroup.warlord.getPos())
-						// When enemies players in battle
+							battle.creepsDefeat(p)
+						// When enemies in battle
 						else if not p.isAllGroupAlive()
 							// player defeat
 							p.battleDefeat()

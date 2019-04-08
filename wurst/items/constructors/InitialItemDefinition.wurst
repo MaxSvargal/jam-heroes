@@ -1,0 +1,323 @@
+package InitialItemDefinition
+
+import ObjectIdGenerator
+import AbilityObjEditing
+import LinkedList
+import HashMap
+import StringUtils
+import ObjectIds
+
+constant RECIEPT_GOLD_COST = 50
+constant RECIEPT_LUMBER_COST = 1
+constant FOR_RECIEPT_COST_MULTIPLY = 1.3
+
+public enum ItemType
+	COMMON
+	UNCOMMON
+	RARE
+	EPIC
+	LEGENDARY
+	UNIQUE
+
+function getColorOfItemType(ItemType itemType) returns string
+	switch itemType
+		case COMMON
+			return ""
+		case UNCOMMON
+			return color(31,191,0).toColorString()
+		case RARE
+			return color(60, 110, 255).toColorString()
+		case EPIC
+			return color(190, 0, 254).toColorString()
+		case LEGENDARY
+			return color(254,137,13).toColorString()
+		case UNIQUE
+			return color(236, 220, 0).toColorString()
+		default
+			return ""
+
+public class InitialItemDefinition
+	int id
+	int recieptId
+	LinkedList<int> abilities = new LinkedList<int>()
+	IterableMap<string, string> props = new IterableMap<string, string>()
+	LinkedList<InitialItemDefinition> requiredItems = new LinkedList<InitialItemDefinition>()
+	ItemType itemType
+	string name
+	string tooltipBasic = ""
+	string description = ""
+	string iconPath
+	boolean recieptIsset = false
+	boolean recieptRequired = false
+	string recieptIcon
+	string recieptName
+	int goldCost = 0
+	int lumberCost = 0
+	int recieptGoldCost = 0
+	int recieptLumberCost = 0
+
+	construct(int id)
+		this.id = id
+
+	private function getColorOfCurrentType() returns string
+		return getColorOfItemType(itemType)
+
+	private function generateProps() returns string
+		if props.size() == 0
+			return ""
+		let itemColor = getColorOfCurrentType()
+		string tooltip = ""
+		let iterator = props.iterator()
+		for prop from iterator
+			if props.get(prop) != "0"
+				tooltip += itemColor + "+ " + props.get(prop) + "|r " + COLOR_GOLD.toColorString() + prop + "|r\n"
+		return tooltip
+
+	private function getRequiredItemsNames() returns string
+		string requiredNames = ""
+		let requiredNamesIterator = requiredItems.iterator()
+		for reqItem from requiredNamesIterator
+			requiredNames +=  "- " + reqItem.name + "\n"
+		requiredNamesIterator.close()
+		return requiredNames
+
+	// =======
+	// Setters
+	// =======
+
+	function setName(string name)
+		this.name = name
+		let str = getColorOfCurrentType() + name + "|r"
+		this.name = str
+		this.tooltipBasic = "Buy " + str
+
+	function setType(ItemType itemType)
+		this.itemType = itemType
+
+	function setIcon(string name)
+		string s = name
+		if name.length() < 20 or not name.startsWith("ReplaceableTextures")
+			 s = "ReplaceableTextures\\CommandButtons\\" + s
+		if not name.endsWith(".blp")
+			s += ".blp"
+		iconPath = s
+
+	function setDescription(string desc)
+		description = desc
+
+	function addAbility(int id)
+		abilities.add(id)
+
+	function addProp(string name, string val)
+		props.put(name, val)
+
+	function setRecieptIsset(int id)
+		recieptIsset = true
+		recieptId = id
+		recieptGoldCost = RECIEPT_GOLD_COST
+		recieptLumberCost = RECIEPT_LUMBER_COST
+		goldCost += recieptGoldCost
+		lumberCost += recieptLumberCost
+		recieptName = getColorOfCurrentType() + "Reciept of " + name + "|r"
+		if itemType == ItemType.UNCOMMON
+			recieptIcon = "ReplaceableTextures\\CommandButtons\\BTNRecieptScrollGreen.blp"
+		if itemType == ItemType.RARE
+			recieptIcon = "ReplaceableTextures\\CommandButtons\\BTNRecieptScrollBlue.blp"
+
+	function setRecieptRequired(bool status)
+		recieptRequired = status
+
+	function setCost(int goldCost, int lumberCost)
+		this.goldCost = goldCost
+		this.lumberCost = lumberCost
+
+	function setRecieptCost(int goldCost, int lumberCost)
+		this.recieptGoldCost = goldCost
+		this.recieptLumberCost = lumberCost
+
+	function addRequiredItem(InitialItemDefinition itemDefinition)
+		requiredItems.add(itemDefinition)
+		goldCost += itemDefinition.goldCost
+		lumberCost += itemDefinition.lumberCost
+
+	// =======
+	// Getters
+	// =======
+
+	function getId() returns int
+		return id
+
+	function getRecieptId() returns int
+		return recieptId
+
+	function getGoldCost() returns int
+		return (goldCost * FOR_RECIEPT_COST_MULTIPLY).toInt()
+
+	function getLumberCost() returns int
+		return (lumberCost * FOR_RECIEPT_COST_MULTIPLY).toInt()
+
+	function getTooltipExtended() returns string
+		return description != ""
+			? description + "\n\n" + generateProps()
+			: generateProps()
+
+	function getRecieptTooltipExtended() returns string
+		return color(255, 100, 190).toColorString() +
+		(recieptRequired ? "This receipt is required" : "This receipt is not required") +
+		"|r\n" +
+		description + "\n\n" +
+		generateProps() + "\n" +
+			color(220, 50, 50).toColorString() +
+			"Requires items: \n" +
+			getRequiredItemsNames() + "|r"
+
+	function getAbilitiesList() returns string
+		return abilities.joinBy((int i) -> i.toRawCode(), ",")
+
+	// =========
+	// Abilities
+	// =========
+
+	function setStrengthBonus(int val)
+		addProp("strength", val.toString())
+		addAbility(
+			new AbilityDefinitionStrengthBonusPlus1(ABIL_ID_GEN.next())
+				..setStrengthBonus(1, val)
+				.getNewId())
+
+	function setAgilityBonus(int val)
+		addProp("agility", val.toString())
+		addAbility(
+			new AbilityDefinitionAgilityBonusPlus1(ABIL_ID_GEN.next())
+				..setAgilityBonus(1, val)
+				.getNewId())
+
+	function setIntelligenceBonus(int val)
+		addProp("intelligence", val.toString())
+		addAbility(
+			new AbilityDefinitionIntelligenceBonusPlus1(ABIL_ID_GEN.next())
+				..setIntelligenceBonus(1, val)
+				.getNewId())
+
+	function setAttackBonus(int val)
+		addProp("attack bonus", val.toString())
+		addAbility(
+			new AbilityDefinitionAttackBonus(ABIL_ID_GEN.next())
+				..setAttackBonus(1, val)
+				.getNewId())
+
+	function setAttackSpeedIncrease(real val)
+		addProp("attack speed", (val * 100).toString() + "%")
+		addAbility(
+			new AbilityDefinitionAttackSpeedIncrease(ABIL_ID_GEN.next())
+				..setAttackSpeedIncrease(1, val)
+				.getNewId())
+
+	function setChancetoEvade(real val)
+		addProp("evade chance", (val * 100).toString() + "%")
+		addAbility(
+			new AbilityDefinitionEvasion(ABIL_ID_GEN.next())
+				..setChancetoEvade(1, val)
+				.getNewId())
+
+	function setDefenceBonus(int val)
+		addProp("defence bonus", val.toString())
+		addAbility(
+			new AbilityDefinitionDefenseBonusPlus1(ABIL_ID_GEN.next())
+				..setDefenseBonus(1, val)
+				.getNewId())
+
+	function setMaxManaGained(int val)
+		// does not work!
+		addProp("mana gained", val.toString())
+		addAbility(
+			new AbilityDefinitionAImm(ABIL_ID_GEN.next())
+				..setMaxManaGained(1, val)
+				.getNewId())
+
+	function setMaxLifeGained(int val)
+		// TODO: does not work
+		addProp("life gained", val.toString())
+		addAbility(
+			new AbilityDefinitionMaxLifeBonusGreater(ABIL_ID_GEN.next())
+				..setMaxLifeGained(1, val)
+				.getNewId())
+
+	function setMovementSpeedBonus(int val)
+		addProp("movement speed", val.toString())
+		addAbility(
+			new AbilityDefinitionMoveSpeedBonus(ABIL_ID_GEN.next())
+				..setMovementSpeedBonus(1, val)
+				.getNewId())
+
+	function setMovementSpeedIncrease(real val)
+		// aura?
+		print(val)
+
+	function setAllStatsBonus(int val)
+		addProp("all stats", val.toString())
+		addAbility(
+			new AbilityDefinitionAllPlus1(ABIL_ID_GEN.next())
+				..setIntelligenceBonus(1, val)
+				..setAgilityBonus(1, val)
+				..setStrengthBonus(1, val)
+				.getNewId())
+
+	// function setLifeRegenerationIncrease(real val)
+	// 	addProp("life regeneration", val.toString() + "%")
+	// 	addAbility(
+	// 		new AbilityDefinitionDeathKnightUnholyAura(ABIL_ID_GEN.next())
+	// 			..setLifeRegenerationIncrease(1, val)
+	// 			..setMovementSpeedIncrease(1, 0)
+	// 			..setAreaofEffect(1, 1)
+	// 			..setArtTarget("")
+	// 			.getNewId())
+	
+	function setHitPointsRegeneratedPerSecond(int val)
+		addProp("life regeneration", val.toString() + " hp/s")
+		addAbility(
+			new AbilityDefinitionRegenLife(ABIL_ID_GEN.next())
+				..setHitPointsRegeneratedPerSecond(1, val)
+				.getNewId())
+	
+	function setManaRegenerationBonus(real val)
+		addProp("mana regeneration", val.toString() + "%")
+		addAbility(
+			new AbilityDefinitionItemRegenMana(ABIL_ID_GEN.next())
+				..setManaRegenerationBonusasfractionofnormal(1, val)
+				.getNewId())
+	
+	function setSpellDamageReduction(real val)
+		addProp("spell damage reduction", val.toString() + "%")
+		addAbility(
+			new AbilityDefinitionRunedBracers(ABIL_ID_GEN.next())
+				..setDamageBonus(1, 0)
+				..setDamageReduction(1, val)
+				.getNewId())
+	
+	function setChancetoCriticalStrike(real chance, real multiplier, real damageBonus)
+		addProp(
+			"crit chance",
+			chance.toString() + "%" +
+				(multiplier != 2 ? " to deal x" + multiplier.toString() : "") +
+				(damageBonus == 0 ? "" : " and additional " + damageBonus.toString()) + " damage")
+		addAbility(
+			new AbilityDefinitionCriticalStrikecreep(ABIL_ID_GEN.next())
+				..setDamageMultiplier(1, multiplier)
+				..setChancetoCriticalStrike(1, chance)
+				..setDamageBonus(1, damageBonus)
+				.getNewId())
+
+	function setPoisonAttack(real damagePerSecond, real attackSpeedFactor, real movementSpeedFactor)
+		addProp("poison effect", damagePerSecond.toString() + " hp/s")
+		if attackSpeedFactor != 0
+			addProp("decrease enemy attack speed", attackSpeedFactor.toString() + "%")
+		if movementSpeedFactor != 0
+			addProp("decrease enemy movement speed", movementSpeedFactor.toString() + "%")
+
+		addAbility(
+			new AbilityDefinitionPoisonAttack(ABIL_ID_GEN.next())
+				..setAttackSpeedFactor(1, attackSpeedFactor)
+				..setDamageperSecond(1, damagePerSecond)
+				..setMovementSpeedFactor(1, movementSpeedFactor)
+				.getNewId())

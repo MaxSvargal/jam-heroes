@@ -4,6 +4,7 @@ import Battle
 import BattleArea
 import IncomeBuilding
 import BattleGroup
+import PlayerInstance
 
 public class BattleForIncomeBuilding extends Battle
 	IncomeBuilding incomeBuilding = null
@@ -13,7 +14,7 @@ public class BattleForIncomeBuilding extends Battle
 		this.incomeBuilding = incomeBuilding
 		incomeBuilding.setCurrentBattle(this)
 
-	override function creepsDefeat(player p)
+	override function creepsDefeat(PlayerInstance p)
 		incomeBuilding
-			..setOwner(p)
+			..setOwner(p.getPlayer())
 			..setCurrentBattle(null)

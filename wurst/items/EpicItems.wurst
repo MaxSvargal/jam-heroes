@@ -1,0 +1,31 @@
+package EpicItems
+
+import ObjectIdGenerator
+import HashList
+
+import InitialItemDefinition
+import DropTable
+
+import RareItems
+
+public constant greatAxeOfHero = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+	..setName("Great Axe of Hero")
+	..setIcon("BTNAxe002")
+	..setType(ItemType.RARE)
+	..setAttackBonus(80)
+	..setStrengthBonus(20)
+	..setChancetoCriticalStrike(0.2, 2, 10)
+	..setRecieptIsset(compiletime(ITEM_ID_GEN.next()))
+	..setRecieptRequired(false)
+	// ..addRequiredItem(greatAxe)
+	// ..addRequiredItem(platingBoots)
+	// ..addRequiredItem(ruinedShield)
+
+public constant epicItemsList = new HashList<InitialItemDefinition>()
+	..add(greatAxeOfHero)
+
+public constant epicDropTable = new DropTable()
+	..getFromList(rareItemsList)
+
+public constant epicRecieptsDropTable = new DropTable()
+	..getRecieptsFromList(rareItemsList)

@@ -1,5 +1,0 @@
-package UniqueDropTable
-
-import DropTable
-
-public constant uniqueDropTable = new DropTable()

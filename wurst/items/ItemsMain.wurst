@@ -1,0 +1,39 @@
+package ItemsMain
+
+import HashList
+import InitialItemDefinition
+import RegisterItemReciept
+import CompileItemDefinition
+
+import CommonItems
+import UniqueItems
+import UncommonItems
+import RareItems
+
+@compiletime function gen()
+	let toCompile = new HashList<HashList<InitialItemDefinition>>()
+		..add(commonItemsList)
+		..add(uniqueItemsList)
+		..add(uncommonItemsList)
+		..add(rareItemsList)
+
+	let itr = toCompile.iterator()
+	for list from itr
+		let listItr = list.iterator()
+		for itm from listItr
+			new CompileItemDefinition(itm)
+		listItr.close()
+	itr.close()
+
+init
+	let toRegister = new HashList<HashList<InitialItemDefinition>>()
+	..add(uncommonItemsList)
+	..add(rareItemsList)
+
+	let itr = toRegister.iterator()
+	for list from itr
+		let listItr = list.iterator()
+		for itm from listItr
+			new RegisterItemReciept(itm)
+		listItr.close()
+	itr.close()

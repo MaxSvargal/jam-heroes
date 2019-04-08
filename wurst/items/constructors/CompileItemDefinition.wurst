@@ -1,0 +1,28 @@
+package CompileItemDefinition
+
+import ItemObjEditing
+import InitialItemDefinition
+
+public class CompileItemDefinition extends ItemDefinition
+	construct(InitialItemDefinition itemDef)
+		super(itemDef.id, 'rst1')
+		setStockMaximum(2)
+		setStockReplenishInterval(30)
+		setName(itemDef.name)
+		setTooltipBasic(itemDef.tooltipBasic)
+		setTooltipExtended(itemDef.getTooltipExtended())
+		setDescription(itemDef.description)
+		setAbilities(itemDef.getAbilitiesList())
+		setGoldCost(itemDef.getGoldCost())
+		setLumberCost(itemDef.getLumberCost())
+		setInterfaceIcon(itemDef.iconPath)
+
+		if itemDef.recieptIsset
+			new ItemDefinition(itemDef.recieptId, 'rst1')
+				..setGoldCost(itemDef.recieptGoldCost)
+				..setLumberCost(itemDef.recieptLumberCost)
+				..setCanBeSoldByMerchants(itemDef.recieptRequired)
+				..setInterfaceIcon(itemDef.recieptIcon)
+				..setName(itemDef.recieptName)
+				..setTooltipBasic(itemDef.recieptName) // TODO: Add "Buy"?
+				..setTooltipExtended(itemDef.getRecieptTooltipExtended())

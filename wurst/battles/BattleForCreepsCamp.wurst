@@ -5,6 +5,10 @@ import BattleArea
 import CreepCamp
 import CreepsGroup
 import MapState
+import PlayerInstance
+import DropTables
+import DropTable
+import GuardUnitsRelations
 
 public class BattleForCreepsCamp extends Battle
 	CreepCamp creepCamp = null
@@ -14,8 +18,27 @@ public class BattleForCreepsCamp extends Battle
 		this.creepCamp = creepCamp
 		creepCamp.setCurrentBattle(this)
 
-	override function creepsDefeat(player p)
+	override function creepsDefeat(PlayerInstance p)
 		if creepCamp.getCreepsGroup().unitOnMap != null
 			creepCamp.getCreepsGroup().unitOnMap.remove()
 		creepCamp.setCurrentBattle(null)
 		mapState.addCreepCampToRestoreQueue(creepCamp)
+		dropRewardItems(p.castleHeroPoint, p.heroOnMap.getPos())
+
+	function dropRewardItems(vec2 castlePos, vec2 onMapPos)
+		let lvl = mapState.getIncreasedLevel().toInt()
+		let dtg = new DropTableGenerator(lvl)
+		dtg.getDropTable().dropRandomItemAtPos(castlePos)
+		destroy dtg
+
+		let warlordId = creepCamp.getCreepsGroup().warlordId
+		if unitIdToGuardRelations.has(warlordId)
+			let guardItemId = unitIdToGuardRelations.get(warlordId)
+			let dtgg = new DropTable()
+				..addDropNothing()
+				..addDropNothing()
+				..addDropItem(guardItemId)
+				..dropRandomItemAtPos(onMapPos)
+			destroy dtgg
+				
+

@@ -1,5 +1,0 @@
-package RareDropTable
-
-import DropTable
-
-public constant rareDropTable = new DropTable()

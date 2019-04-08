@@ -1,0 +1,37 @@
+package RegisterItemReciept
+
+import InitialItemDefinition
+import ClosureEvents
+
+public class RegisterItemReciept
+	InitialItemDefinition def
+
+	construct(InitialItemDefinition itemDef)
+		this.def = itemDef
+		// TODO: Make single listener and check in HashList?
+		// TODO: if reciept required add it to check!
+		EventListener.add(EVENT_PLAYER_UNIT_PICKUP_ITEM) ->
+			let u = GetTriggerUnit()
+			if checkItemsIsset(u)
+				if not itemDef.recieptIsset
+					complete(u)
+				else 
+					if u.hasItemById(itemDef.getRecieptId())
+						complete(u)
+
+	function checkItemsIsset(unit u) returns boolean
+		int requiresConfirmed = def.requiredItems.size()
+		let iterator = def.requiredItems.iterator()
+		for itmDef from iterator
+			if u.hasItemById(itmDef.getId())
+				requiresConfirmed--
+		iterator.close()
+		return requiresConfirmed == 0
+
+	function complete(unit u)
+		let iterator = def.requiredItems.iterator()
+		for itmDef from iterator
+			let itm = u.getItemById(itmDef.getId())
+			itm.remove()
+		u.addItemById(def.getId())
+		iterator.close()

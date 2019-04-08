@@ -1,0 +1,21 @@
+package UniqueItems
+
+import ObjectIdGenerator
+import HashList
+
+import InitialItemDefinition
+import DropTable
+
+public constant scatteringOfMagicGems = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+	..setName("Scattering of Magic Gems")
+	..setIcon("")
+	..setType(ItemType.UNIQUE)
+	..setMaxManaGained(300)
+  ..setManaRegenerationBonus(2)
+  ..setCost(2000, 1)
+
+public constant uniqueItemsList = new HashList<InitialItemDefinition>()
+	..add(scatteringOfMagicGems)
+
+public constant uniqueDropTable = new DropTable()
+	..getFromList(uniqueItemsList)

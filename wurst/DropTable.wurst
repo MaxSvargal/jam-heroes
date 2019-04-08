@@ -4,6 +4,7 @@ import HashList
 import LinkedList
 import StringUtils
 import ObjectIds
+import InitialItemDefinition
 
 public class DropTable
 	HashList<int> items = new HashList<int>()
@@ -13,6 +14,16 @@ public class DropTable
 
 	function addDropNothing()
 		items.add(0)
+
+	function getFromList(HashList<InitialItemDefinition> list)
+		let itr = list.iterator()
+		for itm from itr
+			addDropItem(itm.getId())
+
+	function getRecieptsFromList(HashList<InitialItemDefinition> list)
+		let itr = list.iterator()
+		for itm from itr
+			addDropItem(itm.getRecieptId())
 
 	function getRandomItem() returns int
 		let i = GetRandomInt(0, items.size() - 1)

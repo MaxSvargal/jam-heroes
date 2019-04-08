@@ -4,7 +4,6 @@ import OrderIds
 import BattleArea
 import Players
 import BattleGroup
-import DropTables
 import HashSet
 import PlayerInstance
 import MapState
@@ -22,12 +21,6 @@ public class Battle
 			.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
 			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
 
-	function dropRandomItemAtPos(vec2 pos) returns item // TODO: Move to other class
-		return new DropTableGenerator()
-			// ..addGuardToDrop(creepsGroup.warlordId)
-			.getDropTable()
-			.dropRandomItemAtPos(pos)
-
 	function enterPlayerIntoBattle(player p)
 		let playerInstance = playersInstances.get(p.getId())
 		if playerInstance != null
@@ -39,8 +32,8 @@ public class Battle
 	function exitPlayerFromBattle(PlayerInstance p)
 		playersInBattle.remove(p)
 
-	function creepsDefeat(player _p)
-		//
+	function creepsDefeat(PlayerInstance _p)
+		// Implemented in child classes
 
 	ondestroy
 		// TODO: add points to player?

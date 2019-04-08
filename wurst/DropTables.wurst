@@ -1,43 +1,51 @@
 package DropTables
 
 import DropTable
-import MapState
 
-import CommonDropTable
-import UncommonDropTable
-import RareDropTable
-import EpicDropTable
-import UniqueDropTable
-import GuardUnitsRelations
+import CommonItems
+import UncommonItems
+import RareItems
+import UniqueItems
+import EpicItems
 
 public class DropTableGenerator
-	constant lvl = mapState.getIncreasedLevel().toInt()
+	int lvl
 	DropTable dropTable
 
-	construct()
+	construct(int lvl)
+		this.lvl = lvl
 		dropTable = new DropTable()
-		for i = 0 to 22 - lvl
-			dropTable.addDropNothing()
-		for i = 0 to lvl
-			dropTable.addDropItem(commonDropTable.getRandomItem())
+
+		if lvl <= 22
+			for i = 0 to 22
+				dropTable.addDropItem(commonDropTable.getRandomItem())
+		else
+			for i = 0 to lvl - 22
+				dropTable.addDropItem(commonDropTable.getRandomItem())
+
 		if lvl > 10
 			for i = 0 to lvl - 10
 				dropTable.addDropItem(uncommonDropTable.getRandomItem())
-		if lvl >= 20
-			dropTable.addDropItem(uniqueDropTable.getRandomItem())
-		if lvl >= 40
-			dropTable.addDropItem(rareDropTable.getRandomItem())
-		if lvl >= 50
-			dropTable.addDropItem(epicDropTable.getRandomItem())
+		if lvl > 20
+			for i = 0 to lvl - 20
+				dropTable.addDropItem(uniqueDropTable.getRandomItem())
+		if lvl > 40
+			for i = 0 to lvl - 40
+				dropTable.addDropItem(rareDropTable.getRandomItem())
+		if lvl > 50
+			for i = 0 to lvl - 50
+				dropTable.addDropItem(epicDropTable.getRandomItem())
+
+		for i = 0 to (dropTable.items.size() * .5).toInt()
+			dropTable.addDropNothing()
 
 	function getDropTable() returns DropTable
 		return dropTable
 
-	function addGuardToDrop(int unitId)
-		if unitIdToGuardRelations.has(unitId)
-			let guardItemId = unitIdToGuardRelations.get(unitId)
-			for i = 0 to 2 + (lvl / 3).toInt()
-				dropTable.addDropItem(guardItemId)
-
 	ondestroy
 		destroy dropTable
+
+@Test function testDropTable()
+	for i = 0 to 100
+		let dt = new DropTableGenerator(40).getDropTable().getRandomItem()
+		print(dt)

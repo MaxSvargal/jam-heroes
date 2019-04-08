@@ -12,6 +12,7 @@ public class ItemGuardDefinition extends ItemDefinition
 	construct(int newId)
 		super(newId, 'rst1') // TODO: replace to tiny tower
 		setDescription("You can hire this unit for using it in your group or for defend your buildings.")
+		super.setAbilities("")
 
 	function addProp(string name, string val)
 		props.put(name, val)
@@ -41,7 +42,7 @@ public class ItemGuardDefinition extends ItemDefinition
 		let iterator = props.iterator()
 		for prop from iterator
 			if props.get(prop) != "0"
-				tooltip += props.get(prop) + COLOR_GOLD.toColorString() + prop + "|r\n"
+				tooltip += prop + ": " + COLOR_GOLD.toColorString() + props.get(prop) + "|r\n"
 		return tooltip
 
 	override function setLevel(int lvl)

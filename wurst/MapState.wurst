@@ -6,7 +6,7 @@ import initlater CreepCamp
 
 class MapState
   int difficalityLevel = 1
-  real increasedLevel = -2.
+  real increasedLevel = -1.
   constant creepCampsToRestore = new HashSet<CreepCamp>()
 
   function getDifficalityLevel() returns int
