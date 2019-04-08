@@ -4,25 +4,31 @@ import HashMap
 import LinkedList
 
 import Crabs
+import Makrura
 import Murlocs
 import SeaElementals
 
 let creepRegularList = new IterableMap<int, int>()
 	..put(CRAB_CRAWLER_ID, 1)
 	..put(CRAB_LIMBRIPPER_ID, 2)
-	..put(MURLOC_ID, 3)
-	..put(MURLOC_WARRIOR_ID, 4)
-	..put(REEF_ELEMENTAL_ID, 5)
-	..put(SEA_ELEMENTAL_ID, 6)
+	..put(MAKRURA_PRAWN_ID, 3)
+	..put(MAKRURA_TIDECALLER_ID, 4)
+	..put(MAKRURA_DEEPSEER_ID, 5)
+	..put(MURLOC_ID, 6)
+	..put(MURLOC_WARRIOR_ID, 7)
+	..put(REEF_ELEMENTAL_ID, 8)
+	..put(SEA_ELEMENTAL_ID, 9)
 
 let creepWarlordsList = new IterableMap<int, int>()
 	..put(CRAB_BEHEMOTH_ID, 3)
-	..put(MURLOC_MUTANT_ID, 5)
-	..put(BLACKWATER_ELEMENTAL_ID, 7)
+	..put(MAKRURA_TIDAL_LORD_ID, 6)
+	..put(MURLOC_MUTANT_ID, 8)
+	..put(BLACKWATER_ELEMENTAL_ID, 10)
 
 // Only warlords here
 public let creepsBattleOnMapRelations = new IterableMap<int, int>()
 	..put(CRAB_BEHEMOTH_ID, CRAB_BEHEMOTH_ID_ONMAP)
+	..put(MAKRURA_TIDAL_LORD_ID, MAKRURA_TIDAL_LORD_ID_ONMAP)
 	..put(MURLOC_MUTANT_ID, MURLOC_MUTANT_ID_ONMAP)
 	..put(BLACKWATER_ELEMENTAL_ID, BLACKWATER_ELEMENTAL_ID_ONMAP)
 
