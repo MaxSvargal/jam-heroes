@@ -12,8 +12,8 @@ public constant ANTONIDAS_ONMAP_ID = compiletime(UNIT_ID_GEN.next())
 
 @compiletime function gen()
 	new HeroBaseDefinition(UnitIds.antonidus, ANTONIDAS_ID, ANTONIDAS_ONMAP_ID)
-		..setAttack(25, 2, 10, 1.2) // 36 DPS
-		..setDefence(ArmorType.Hero, 150, 3, 2)
+		..setAttack(25, 2, 10, 1.2) // 30 DPS
+		..setDefence(ArmorType.Hero, 150, 2, 2)
 		..setModelFile(Units.heroArchMage) // TODO: make a spell that uses HeroArchMageGhost
 		..setStats(14, 17, 19, 1, 1.5, 3)
 

@@ -22,17 +22,17 @@ constant levels = [ 6, 7, 8 ]
 	new CreepDefinition(MURLOC_ID, UnitIds.murlocflesheater, levels[0])
 		..setAttack(AttackType.Normal, 42, 3, 15, 1.3) // 50 DPS
 		..setDefence(ArmorType.Small, 600, 1, 1)
-		..setGoldBounty(1, 1, 2)
+		..setGoldBounty(5, 1, 3)
 
 	new CreepDefinition(MURLOC_WARRIOR_ID, UnitIds.murlochuntsman, levels[1])
 		..setAttack(AttackType.Normal, 66, 3, 15, 1.2) // 75 DPS
 		..setDefence(ArmorType.Medium, 900, 2, 1)
-		..setGoldBounty(1, 1, 3)
+		..setGoldBounty(6, 1, 3)
 
 	new CreepDefinition(MURLOC_MUTANT_ID, UnitIds.murlocmutant, levels[2])
 		..setAttack(AttackType.Hero, 135, 3, 20, 1.1) // 150 DPS
 		..setDefence(ArmorType.Hero, 1800, 3, 2)
-		..setGoldBounty(4, 1, 4)
+		..setGoldBounty(27, 3, 4)
 
 	 new ItemGuardDefinition(MURLOC_MUTANT_ID_ITEM)
 		..setName("Murloc Mutant")

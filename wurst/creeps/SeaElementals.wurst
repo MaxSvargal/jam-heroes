@@ -22,17 +22,17 @@ constant levels = [ 8, 9, 10 ]
 	new CreepDefinition(REEF_ELEMENTAL_ID, UnitIds.reefelemental, levels[0])
 		..setAttack(AttackType.Normal, 101, 3, 20, 1.2) // 110 DPS
 		..setDefence(ArmorType.Small, 1350, 2, 1)
-		..setGoldBounty(2, 1, 2)
+		..setGoldBounty(7, 1, 3)
 
 	new CreepDefinition(SEA_ELEMENTAL_ID, UnitIds.seaelemental, levels[1])
 		..setAttack(AttackType.Normal, 151, 3, 20, 1.1) // 165 DPS
 		..setDefence(ArmorType.Medium, 2000, 3, 1)
-		..setGoldBounty(2, 1, 3)
+		..setGoldBounty(8, 1, 3)
 
 	new CreepDefinition(BLACKWATER_ELEMENTAL_ID, UnitIds.seaelemental, levels[2])
 		..setAttack(AttackType.Hero, 188, 4, 10, .9) // 300 DPS
 		..setDefence(ArmorType.Hero, 4000, 4, 2)
-		..setGoldBounty(5, 2, 4)
+		..setGoldBounty(37, 3, 4)
 		..setColor(32, 12, 0)
 
 	new ItemGuardDefinition(BLACKWATER_ELEMENTAL_ID_ITEM)

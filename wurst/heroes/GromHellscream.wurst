@@ -12,7 +12,7 @@ public constant GROM_HELLSCREAM_ONMAP_ID = compiletime(UNIT_ID_GEN.next())
 
 @compiletime function gen()
 	new HeroBaseDefinition(UnitIds.gromhellscream, GROM_HELLSCREAM_ID, GROM_HELLSCREAM_ONMAP_ID)
-		..setAttack(25, 2, 10, 1.2) // 36 DPS
+		..setAttack(27, 2, 16, 1.2) // 36 DPS
 		..setDefence(ArmorType.Hero, 200, 3, 2)
 		..setModelFile(Units.hellscream1)
 		..setStats(23, 19, 16, 2, 1.75, 2)
