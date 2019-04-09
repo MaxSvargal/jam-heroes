@@ -1,7 +1,7 @@
 package CreepsGroup
 
 import LinkedList
-import CreepsLists
+import Creeps
 import MapState
 import CreepAbilities
 import BattleGroup
@@ -15,8 +15,8 @@ public class CreepsGroup implements BattleGroup
 	unit unitOnMap
 
 	construct(int lvl)
-		warlordId = getRandomWarlordIdOfLevel(lvl)
-		let creepId = getRandomRegularIdOfLevel(lvl)
+		warlordId = creeps.getRandomWarlordIdOfLevel(lvl)
+		let creepId = creeps.getRandomRegularIdOfLevel(lvl)
 		for i = 0 to GetRandomInt(2, 8)
 			unitIds.add(creepId)
 
@@ -34,7 +34,7 @@ public class CreepsGroup implements BattleGroup
 		return units
 
 	function createWarlordOnMapAtPos(vec2 pos) returns unit
-		let unitOnMapId = creepsBattleOnMapRelations.get(warlordId)
+		let unitOnMapId = creeps.warlordsToMapList.get(warlordId)
 		unitOnMap = createUnit(p, unitOnMapId, pos, angle(200))
 		return unitOnMap
 

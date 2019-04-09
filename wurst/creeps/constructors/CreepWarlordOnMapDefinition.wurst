@@ -1,0 +1,20 @@
+package CreepWarlordOnMapDefinition
+
+import AbilityObjEditing
+
+import CreepUnitBaseDefinition
+import CreepWarlordDefinition
+
+public class CreepWarlordOnMapDefinition extends CreepUnitBaseDefinition
+	construct(CreepWarlordDefinition creep)
+		super(creep.onMapUnitId, creep.baseId)
+		super.initByDefinition(creep)
+
+		setSpeedBase(60)
+		setScalingValue(.7 + (creep.level * .01))
+		setAttacksEnabled(1)
+		setAttack1Range(100)
+		setAttack1TargetsAllowed(TargetsAllowed.organic)
+		setAcquisitionRange(250)
+		setSightRadiusNight(200)
+		setSightRadiusDay(300)

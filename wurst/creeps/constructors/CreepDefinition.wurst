@@ -1,42 +1,73 @@
 package CreepDefinition
 
 import AbilityObjEditing
-import ObjectIds
 
-import CreepDamageUpgrade
-import CreepDefenceUpgrade
-import CreepHPUpgrade
+public class CreepDefinition
+	int id
+	int baseId
+	int level
+	string name
+	AttackType attackType
+	int damageBase
+	int numberofDice
+	int sidesperDie
+	real cooldownTime
+	ArmorType armorType
+	int hitPoints
+	int defenceBase
+	int upgradeBonus
+	int goldBountyBase
+	int goldBountyNumberOfDice
+	int goldBountySideperDie
+	int speedBase
+	int speedMin
+	int speedMax
+	int tintingColorRed
+	int tintingColorGreen
+	int tintingColorBlue
 
-public class CreepDefinition extends UnitDefinition
-	construct(int newId, int origId, int level)
-		super(newId, origId)
-		setUpgradesUsed(commaList(CREEP_DAMAGE_UPGRADE_ID, CREEP_DEFENCE_UPGRADE_ID, CREEP_HP_UPGRADE_ID))
-		setLevel(level)
+	construct(int newId)
+		id = newId
+
+	function setLevel(int lvl)
+		level = lvl
+
+	function setBaseUnitId(int id)
+		baseId = id
 
 	function setAttack(AttackType attackType, int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
-		setAttack1AttackType(attackType)
-		setAttack1DamageBase(damageBase)
-		setAttack1DamageNumberofDice(numberofDice)
-		setAttack1DamageSidesperDie(sidesperDie)
-		setAttack1CooldownTime(cooldownTime)
+		this.attackType = attackType
+		this.damageBase = damageBase
+		this.numberofDice = numberofDice
+		this.sidesperDie = sidesperDie
+		this.cooldownTime = cooldownTime
 	
 	function setDefence(ArmorType armorType, int hitPoints, int defenceBase, int upgradeBonus)
-		setArmorType(armorType)
-		setHitPointsMaximumBase(hitPoints)
-		setDefenseBase(defenceBase)
-		setDefenseUpgradeBonus(upgradeBonus) // Required for defence upgrades
+		this.armorType = armorType
+		this.hitPoints = hitPoints
+		this.defenceBase = defenceBase
+		this.upgradeBonus = upgradeBonus
 
 	function setGoldBounty(int base, int numberOfDice, int sideperDie)
-		setGoldBountyAwardedBase(base)
-		setGoldBountyAwardedNumberofDice(numberOfDice)
-		setGoldBountyAwardedSidesperDie(sideperDie)
+		this.goldBountyBase = base
+		this.goldBountyNumberOfDice = numberOfDice
+		this.goldBountySideperDie = sideperDie
 
 	function setWalkSpeed(int base, int min, int max)
-		setSpeedBase(base)
-		setSpeedMinimum(min)
-		setSpeedMaximum(max)
+		this.speedBase = base
+		this.speedMin = min
+		this.speedMax = max
 
 	function setColor(int red, int green, int blue)
-		setTintingColorRed(red)
-		setTintingColorGreen(green)
-		setTintingColorBlue(blue)
+		this.tintingColorRed = red
+		this.tintingColorGreen = green
+		this.tintingColorBlue = blue
+
+	function setName(string name)
+		this.name = name
+
+	function getId() returns int
+		return id
+
+	function getLevel() returns int
+		return level

@@ -22,10 +22,6 @@ import RecoveryDebuff
 import MoveToCastle
 import initlater TheEscape
 
-import SeaElementals
-import Murlocs
-import Treasure
-
 public class PlayerInstance
 	protected constant player p
 	group groupInBattle
@@ -110,8 +106,6 @@ public class PlayerInstance
 		let forMapHero = heroesOnMapAndInBattleRelations.get(hero.getTypeId())
 		heroOnMap = createUnit(p, forMapHero, pos, angle(220))
 		// TODO: DEV
-		createItem(BLACKWATER_ELEMENTAL_ID_ITEM, pos)
-		createItem(MURLOC_MUTANT_ID_ITEM, pos)
 		// createItem(TREASURE_ID, pos)
 		// createDestructable('B000', pos.polarOffset(angle(90), 100), angle(GetRandomDirectionDeg()), 1.1, 0)
 		// createDestructable('B000', pos.polarOffset(angle(270), 100), angle(GetRandomDirectionDeg()), 1.1, 0)

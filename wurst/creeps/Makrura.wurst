@@ -1,55 +1,50 @@
 package Makrura
 
+import HashList
 import UnitIds
 import ObjectIdGenerator
 import UnitObjEditing
 import Icons
 
 import CreepDefinition
-import CreepOnMapDefinition
-import ItemGuardDefinition
-import GuardUnitsRelations
+import CreepWarlordDefinition
 
-public constant MAKRURA_PRAWN_ID = compiletime(UNIT_ID_GEN.next())
-public constant MAKRURA_TIDECALLER_ID = compiletime(UNIT_ID_GEN.next())
-public constant MAKRURA_DEEPSEER_ID = compiletime(UNIT_ID_GEN.next())
-public constant MAKRURA_TIDAL_LORD_ID = compiletime(UNIT_ID_GEN.next())
-public constant MAKRURA_TIDAL_LORD_ID_ONMAP = compiletime(UNIT_ID_GEN.next())
-public constant MAKRURA_TIDAL_LORD_ID_ITEM = compiletime(ITEM_ID_GEN.next())
+public constant makruraPrawn = new CreepDefinition(compiletime(UNIT_ID_GEN.next()))
+  ..setBaseUnitId(UnitIds.lobstrokkprawn)
+  ..setLevel(3)
+  ..setAttack(AttackType.Normal, 13, 2, 6, 1.3) // 15 DPS
+  ..setDefence(ArmorType.Small, 180, 1, 1)
+  ..setGoldBounty(2, 1, 2)
 
-constant levels = [ 3, 4, 5, 6 ]
+public constant makruraTidecaller = new CreepDefinition(compiletime(UNIT_ID_GEN.next()))
+  ..setBaseUnitId(UnitIds.lobstrokktidecaller)
+  ..setLevel(4)
+  ..setAttack(AttackType.Normal, 16, 2, 10, 1.2) // 22 DPS
+  ..setDefence(ArmorType.Medium, 270, 2, 1)
+  ..setGoldBounty(3, 1, 2)
 
-@compiletime function gen()
-  new CreepDefinition(MAKRURA_PRAWN_ID, UnitIds.lobstrokkprawn, levels[0])
-    ..setAttack(AttackType.Normal, 13, 2, 6, 1.3) // 15 DPS
-    ..setDefence(ArmorType.Small, 180, 1, 1)
-    ..setGoldBounty(2, 1, 2)
+public constant makruraDeepseer = new CreepDefinition(compiletime(UNIT_ID_GEN.next()))
+  ..setBaseUnitId(UnitIds.lobstrokkdeepseer)
+  ..setLevel(5)
+  ..setAttack(AttackType.Hero, 21, 3, 10, 1.1) // 33 DPS
+  ..setDefence(ArmorType.Hero, 400, 3, 1)
+  ..setGoldBounty(4, 1, 2)
 
-  new CreepDefinition(MAKRURA_TIDECALLER_ID, UnitIds.lobstrokktidecaller, levels[1])
-    ..setAttack(AttackType.Normal, 16, 2, 10, 1.2) // 22 DPS
-    ..setDefence(ArmorType.Medium, 270, 2, 1)
-    ..setGoldBounty(3, 1, 2)
+public constant makruraTidalLord = new CreepWarlordDefinition(compiletime(UNIT_ID_GEN.next()))
+  ..setOnMapUnitId(compiletime(UNIT_ID_GEN.next()))
+  ..setGuardItemId(compiletime(ITEM_ID_GEN.next()))
+  ..setBaseUnitId(UnitIds.lobstrokktidallord)
+  ..setLevel(6)
+  ..setName("Makura Tidal Lord")
+  ..setIcon(Icons.bTNLobstrokkBlue)
+  ..setAttack(AttackType.Hero, 21, 3, 10, 1.1)
+  ..setDefence(ArmorType.Hero, 800, 4, 2)
+  ..setGoldBounty(17, 3, 4) // 20-29
 
-  new CreepDefinition(MAKRURA_DEEPSEER_ID, UnitIds.lobstrokkdeepseer, levels[2])
-    ..setAttack(AttackType.Hero, 21, 3, 10, 1.1) // 33 DPS
-    ..setDefence(ArmorType.Hero, 400, 3, 1)
-    ..setGoldBounty(4, 1, 2)
+public constant makruraCreepsToCompile = new HashList<CreepDefinition>()
+  ..add(makruraPrawn)
+  ..add(makruraTidecaller)
+  ..add(makruraDeepseer)
 
-  new CreepDefinition(MAKRURA_TIDAL_LORD_ID, UnitIds.lobstrokktidallord, levels[3])
-    ..setAttack(AttackType.Hero, 42, 3, 16, 1.1) // 60 DPS
-    ..setDefence(ArmorType.Hero, 800, 4, 2)
-    ..setGoldBounty(17, 3, 4) // 20-29
-
-  new ItemGuardDefinition(MAKRURA_TIDAL_LORD_ID_ITEM)
-    ..setName("Makura Tidal Lord")
-    ..setIcon(Icons.bTNLobstrokkBlue)
-    ..setLevel(levels[3])
-    ..setAttack(AttackType.Hero, 21, 3, 10, 1.1)
-    ..setDefence(ArmorType.Hero, 800, 4, 2)
-    ..updateTooltip()
-
-  new CreepOnMapDefinition(MAKRURA_TIDAL_LORD_ID_ONMAP, UnitIds.lobstrokktidallord, levels[3])
-
-init
-  unitIdToGuardRelations.put(MAKRURA_TIDAL_LORD_ID, MAKRURA_TIDAL_LORD_ID_ITEM)
-  itemIdToGuardUnitRelations.put(MAKRURA_TIDAL_LORD_ID_ITEM, MAKRURA_TIDAL_LORD_ID)
+public constant makruraWarlordsToCompile = new HashList<CreepWarlordDefinition>()
+  ..add(makruraTidalLord)

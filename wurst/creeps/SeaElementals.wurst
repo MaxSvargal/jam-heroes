@@ -1,50 +1,43 @@
 package SeaElementals
 
+import HashList
 import UnitIds
 import ObjectIdGenerator
 import UnitObjEditing
 import Icons
 
-import CreepOnMapDefinition
 import CreepDefinition
-import ItemGuardDefinition
-import GuardUnitsRelations
+import CreepWarlordDefinition
 
-public constant REEF_ELEMENTAL_ID = compiletime(UNIT_ID_GEN.next())
-public constant SEA_ELEMENTAL_ID = compiletime(UNIT_ID_GEN.next())
-public constant BLACKWATER_ELEMENTAL_ID = compiletime(UNIT_ID_GEN.next())
-public constant BLACKWATER_ELEMENTAL_ID_ONMAP = compiletime(UNIT_ID_GEN.next())
-public constant BLACKWATER_ELEMENTAL_ID_ITEM = compiletime(ITEM_ID_GEN.next())
+public constant reefElemental = new CreepDefinition(compiletime(UNIT_ID_GEN.next()))
+	..setBaseUnitId(UnitIds.reefelemental)
+	..setLevel(8)
+	..setAttack(AttackType.Normal, 101, 3, 20, 1.2) // 110 DPS
+	..setDefence(ArmorType.Small, 1350, 2, 1)
+	..setGoldBounty(7, 1, 3)
 
-constant levels = [ 8, 9, 10 ]
+public constant seaElemental = new CreepDefinition(compiletime(UNIT_ID_GEN.next()))
+	..setBaseUnitId(UnitIds.seaelemental)
+	..setLevel(9)
+	..setAttack(AttackType.Normal, 151, 3, 20, 1.1) // 165 DPS
+	..setDefence(ArmorType.Medium, 2000, 3, 1)
+	..setGoldBounty(8, 1, 3)
 
-@compiletime function gen()
-	new CreepDefinition(REEF_ELEMENTAL_ID, UnitIds.reefelemental, levels[0])
-		..setAttack(AttackType.Normal, 101, 3, 20, 1.2) // 110 DPS
-		..setDefence(ArmorType.Small, 1350, 2, 1)
-		..setGoldBounty(7, 1, 3)
+public constant blackwaterElemental = new CreepWarlordDefinition(compiletime(UNIT_ID_GEN.next()))
+	..setOnMapUnitId(compiletime(UNIT_ID_GEN.next()))
+	..setGuardItemId(compiletime(ITEM_ID_GEN.next()))
+	..setBaseUnitId(UnitIds.seaelemental)
+	..setLevel(10)
+	..setName("Murloc Mutant")
+	..setIcon(Icons.bTNMurlocMutant)
+	..setAttack(AttackType.Hero, 188, 4, 10, .9)
+	..setDefence(ArmorType.Hero, 4000, 4, 2)
+	..setGoldBounty(37, 3, 4) // 40-49
+	..setColor(32, 12, 0)
 
-	new CreepDefinition(SEA_ELEMENTAL_ID, UnitIds.seaelemental, levels[1])
-		..setAttack(AttackType.Normal, 151, 3, 20, 1.1) // 165 DPS
-		..setDefence(ArmorType.Medium, 2000, 3, 1)
-		..setGoldBounty(8, 1, 3)
+public constant seaElementalsCreepsToCompile = new HashList<CreepDefinition>()
+	..add(reefElemental)
+	..add(seaElemental)
 
-	new CreepDefinition(BLACKWATER_ELEMENTAL_ID, UnitIds.seaelemental, levels[2])
-		..setAttack(AttackType.Hero, 188, 4, 10, .9) // 300 DPS
-		..setDefence(ArmorType.Hero, 4000, 4, 2)
-		..setGoldBounty(37, 3, 4)
-		..setColor(32, 12, 0)
-
-	new ItemGuardDefinition(BLACKWATER_ELEMENTAL_ID_ITEM)
-		..setName("Blackwater Elemental")
-		..setIcon(Icons.bTNSeaElemental)
-		..setLevel(levels[2])
-		..setAttack(AttackType.Hero, 188, 4, 10, .9)
-		..setDefence(ArmorType.Hero, 4000, 4, 2)
-		..updateTooltip()
-
-	new CreepOnMapDefinition(BLACKWATER_ELEMENTAL_ID_ONMAP, UnitIds.seaelemental, levels[2])
-
-init
-	unitIdToGuardRelations.put(BLACKWATER_ELEMENTAL_ID, BLACKWATER_ELEMENTAL_ID_ITEM)
-	itemIdToGuardUnitRelations.put(BLACKWATER_ELEMENTAL_ID_ITEM, BLACKWATER_ELEMENTAL_ID)
+public constant seaElementalsWarlordsToCompile = new HashList<CreepWarlordDefinition>()
+	..add(blackwaterElemental)
