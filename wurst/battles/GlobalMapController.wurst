@@ -8,6 +8,7 @@ import ClosureEvents
 import CreepCamp
 import CreepsGroup
 import GuardsGroup
+import BossGroup
 import BattleForCreepsCamp
 import BattleForIncomeBuilding
 import BattleArea
@@ -36,6 +37,7 @@ public class GlobalMapController
 
 	construct()
 		createCreepCamps()
+		createBossesCamps()
 		listenForCreepCampAttack()
 		createIncomeGoldMineBuildings()
 		createIncomeCampsBuildings()
@@ -52,6 +54,15 @@ public class GlobalMapController
 			u.remove()
 			let creepCamp = new CreepCamp(pos)
 			createGroupForCamp(creepCamp)
+		g.destr()
+
+	function createBossesCamps()
+		let g = GetUnitsOfTypeIdAll(UnitIds.lavaspawn2)
+		for u in g
+			let pos = u.getPos()
+			u.remove()
+			let creepCamp = new CreepCamp(pos)
+			createBossGroupForCamp(creepCamp)
 		g.destr()
 
 	function createIncomeGoldMineBuildings()
@@ -162,6 +173,14 @@ public class GlobalMapController
 	private function createGroupForCamp(CreepCamp creepCamp)
 		let creepsGroup = createGroupForEntity(creepCamp)
 		let unitOnMap = creepsGroup.createWarlordOnMapAtPos(creepCamp.getPos())
+		creepCamps.put(unitOnMap, creepCamp)
+
+	private function createBossGroupForCamp(CreepCamp creepCamp)
+		let pos = creepCamp.getPos()
+		let lvl = getCampLevel(pos)
+		let bossGroup = new BossGroup(lvl)
+		creepCamp.setCreepsGroup(bossGroup)
+		let unitOnMap = bossGroup.createWarlordOnMapAtPos(creepCamp.getPos())
 		creepCamps.put(unitOnMap, creepCamp)
 
 	private function createGroupForIncomeBuilding(IncomeBuilding incomeBuilding)

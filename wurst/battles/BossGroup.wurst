@@ -1,0 +1,9 @@
+package BossGroup
+
+import Creeps
+import CreepsGroup
+
+public class BossGroup extends CreepsGroup
+  construct(int lvl)
+    super(lvl)
+    warlordId = creeps.getRandomBossIdOfLevel(lvl)

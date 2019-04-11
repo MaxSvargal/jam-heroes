@@ -16,6 +16,8 @@ import Makrura
 import Murlocs
 import SeaElementals
 
+import Bosses
+
 abstract class CallbackCreep
 	abstract function call(CreepDefinition c)
 
@@ -28,21 +30,28 @@ class Creeps
 		..add(makruraCreepsToCompile)
 		..add(murlocCreepsToCompile)
 		..add(seaElementalsCreepsToCompile)
+		//
+		..add(bossesCreepsToCompile)
 
 	constant warlordsLists = new HashList<HashList<CreepWarlordDefinition>>()
 		..add(crabsWarlordsToCompile)
 		..add(makruraWarlordsToCompile)
 		..add(murlocWarlordsToCompile)
 		..add(seaElementalsWarlordsToCompile)
+	
+	constant bossesLists = new HashList<HashList<CreepWarlordDefinition>>()
+		..add(bossesWarlordsToCompile)
 
 	constant creepToLevelList = new IterableMap<int, int>()
 	constant warlordsToLevelList = new IterableMap<int, int>()
 	constant warlordsToMapList = new IterableMap<int, int>()
+	constant bossesToLevelList = new IterableMap<int, int>()
 
 	construct()
 		fillCreepsList(creepsLists)
 		fillWarlordsList(warlordsLists)
 		fillWarlordsToOnMapUnitsRelations(warlordsLists)
+		fillBossesList(bossesLists)
 
 	private function fillCreepsList(HashList<HashList<CreepDefinition>> list)
 		iterateListOfList(list) c ->
@@ -51,6 +60,10 @@ class Creeps
 	private function fillWarlordsList(HashList<HashList<CreepWarlordDefinition>> list)
 		iterateListOfList(list) w ->
 			warlordsToLevelList.put(w.getId(), w.getLevel())
+
+	private function fillBossesList(HashList<HashList<CreepWarlordDefinition>> list)
+		iterateListOfList(list) w ->
+			bossesToLevelList.put(w.getId(), w.getLevel())
 
 	private function fillWarlordsToOnMapUnitsRelations(HashList<HashList<CreepWarlordDefinition>> list)
 		iterateListOfList(list) w ->
@@ -72,10 +85,13 @@ class Creeps
 			return list..shuffle().get(0)
 
 	function getRandomWarlordIdOfLevel(int level) returns int
-		return getRandomUnitOfLevel(warlordsToLevelList, level, 2, 5)
+		return getRandomUnitOfLevel(warlordsToLevelList, level, 2, 4)
 
 	function getRandomRegularIdOfLevel(int level) returns int
 		return getRandomUnitOfLevel(creepToLevelList, level, 0, 2)
+
+	function getRandomBossIdOfLevel(int level) returns int
+		return getRandomUnitOfLevel(bossesToLevelList, level, 0, 5)
 
 	function getOnMapUnitIdByBattleId(int id) returns int
 		return warlordsToMapList.get(id)
@@ -120,6 +136,15 @@ public constant creeps = new Creeps()
 			new CompileItemGuardDefinition(w)
 		itr.close()
 	warlordsItr.close()
+
+	let bossesItr = creeps.bossesLists.iterator()
+	for list from bossesItr
+		let itr = list.iterator()
+		for b from itr
+			new CreepUnitDefinition(b)
+			new CreepWarlordOnMapDefinition(b)
+		itr.close()
+	bossesItr.close()
 
 init
 	let warlordsItr = creeps.warlordsLists.iterator()
