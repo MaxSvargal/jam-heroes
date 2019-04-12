@@ -1,0 +1,32 @@
+package MagicArmorShop
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+import ObjectIds
+import Units
+
+import CommonItems
+import UncommonItems
+
+public constant MAGIC_ARMOR_SHOP_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new BuildingDefinition(MAGIC_ARMOR_SHOP_ID, UnitIds.goblinmerchant)
+		..setName("Magic Armor Shop")
+		..setModelFile(Units.acolyte1)
+		..setGroundTexture("")
+		..setNeutralBuildingShowsMinimapIcon(false)
+		..setItemsSold(commaList(
+			mageBracers.getId(),
+			mageCape.getId(),
+			magicCrown.getId(),
+			mantie.getId(),
+			misleadingCloak.getId(),
+
+			magicBoots.getRecieptId(),
+			magicCloak.getRecieptId(),
+			magicGloves.getRecieptId(),
+			magicMantie.getRecieptId()
+			// 2 more
+		))

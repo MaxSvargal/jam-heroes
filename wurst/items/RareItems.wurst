@@ -3,12 +3,12 @@ package RareItems
 import ObjectIdGenerator
 import HashList
 
-import InitialItemDefinition
+import BaseAbilityItemDefinition
 import DropTable
 
 import UncommonItems
 
-public constant greatAxeOfHero = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatAxeOfHero = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Great Axe of Hero")
 	..setIcon("BTNAxe002")
 	..setType(ItemType.RARE)
@@ -16,12 +16,12 @@ public constant greatAxeOfHero = new InitialItemDefinition(compiletime(ITEM_ID_G
 	..setStrengthBonus(20)
 	..setChancetoCriticalStrike(0.2, 2, 10)
 	..setRecieptIsset(compiletime(ITEM_ID_GEN.next()))
-	..setRecieptRequired(false)
+	..setRecieptRequired(true)
 	..addRequiredItem(greatAxe)
 	..addRequiredItem(platingBoots)
 	..addRequiredItem(ruinedShield)
 
-public constant greatArmorOfHero = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatArmorOfHero = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Great Armor of Hero")
 	..setIcon("")
 	..setType(ItemType.RARE)
@@ -29,12 +29,12 @@ public constant greatArmorOfHero = new InitialItemDefinition(compiletime(ITEM_ID
 	..setDefenceBonus(12)
 	..setHitPointsRegeneratedPerSecond(5)
 	..setRecieptIsset(compiletime(ITEM_ID_GEN.next()))
-	..setRecieptRequired(false)
+	..setRecieptRequired(true)
 	..addRequiredItem(greatAxe)
 	..addRequiredItem(mailPants)
 	..addRequiredItem(chainArmor)
 
-public constant greatMageRobe = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatMageRobe = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Great Mage Robe")
 	..setIcon("")
 	..setType(ItemType.RARE)
@@ -42,12 +42,12 @@ public constant greatMageRobe = new InitialItemDefinition(compiletime(ITEM_ID_GE
 	..setMaxManaGained(1000)
 	..setManaRegenerationBonus(5)
 	..setRecieptIsset(compiletime(ITEM_ID_GEN.next()))
-	..setRecieptRequired(false)
+	..setRecieptRequired(true)
 	..addRequiredItem(magicCloak)
 	..addRequiredItem(magicBoots)
 	..addRequiredItem(magicMantie)
 
-public constant greatMageStaff = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatMageStaff = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Great Mage Staff")
 	..setIcon("")
 	..setType(ItemType.RARE)
@@ -55,12 +55,12 @@ public constant greatMageStaff = new InitialItemDefinition(compiletime(ITEM_ID_G
 	..setAttackBonus(60)
 	..setChancetoCriticalStrike(0.2, 2, 10)
 	..setRecieptIsset(compiletime(ITEM_ID_GEN.next()))
-	..setRecieptRequired(false)
+	..setRecieptRequired(true)
 	..addRequiredItem(magicCloak)
 	..addRequiredItem(magicGloves)
 	..addRequiredItem(magicStaff)
 
-public constant greatAsassinArmor = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatAsassinArmor = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Great Asassin Armor")
 	..setIcon("")
 	..setType(ItemType.RARE)
@@ -68,12 +68,12 @@ public constant greatAsassinArmor = new InitialItemDefinition(compiletime(ITEM_I
 	..setChancetoEvade(.25)
 	..setMovementSpeedBonus(160)
 	..setRecieptIsset(compiletime(ITEM_ID_GEN.next()))
-	..setRecieptRequired(false)
+	..setRecieptRequired(true)
 	..addRequiredItem(mercenaryJacket)
 	..addRequiredItem(leatherPants)
 	..addRequiredItem(tightBelt)
 
-public constant greatAsassinDaggers = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatAsassinDaggers = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Great Asassin Daggers")
 	..setIcon("")
 	..setType(ItemType.RARE)
@@ -81,12 +81,12 @@ public constant greatAsassinDaggers = new InitialItemDefinition(compiletime(ITEM
 	..setAttackSpeedIncrease(0.2)
 	..setPoisonAttack(16, .8, .8)
 	..setRecieptIsset(compiletime(ITEM_ID_GEN.next()))
-	..setRecieptRequired(false)
+	..setRecieptRequired(true)
 	..addRequiredItem(boneDaggers)
 	..addRequiredItem(killersGloves)
 	..addRequiredItem(tightBelt)
 
-public constant rareItemsList = new HashList<InitialItemDefinition>()
+public constant rareItemsList = new HashList<BaseAbilityItemDefinition>()
 	..add(greatAxeOfHero)
 	..add(greatArmorOfHero)
 	..add(greatMageRobe)

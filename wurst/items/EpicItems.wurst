@@ -3,12 +3,12 @@ package EpicItems
 import ObjectIdGenerator
 import HashList
 
-import InitialItemDefinition
+import BaseAbilityItemDefinition
 import DropTable
 
 import RareItems
 
-public constant greatAxeOfHero = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatAxeOfHero = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Great Axe of Hero")
 	..setIcon("BTNAxe002")
 	..setType(ItemType.RARE)
@@ -21,7 +21,7 @@ public constant greatAxeOfHero = new InitialItemDefinition(compiletime(ITEM_ID_G
 	// ..addRequiredItem(platingBoots)
 	// ..addRequiredItem(ruinedShield)
 
-public constant epicItemsList = new HashList<InitialItemDefinition>()
+public constant epicItemsList = new HashList<BaseAbilityItemDefinition>()
 	..add(greatAxeOfHero)
 
 public constant epicDropTable = new DropTable()

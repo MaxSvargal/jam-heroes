@@ -1,7 +1,7 @@
 package ItemsMain
 
 import HashList
-import InitialItemDefinition
+import BaseAbilityItemDefinition
 import RegisterItemReciept
 import CompileItemDefinition
 
@@ -9,9 +9,11 @@ import CommonItems
 import UniqueItems
 import UncommonItems
 import RareItems
+import ChargedItems
 
 @compiletime function gen()
-	let toCompile = new HashList<HashList<InitialItemDefinition>>()
+	let toCompile = new HashList<HashList<BaseAbilityItemDefinition>>()
+		..add(chargedItemsList)
 		..add(commonItemsList)
 		..add(uniqueItemsList)
 		..add(uncommonItemsList)
@@ -26,7 +28,7 @@ import RareItems
 	itr.close()
 
 init
-	let toRegister = new HashList<HashList<InitialItemDefinition>>()
+	let toRegister = new HashList<HashList<BaseAbilityItemDefinition>>()
 	..add(uncommonItemsList)
 	..add(rareItemsList)
 

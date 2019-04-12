@@ -22,12 +22,12 @@ public class CreepDefinition
 	int goldBountyBase
 	int goldBountyNumberOfDice
 	int goldBountySideperDie
-	int speedBase
-	int speedMin
-	int speedMax
-	int tintingColorRed
-	int tintingColorGreen
-	int tintingColorBlue
+	int speedBase = 0
+	int speedMin = 0
+	int speedMax = 0
+	int tintingColorRed = 255
+	int tintingColorGreen = 255
+	int tintingColorBlue = 255
 	constant LinkedList<int> abilities = new LinkedList<int>()
 
 	construct(int newId)

@@ -1,0 +1,18 @@
+package RareRecieptsShop
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+import Units
+
+import RareItems
+
+public constant RARE_RECIEPTS_SHOP_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new BuildingDefinition(RARE_RECIEPTS_SHOP_ID, UnitIds.goblinmerchant)
+		..setName("Rare Reciepts Shop")
+		..setModelFile(Units.obsidianStatue1)
+		..setGroundTexture("")
+		..setNeutralBuildingShowsMinimapIcon(false)
+		..setItemsSold(rareRecieptsDropTable.asString())

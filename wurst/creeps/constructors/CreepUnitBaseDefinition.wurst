@@ -29,9 +29,10 @@ public class CreepUnitBaseDefinition extends UnitDefinition
 		setGoldBountyAwardedBase(creep.goldBountyBase)
 		setGoldBountyAwardedNumberofDice(creep.goldBountyNumberOfDice)
 		setGoldBountyAwardedSidesperDie(creep.goldBountySideperDie)
-		setSpeedBase(creep.speedBase)
-		setSpeedMinimum(creep.speedMin)
-		setSpeedMaximum(creep.speedMax)
 		setTintingColorRed(creep.tintingColorRed)
 		setTintingColorGreen(creep.tintingColorGreen)
 		setTintingColorBlue(creep.tintingColorBlue)
+		if creep.speedBase != 0
+			setSpeedBase(creep.speedBase)
+			setSpeedMinimum(creep.speedMin)
+			setSpeedMaximum(creep.speedMax)

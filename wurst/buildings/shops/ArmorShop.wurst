@@ -1,0 +1,31 @@
+package ArmorShop
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+import ObjectIds
+import Units
+
+import CommonItems
+
+public constant ARMOR_SHOP_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new BuildingDefinition(ARMOR_SHOP_ID, UnitIds.goblinmerchant)
+		..setName("Armor Shop")
+		..setModelFile(Units.mortarTeam1)
+		..setGroundTexture("")
+		..setNeutralBuildingShowsMinimapIcon(false)
+		..setItemsSold(commaList(
+			armor.getId(),
+			belt.getId(),
+			brigandine.getId(),
+			gloves.getId(),
+			highBoots.getId(),
+			hurryBoots.getId(),
+			luckyBracers.getId(),
+			pants.getId(),
+			rescueShirt.getId(),
+			ringOfHaste.getId(),
+			shoulder.getId()
+		))

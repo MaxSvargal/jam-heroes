@@ -1,0 +1,33 @@
+package WeaponShop
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+import ObjectIds
+import Units
+
+import CommonItems
+import UncommonItems
+
+public constant WEAPON_SHOP_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new BuildingDefinition(WEAPON_SHOP_ID, UnitIds.goblinmerchant)
+		..setName("Weapon Shop")
+		..setModelFile(Units.headhunter1)
+		..setGroundTexture("")
+		..setNeutralBuildingShowsMinimapIcon(false)
+		..setItemsSold(commaList(
+			axe.getId(),
+			breakerOfVenom.getId(),
+			dagger.getId(),
+			staff.getId(),
+			manaShield.getId(), // TODO: Magic armor?
+
+			greatAxe.getRecieptId(),
+			boneDaggers.getRecieptId(),
+			killersGloves.getRecieptId(),
+			magicStaff.getRecieptId(),
+			ruinedShield.getRecieptId()
+			// 1 more
+		))

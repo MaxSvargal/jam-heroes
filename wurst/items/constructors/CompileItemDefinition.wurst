@@ -1,10 +1,10 @@
 package CompileItemDefinition
 
 import ItemObjEditing
-import InitialItemDefinition
+import BaseAbilityItemDefinition
 
 public class CompileItemDefinition extends ItemDefinition
-	construct(InitialItemDefinition itemDef)
+	construct(BaseAbilityItemDefinition itemDef)
 		super(itemDef.id, 'rst1')
 		setStockMaximum(2)
 		setStockReplenishInterval(30)
@@ -16,6 +16,11 @@ public class CompileItemDefinition extends ItemDefinition
 		setGoldCost(itemDef.getGoldCost())
 		setLumberCost(itemDef.getLumberCost())
 		setInterfaceIcon(itemDef.iconPath)
+		setButtonPositionX(0)
+		setButtonPositionY(0)
+
+		if itemDef.numberofCharges > 0
+			setNumberofCharges(itemDef.numberofCharges)
 
 		if itemDef.recieptIsset
 			new ItemDefinition(itemDef.recieptId, 'rst1')
@@ -26,3 +31,5 @@ public class CompileItemDefinition extends ItemDefinition
 				..setName(itemDef.recieptName)
 				..setTooltipBasic(itemDef.recieptName) // TODO: Add "Buy"?
 				..setTooltipExtended(itemDef.getRecieptTooltipExtended())
+				..setButtonPositionX(0)
+				..setButtonPositionY(1)

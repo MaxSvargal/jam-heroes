@@ -4,7 +4,7 @@ import HashList
 import LinkedList
 import StringUtils
 import ObjectIds
-import InitialItemDefinition
+import BaseAbilityItemDefinition
 
 public class DropTable
 	HashList<int> items = new HashList<int>()
@@ -15,12 +15,12 @@ public class DropTable
 	function addDropNothing()
 		items.add(0)
 
-	function getFromList(HashList<InitialItemDefinition> list)
+	function getFromList(HashList<BaseAbilityItemDefinition> list)
 		let itr = list.iterator()
 		for itm from itr
 			addDropItem(itm.getId())
 
-	function getRecieptsFromList(HashList<InitialItemDefinition> list)
+	function getRecieptsFromList(HashList<BaseAbilityItemDefinition> list)
 		let itr = list.iterator()
 		for itm from itr
 			addDropItem(itm.getRecieptId())

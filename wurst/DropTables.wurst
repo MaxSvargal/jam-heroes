@@ -7,6 +7,7 @@ import UncommonItems
 import RareItems
 import UniqueItems
 import EpicItems
+import ChargedItems
 
 public class DropTableGenerator
 	int lvl
@@ -15,6 +16,9 @@ public class DropTableGenerator
 	construct(int lvl)
 		this.lvl = lvl
 		dropTable = new DropTable()
+
+		for i = 0 to lvl
+			dropTable.addDropItem(chargedDropTable.getRandomItem())
 
 		if lvl <= 22
 			for i = 0 to 22

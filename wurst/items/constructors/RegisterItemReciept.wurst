@@ -1,12 +1,12 @@
 package RegisterItemReciept
 
-import InitialItemDefinition
+import BaseAbilityItemDefinition
 import ClosureEvents
 
 public class RegisterItemReciept
-	InitialItemDefinition def
+	BaseAbilityItemDefinition def
 
-	construct(InitialItemDefinition itemDef)
+	construct(BaseAbilityItemDefinition itemDef)
 		this.def = itemDef
 		// TODO: Make single listener and check in HashList?
 		// TODO: if reciept required add it to check!

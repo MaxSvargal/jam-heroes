@@ -1,0 +1,68 @@
+package ChargedItems
+
+import ObjectIdGenerator
+import HashList
+
+import BaseAbilityItemDefinition
+import DropTable
+
+public constant healthPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+	..setName("Health Potion")
+	..setIcon("BTNredAApotionGS")
+	..setType(ItemType.COMMON)
+  ..setCost(50, 0)
+  ..setNumberOfCharges(3)
+  ..setLifeRegenerated(500)
+
+public constant greatHealthPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+	..setName("Great Health Positon")
+	..setIcon("BTNredEApotionGS")
+	..setType(ItemType.COMMON)
+  ..setCost(400, 0)
+  ..setNumberOfCharges(5)
+	..setLifeRegenerated(5000)
+
+public constant manaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+	..setName("Mana Potion")
+	..setIcon("BTNblueAApotionGS")
+	..setType(ItemType.COMMON)
+  ..setCost(60, 0)
+  ..setNumberOfCharges(3)
+	..setManaRegenerated(150)
+
+public constant greatManaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+	..setName("Great Mana Positon")
+	..setIcon("BTNblueEApotionGS")
+	..setType(ItemType.COMMON)
+  ..setCost(500, 0)
+  ..setNumberOfCharges(5)
+	..setManaRegenerated(1500)
+
+public constant universalPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+	..setName("Universal Potion")
+	..setIcon("BTNgreenAApotionGS")
+	..setType(ItemType.COMMON)
+  ..setCost(70, 0)
+  ..setNumberOfCharges(6)
+	..setLifeRegenerated(250)
+	..setManaRegenerated(75)
+
+public constant greatUniversalPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+	..setName("Great Universal Positon")
+	..setIcon("BTNpurpleEApotionGS")
+	..setType(ItemType.COMMON)
+	..setCost(600, 0)
+  ..setNumberOfCharges(10)
+	..setLifeRegenerated(2500)
+	..setManaRegenerated(750)
+
+public constant chargedItemsList = new HashList<BaseAbilityItemDefinition>()
+	..add(healthPotion)
+	..add(greatHealthPotion)
+	..add(manaPotion)
+	..add(greatManaPotion)
+	..add(universalPotion)
+	..add(greatUniversalPotion)
+
+public constant chargedDropTable = new DropTable()
+	..getFromList(chargedItemsList)

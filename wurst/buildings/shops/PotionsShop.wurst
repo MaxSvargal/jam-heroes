@@ -1,0 +1,18 @@
+package PotionsShop
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+import Units
+
+import ChargedItems
+
+public constant POTIONS_SHOP_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new BuildingDefinition(POTIONS_SHOP_ID, UnitIds.goblinmerchant)
+		..setName("Potions Shop")
+		..setModelFile(Units.priest1)
+		..setGroundTexture("")
+		..setNeutralBuildingShowsMinimapIcon(false)
+		..setItemsSold(chargedDropTable.asString())

@@ -3,10 +3,10 @@ package UniqueItems
 import ObjectIdGenerator
 import HashList
 
-import InitialItemDefinition
+import BaseAbilityItemDefinition
 import DropTable
 
-public constant scatteringOfMagicGems = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant scatteringOfMagicGems = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Scattering of Magic Gems")
 	..setIcon("")
 	..setType(ItemType.UNIQUE)
@@ -14,7 +14,7 @@ public constant scatteringOfMagicGems = new InitialItemDefinition(compiletime(IT
   ..setManaRegenerationBonus(2)
   ..setCost(2000, 1)
 
-public constant uniqueItemsList = new HashList<InitialItemDefinition>()
+public constant uniqueItemsList = new HashList<BaseAbilityItemDefinition>()
 	..add(scatteringOfMagicGems)
 
 public constant uniqueDropTable = new DropTable()

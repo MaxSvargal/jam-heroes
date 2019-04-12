@@ -1,0 +1,29 @@
+package ArmorRecieptsShop
+
+import UnitObjEditing
+import UnitIds
+import ObjectIdGenerator
+import ObjectIds
+import Units
+
+import UncommonItems
+
+public constant ARMOR_RECIEPTS_SHOP_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new BuildingDefinition(ARMOR_RECIEPTS_SHOP_ID, UnitIds.goblinmerchant)
+		..setName("Armor Reciepts Shop")
+		..setModelFile(Units.chaosWarlord1)
+		..setGroundTexture("")
+		..setNeutralBuildingShowsMinimapIcon(false)
+		..setItemsSold(commaList(
+			killersGloves.getRecieptId(),
+			leatherPants.getRecieptId(),
+			mailPants.getRecieptId(),
+			mercenaryJacket.getRecieptId(),
+			platingBoots.getRecieptId(),
+			chainArmor.getRecieptId(),
+			tightBelt.getRecieptId(),
+			ruinedShield.getRecieptId()
+			// 3 more
+		))

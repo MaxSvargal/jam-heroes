@@ -10,13 +10,18 @@ import BuildingToUnitRelations
 import HeroesList
 import PlayersSpawnPoints
 
-import CommonShop
-import RecieptsShop
 import Laboratory
 import Tavern
 import Selector
 import UnitBuildPlaceSmall
 import UnitBuildPlaceLarge
+
+import ArmorRecieptsShop
+import ArmorShop
+import MagicArmorShop
+import PotionsShop
+import RareRecieptsShop
+import WeaponShop
 
 import RecoveryDebuff
 import MoveToCastle
@@ -36,6 +41,8 @@ public class PlayerInstance
 		p = pl
 		initGroupBuildingPlaces()
 		createUnit(p, SELECTOR_ID, gg_rct_InitialPos.getCenter(), angle(200))
+		p.setCameraPosition(gg_rct_InitialPos.getCenter())
+
 		onGlobalMapPos = getRandomSpawnPoint()
 
 		EventListener.add(EVENT_PLAYER_UNIT_SELL) ->
@@ -72,9 +79,24 @@ public class PlayerInstance
 		// 180deg is left
 		// 270deg is bottom
 		// <- x ^ y
-		createUnit(p, COMMON_SHOP_ID, vec2(castleRect.getMaxX(), castleRect.getMaxY()).moveTowards(castleRect.getCenter(), 300), angle(225))
-		createUnit(p, RECIEPTS_SHOP_ID, vec2(castleRect.getMaxX(), castleRect.getMinY()).moveTowards(castleRect.getCenter(), 300), angle(135))
-		createUnit(p, LABORATORY_ID, vec2(castleRect.getMinX(), castleRect.getMaxY()).moveTowards(castleRect.getCenter(), 300), angle(-45))
+		let castleCenter = castleRect.getCenter()
+		let posTopRight0 = vec2(castleRect.getMaxX(), castleRect.getMaxY()).moveTowards(castleCenter, 300)
+		let posTopRight1 = vec2(castleRect.getMaxX() - 300, castleRect.getMaxY()).moveTowards(castleCenter, 300)
+		let posTopRight2 = vec2(castleRect.getMaxX(), castleRect.getMaxY() - 300).moveTowards(castleRect.getCenter(), 300)
+		let posBtmRight0 = vec2(castleRect.getMaxX(), castleRect.getMinY()).moveTowards(castleRect.getCenter(), 300)
+		let posBtmRight1 = vec2(castleRect.getMaxX() - 300, castleRect.getMinY()).moveTowards(castleRect.getCenter(), 300)
+		let posBrmRight2 = vec2(castleRect.getMaxX(), castleRect.getMinY() + 300).moveTowards(castleRect.getCenter(), 300)
+		let posTopLeft0 = vec2(castleRect.getMinX(), castleRect.getMaxY()).moveTowards(castleRect.getCenter(), 300)
+
+		createUnit(p, ARMOR_SHOP_ID, posTopRight1, posTopRight1.angleTo(castleCenter))
+		createUnit(p, MAGIC_ARMOR_SHOP_ID, posTopRight2, posTopRight2.angleTo(castleCenter))
+		createUnit(p, ARMOR_RECIEPTS_SHOP_ID, posTopRight0, posTopRight0.angleTo(castleCenter))
+
+		createUnit(p, WEAPON_SHOP_ID, posBrmRight2, posBrmRight2.angleTo(castleCenter))
+		createUnit(p, POTIONS_SHOP_ID, posBtmRight1, posBtmRight1.angleTo(castleCenter))
+		createUnit(p, RARE_RECIEPTS_SHOP_ID, posBtmRight0, posBtmRight0.angleTo(castleCenter))
+
+		createUnit(p, LABORATORY_ID, posTopLeft0, posTopLeft0.angleTo(castleCenter))
 
 	function getId() returns int
 		return p.getId()

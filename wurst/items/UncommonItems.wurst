@@ -3,12 +3,12 @@ package UncommonItems
 import ObjectIdGenerator
 import HashList
 
-import InitialItemDefinition
+import BaseAbilityItemDefinition
 import DropTable
 
 import CommonItems
 
-public constant greatAxe = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatAxe = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Great Axe")
 	..setIcon("BTNDwarvenDoubleAxe2")
 	..setType(ItemType.UNCOMMON)
@@ -20,7 +20,7 @@ public constant greatAxe = new InitialItemDefinition(compiletime(ITEM_ID_GEN.nex
 	..addRequiredItem(gloves)
 	..addRequiredItem(luckyBracers)
 
-public constant boneDaggers = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant boneDaggers = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Bone Daggers")
 	..setIcon("BTNBoneDaggers")
 	..setType(ItemType.UNCOMMON)
@@ -32,7 +32,7 @@ public constant boneDaggers = new InitialItemDefinition(compiletime(ITEM_ID_GEN.
 	..addRequiredItem(dagger)
 	..addRequiredItem(marvelousRing)
 
-public constant killersGloves = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant killersGloves = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Killers Gloves")
 	..setIcon("BTNLeatherGauntlet")
 	..setType(ItemType.UNCOMMON)
@@ -44,7 +44,7 @@ public constant killersGloves = new InitialItemDefinition(compiletime(ITEM_ID_GE
 	..addRequiredItem(magicCrown)
 	..addRequiredItem(luckyBracers)
 
-public constant leatherPants = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant leatherPants = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Leather Pants")
 	..setIcon("BTNLeatherPants2")
 	..setType(ItemType.UNCOMMON)
@@ -56,7 +56,7 @@ public constant leatherPants = new InitialItemDefinition(compiletime(ITEM_ID_GEN
 	..addRequiredItem(hurryBoots)
 	..addRequiredItem(pants)
 
-public constant magicBoots = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant magicBoots = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Magic Boots")
 	..setIcon("BTNBoots3.blp")
 	..setType(ItemType.UNCOMMON)
@@ -68,7 +68,7 @@ public constant magicBoots = new InitialItemDefinition(compiletime(ITEM_ID_GEN.n
 	..addRequiredItem(hurryBoots)
 	..addRequiredItem(misleadingCloak)
 
-public constant magicCloak = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant magicCloak = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Magic Cloak")
 	..setIcon("BTNCloakOfShadows")
 	..setType(ItemType.UNCOMMON)
@@ -80,7 +80,7 @@ public constant magicCloak = new InitialItemDefinition(compiletime(ITEM_ID_GEN.n
 	..addRequiredItem(mageBracers)
 	..addRequiredItem(mageCape)
 
-public constant magicGloves = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant magicGloves = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Magic Gloves")
 	..setIcon("BTNFurGauntlet")
 	..setType(ItemType.UNCOMMON)
@@ -92,7 +92,7 @@ public constant magicGloves = new InitialItemDefinition(compiletime(ITEM_ID_GEN.
 	..addRequiredItem(gloves)
 	..addRequiredItem(luckyBracers)
 
-public constant magicMantie = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant magicMantie = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Magic Mantie")
 	..setIcon("BTNBattlemageArmor")
 	..setType(ItemType.UNCOMMON)
@@ -104,7 +104,7 @@ public constant magicMantie = new InitialItemDefinition(compiletime(ITEM_ID_GEN.
 	..addRequiredItem(pants)
 	..addRequiredItem(marvelousRing)
 
-public constant magicStaff = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant magicStaff = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Magic Staff")
 	..setIcon("BTNArcaneStaff")
 	..setType(ItemType.UNCOMMON)
@@ -116,7 +116,7 @@ public constant magicStaff = new InitialItemDefinition(compiletime(ITEM_ID_GEN.n
 	..addRequiredItem(magicCrown)
 	..addRequiredItem(staff)
 
-public constant mailPants = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant mailPants = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Mail Pants")
 	..setIcon("BTNSteelPants1")
 	..setType(ItemType.UNCOMMON)
@@ -128,7 +128,7 @@ public constant mailPants = new InitialItemDefinition(compiletime(ITEM_ID_GEN.ne
 	..addRequiredItem(belt)
 	..addRequiredItem(marvelousRing)
 
-public constant mercenaryJacket = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant mercenaryJacket = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Mercenary Jacket")
 	..setIcon("BTNBattlemagesGuard")
 	..setType(ItemType.UNCOMMON)
@@ -140,7 +140,7 @@ public constant mercenaryJacket = new InitialItemDefinition(compiletime(ITEM_ID_
 	..addRequiredItem(misleadingCloak)
 	..addRequiredItem(rescueShirt)
 
-public constant platingBoots = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant platingBoots = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Plating Boots")
 	..setIcon("BTNSteelBoots")
 	..setType(ItemType.UNCOMMON)
@@ -152,7 +152,7 @@ public constant platingBoots = new InitialItemDefinition(compiletime(ITEM_ID_GEN
 	..addRequiredItem(shoulder)
 	..addRequiredItem(breakerOfVenom)
 
-public constant chainArmor = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant chainArmor = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Chain Armor")
 	..setIcon("BTNChainArmor")
 	..setType(ItemType.UNCOMMON)
@@ -164,7 +164,7 @@ public constant chainArmor = new InitialItemDefinition(compiletime(ITEM_ID_GEN.n
 	..addRequiredItem(brigandine)
 	..addRequiredItem(shoulder)
 
-public constant tightBelt = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant tightBelt = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Tight Belt")
 	..setIcon("BTNbelt")
 	..setType(ItemType.UNCOMMON)
@@ -176,7 +176,7 @@ public constant tightBelt = new InitialItemDefinition(compiletime(ITEM_ID_GEN.ne
 	..addRequiredItem(mageCape)
 	..addRequiredItem(belt)
 
-public constant ruinedShield = new InitialItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant ruinedShield = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
 	..setName("Ruined Shield")
 	..setIcon("BTNRuinedShield")
 	..setType(ItemType.UNCOMMON)
@@ -188,7 +188,7 @@ public constant ruinedShield = new InitialItemDefinition(compiletime(ITEM_ID_GEN
 	..addRequiredItem(manaShield)
 	..addRequiredItem(ringOfHaste)
 
-public constant uncommonItemsList = new HashList<InitialItemDefinition>()
+public constant uncommonItemsList = new HashList<BaseAbilityItemDefinition>()
 	..add(greatAxe)
 	..add(boneDaggers)
 	..add(killersGloves)
