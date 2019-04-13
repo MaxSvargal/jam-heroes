@@ -6,7 +6,7 @@ import HashList
 import BaseAbilityItemDefinition
 import DropTable
 
-public constant healthPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant healthPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pghe')
 	..setName("Health Potion")
 	..setIcon("BTNredAApotionGS")
 	..setType(ItemType.COMMON)
@@ -14,7 +14,7 @@ public constant healthPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID
   ..setNumberOfCharges(3)
   ..setLifeRegenerated(500)
 
-public constant greatHealthPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatHealthPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pghe')
 	..setName("Great Health Positon")
 	..setIcon("BTNredEApotionGS")
 	..setType(ItemType.COMMON)
@@ -22,7 +22,7 @@ public constant greatHealthPotion = new BaseAbilityItemDefinition(compiletime(IT
   ..setNumberOfCharges(5)
 	..setLifeRegenerated(5000)
 
-public constant manaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant manaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pgma')
 	..setName("Mana Potion")
 	..setIcon("BTNblueAApotionGS")
 	..setType(ItemType.COMMON)
@@ -30,7 +30,7 @@ public constant manaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_G
   ..setNumberOfCharges(3)
 	..setManaRegenerated(150)
 
-public constant greatManaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatManaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pgma')
 	..setName("Great Mana Positon")
 	..setIcon("BTNblueEApotionGS")
 	..setType(ItemType.COMMON)
@@ -38,7 +38,7 @@ public constant greatManaPotion = new BaseAbilityItemDefinition(compiletime(ITEM
   ..setNumberOfCharges(5)
 	..setManaRegenerated(1500)
 
-public constant universalPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant universalPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pgma')
 	..setName("Universal Potion")
 	..setIcon("BTNgreenAApotionGS")
 	..setType(ItemType.COMMON)
@@ -47,7 +47,7 @@ public constant universalPotion = new BaseAbilityItemDefinition(compiletime(ITEM
 	..setLifeRegenerated(250)
 	..setManaRegenerated(75)
 
-public constant greatUniversalPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()))
+public constant greatUniversalPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pgma')
 	..setName("Great Universal Positon")
 	..setIcon("BTNpurpleEApotionGS")
 	..setType(ItemType.COMMON)

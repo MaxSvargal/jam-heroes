@@ -9,6 +9,9 @@ public class BaseAbilityItemDefinition extends BaseItemDefinition
 	construct(int id)
 		super(id)
 
+	construct(int id, int baseId)
+		super(id, baseId)
+
 	function setStrengthBonus(int val)
 		addProp("strength", val.toString())
 		addAbility(

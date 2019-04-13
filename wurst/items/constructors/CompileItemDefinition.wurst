@@ -5,7 +5,7 @@ import BaseAbilityItemDefinition
 
 public class CompileItemDefinition extends ItemDefinition
 	construct(BaseAbilityItemDefinition itemDef)
-		super(itemDef.id, 'rst1')
+		super(itemDef.id, itemDef.baseId)
 		setStockMaximum(2)
 		setStockReplenishInterval(30)
 		setName(itemDef.name)

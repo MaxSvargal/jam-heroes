@@ -13,7 +13,7 @@ public class RegisterItemReciept
 		EventListener.add(EVENT_PLAYER_UNIT_PICKUP_ITEM) ->
 			let u = GetTriggerUnit()
 			if checkItemsIsset(u)
-				if not itemDef.recieptIsset
+				if not itemDef.recieptRequired
 					complete(u)
 				else 
 					if u.hasItemById(itemDef.getRecieptId())
@@ -33,5 +33,7 @@ public class RegisterItemReciept
 		for itmDef from iterator
 			let itm = u.getItemById(itmDef.getId())
 			itm.remove()
-		u.addItemById(def.getId())
 		iterator.close()
+		if def.recieptRequired
+			u.getItemById(def.getRecieptId()).remove()
+		u.addItemById(def.getId())

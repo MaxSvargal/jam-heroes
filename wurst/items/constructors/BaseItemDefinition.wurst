@@ -36,6 +36,7 @@ function getColorOfItemType(ItemType itemType) returns string
 
 public class BaseItemDefinition
 	int id
+	int baseId
 	int recieptId
 	LinkedList<int> abilities = new LinkedList<int>()
 	IterableMap<string, string> props = new IterableMap<string, string>()
@@ -57,6 +58,11 @@ public class BaseItemDefinition
 
 	construct(int id)
 		this.id = id
+		this.baseId = 'rst1'
+
+	construct(int id, int baseId)
+		this.id = id
+		this.baseId = baseId
 
 	private function getColorOfCurrentType() returns string
 		return getColorOfItemType(itemType)
@@ -155,10 +161,14 @@ public class BaseItemDefinition
 		return recieptId
 
 	function getGoldCost() returns int
-		return (goldCost * FOR_RECIEPT_COST_MULTIPLY).toInt()
+		return recieptIsset
+			? (goldCost * FOR_RECIEPT_COST_MULTIPLY).toInt()
+			: goldCost
 
 	function getLumberCost() returns int
-		return (lumberCost * FOR_RECIEPT_COST_MULTIPLY).toInt()
+		return recieptIsset
+			? (lumberCost * FOR_RECIEPT_COST_MULTIPLY).toInt()
+			: lumberCost
 
 	function getTooltipExtended() returns string
 		return description != ""
