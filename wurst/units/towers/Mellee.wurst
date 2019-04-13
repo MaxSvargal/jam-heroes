@@ -1,0 +1,82 @@
+package Mellee
+
+import HashList
+import Icons
+import ObjectIdGenerator
+import Units
+import UnitIds
+
+import BaseUnitTowerDefinition
+
+public constant siegeEngine = new BaseUnitTowerDefinition(compiletime(UNIT_ID_GEN.next()), compiletime(UNIT_ID_GEN.next()))
+	..setBaseUnit(UnitIds.siegeengine)
+	..setModelFile(Units.warWagon)
+	..setIcon(Icons.bTNSeigeEngine)
+	..setName("Siege Engine")
+	..setDescription("Advanced mechanical unit with hight defence")
+	..setCost(400, 20, 5)
+	..setAttack(AttackType.Siege, 260, 5, 80, 1.2)
+	..setDefence(ArmorType.Fortified, 10000, 8, 3)
+
+public constant banditLord = new BaseUnitTowerDefinition(compiletime(UNIT_ID_GEN.next()), compiletime(UNIT_ID_GEN.next()))
+	..setBaseUnit(UnitIds.knight)
+	..setModelFile(Units.knight1)
+	..setIcon(Icons.bTNKnight)
+	..setName("Bandit Lord")
+	..setDescription("Advanced mellee unit with increased chaos attack")
+	..setCost(200, 10, 5)
+	..setAttack(AttackType.Chaos, 290, 4, 80, .9)
+	..setDefence(ArmorType.Large, 7000, 5, 2)
+
+public constant knight = new BaseUnitTowerDefinition(compiletime(UNIT_ID_GEN.next()), compiletime(UNIT_ID_GEN.next()))
+	..setBaseUnit(UnitIds.knight)
+	..setModelFile(Units.knight1)
+	..setIcon(Icons.bTNKnight)
+	..setName("Knight")
+	..setDescription("Advanced mellee unit")
+	..setCost(200, 10, 4)
+	..setAttack(AttackType.Normal, 160, 3, 40, 1.1)
+	..setDefence(ArmorType.Medium, 4800, 4, 1)
+	..addUpgradesTo(siegeEngine)
+
+public constant bandit = new BaseUnitTowerDefinition(compiletime(UNIT_ID_GEN.next()), compiletime(UNIT_ID_GEN.next()))
+	..setBaseUnit(UnitIds.jailorkassan)
+	..setModelFile(Units.bandit1)
+	..setIcon(Icons.bTNBandit)
+	..setName("Bandit")
+	..setDescription("Advanced mellee unit")
+	..setCost(200, 10, 3)
+	..setAttack(AttackType.Normal, 180, 3, 46, 1)
+	..setDefence(ArmorType.Normal, 3800, 3, 1)
+	..addUpgradesTo(banditLord)
+
+public constant captain = new BaseUnitTowerDefinition(compiletime(UNIT_ID_GEN.next()), compiletime(UNIT_ID_GEN.next()))
+	..setBaseUnit(UnitIds.highelvenswordsman)
+	..setModelFile(Units.theCaptain1)
+	..setIcon(Icons.bTNTheCaptain)
+	..setName("Captain")
+	..setDescription("Advanced mellee unit")
+	..setCost(100, 5, 2)
+	..setAttack(AttackType.Normal, 97, 3, 15, 1.2)
+	..setDefence(ArmorType.Normal, 2400, 2, 1)
+	..addUpgradesTo(bandit)
+	..addUpgradesTo(knight)
+
+public constant footman = new BaseUnitTowerDefinition(compiletime(UNIT_ID_GEN.next()), compiletime(UNIT_ID_GEN.next()))
+	..setBaseUnit(UnitIds.footman)
+	..setModelFile(Units.footman1)
+	..setIcon(Icons.bTNFootman)
+	..setName("Footman")
+	..setDescription("Basic mellee unit")
+	..setCost(50, 1, 1)
+	..setAttack(AttackType.Normal, 20, 2, 12, 1.3)
+	..setDefence(ArmorType.Small, 600, 1, 1)
+	..addUpgradesTo(captain)
+
+public constant melleeUnitsList = new HashList<BaseUnitTowerDefinition>()
+	..add(siegeEngine)
+	..add(banditLord)
+	..add(knight)
+	..add(bandit)
+	..add(captain)
+	..add(footman)

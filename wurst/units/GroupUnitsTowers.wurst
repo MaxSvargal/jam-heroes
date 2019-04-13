@@ -1,0 +1,38 @@
+package GroupUnitsTowers
+
+import HashList
+import HashMap
+import BaseUnitTowerDefinition
+import CompileUnitTowerDefinition
+
+import Giant
+import Mellee
+import Range
+
+let toCompile = new HashList<HashList<BaseUnitTowerDefinition>>()
+	..add(melleeUnitsList)
+	..add(giantUnitsList)
+	..add(rangeUnitsList)
+
+@compiletime function gen()
+	let citr = toCompile.iterator()
+	for list from citr
+		let listItr = list.iterator()
+		for itm from listItr
+			new CompileUnitTowerDefinition(itm)
+		listItr.close()
+	citr.close()
+
+constant buildingToUnitRelations = new IterableMap<int, int>()
+public function getBuildingToUnitRelations() returns IterableMap<int, int>
+	if buildingToUnitRelations.size() > 0
+		return buildingToUnitRelations
+	else
+		let itr = toCompile.iterator()
+		for list from itr
+			let listItr = list.iterator()
+			for itm from listItr
+				buildingToUnitRelations.put(itm.buildingId, itm.id)
+			listItr.close()
+		itr.close()
+		return buildingToUnitRelations

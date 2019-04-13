@@ -1,0 +1,74 @@
+package BaseUnitTowerDefinition
+
+import LinkedList
+import public UnitObjEditing
+
+public enum UnitSize
+	Small
+	Big
+
+public class BaseUnitTowerDefinition
+	constant upgradesTo = new LinkedList<BaseUnitTowerDefinition>()
+	UnitSize unitSize = Small
+	int id
+	int buildingId
+	int baseId
+	string name
+	string desc
+	AttackType attackType
+	int damageBase
+	int numberofDice
+	int sidesperDie
+	real cooldownTime
+	ArmorType armorType
+	int hitPoints
+	int defenceBase
+	int upgradeBonus
+	string modelFile
+	string icon
+	int goldCost
+	int lumberCost
+	int foodCost
+
+	construct(int unitId, int buildingId)
+		this.id = unitId
+		this.buildingId = buildingId
+
+	function setUnitSize(UnitSize unitSize)
+		this.unitSize = unitSize
+
+	function setBaseUnit(int baseId)
+		this.baseId = baseId
+
+	function setName(string name)
+		this.name = name
+
+	function setDescription(string desc)
+		this.desc = desc
+
+	function setModelFile(string modelFile)
+		this.modelFile = modelFile
+
+	function setIcon(string icon)
+		this.icon = icon
+
+	function setAttack(AttackType attackType, int damageBase, int numberofDice, int sidesperDie, real cooldownTime)
+		this.attackType = attackType
+		this.damageBase = damageBase
+		this.numberofDice = numberofDice
+		this.sidesperDie = sidesperDie
+		this.cooldownTime = cooldownTime
+	
+	function setDefence(ArmorType armorType, int hitPoints, int defenceBase, int upgradeBonus)
+		this.armorType = armorType
+		this.hitPoints = hitPoints
+		this.defenceBase = defenceBase
+		this.upgradeBonus = upgradeBonus
+
+	function setCost(int gold, int lumber, int food)
+		this.goldCost = gold
+		this.lumberCost = lumber
+		this.foodCost = food
+
+	function addUpgradesTo(BaseUnitTowerDefinition def)
+		upgradesTo.add(def)

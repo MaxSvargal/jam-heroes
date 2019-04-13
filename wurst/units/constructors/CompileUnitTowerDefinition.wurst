@@ -1,0 +1,62 @@
+package CompileUnitTowerDefinition
+
+import UnitIds
+import ObjectIds
+import LinkedList
+import StringUtils
+
+import BaseUnitTowerDefinition
+
+public class CompileUnitTowerDefinition extends UnitDefinition
+	construct(BaseUnitTowerDefinition def)
+		super(def.id, def.baseId)
+
+		// Unit
+		setName(def.name)
+		setTooltipExtended(def.desc)
+		setModelFile(def.modelFile)
+		setIconGameInterface(def.icon)
+		setAttack1DamageBase(def.damageBase)
+		setAttack1DamageNumberofDice(def.numberofDice)
+		setAttack1DamageSidesperDie(def.sidesperDie)
+		setAttack1CooldownTime(def.cooldownTime)
+		setArmorType(def.armorType)
+		setHitPointsMaximumBase(def.hitPoints)
+		setDefenseBase(def.defenceBase)
+		setDefenseUpgradeBonus(def.upgradeBonus) // Required for defence upgrades
+		setFoodCost(0)
+
+		// Building
+		let building = new BuildingDefinition(def.buildingId, UnitIds.scouttower)
+			..setBuildTime(1)
+			..setAttacksEnabled(1)
+			..setNormalAbilities("")
+			..setGroundTexture("")
+			..setName(def.name)
+			..setTooltipBasic(def.name)
+			..setTooltipExtended(def.desc)
+			..setModelFile(def.modelFile)
+			..setIconGameInterface(def.icon)
+			..setGoldCost(def.goldCost)
+			..setLumberCost(def.lumberCost)
+			..setFoodCost(def.foodCost)
+			..setAttack1DamageBase(def.damageBase)
+			..setAttack1DamageNumberofDice(def.numberofDice)
+			..setAttack1DamageSidesperDie(def.sidesperDie)
+			..setAttack1CooldownTime(def.cooldownTime)
+			..setArmorType(def.armorType)
+			..setHitPointsMaximumBase(def.hitPoints)
+			..setDefenseBase(def.defenceBase)
+			..setDefenseUpgradeBonus(def.upgradeBonus)
+			..setUpgradesTo("")
+
+		switch def.unitSize
+			case Big
+				building.setPathingMap("\\PathTextures\\8x8default.tga")
+			case Small
+				building.setPathingMap("\\PathTextures\\4x4default.tga")
+
+		if def.upgradesTo.size() > 0
+			// TODO: bug is here
+			let upgradesTo = def.upgradesTo.joinBy((BaseUnitTowerDefinition d) -> d.buildingId.toRawCode(), ",")
+			building.setUpgradesTo(upgradesTo)
