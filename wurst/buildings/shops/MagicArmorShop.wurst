@@ -23,10 +23,11 @@ public constant MAGIC_ARMOR_SHOP_ID = compiletime(UNIT_ID_GEN.next())
 			magicCrown.getId(),
 			mantie.getId(),
 			misleadingCloak.getId(),
+			marvelousRing.getId(),
 
 			magicBoots.getRecieptId(),
 			magicCloak.getRecieptId(),
 			magicGloves.getRecieptId(),
 			magicMantie.getRecieptId()
-			// 2 more
+			// 1 more
 		))
