@@ -1,1 +1,4 @@
-- make income buildings
+- bosses with abilities
+- hero abilities
+- make more income buildings
+- add more creeps
