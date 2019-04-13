@@ -5,9 +5,11 @@ import Players
 import initlater CreepCamp
 
 class MapState
+  static constant centerOfGlobalMap = vec2(-2243, -3770)
+  static constant topOfGlobalMap = vec2(-2243, 8700)
+  constant creepCampsToRestore = new HashSet<CreepCamp>()
   int difficalityLevel = 1
   real increasedLevel = -1.
-  constant creepCampsToRestore = new HashSet<CreepCamp>()
 
   function getDifficalityLevel() returns int
     return difficalityLevel

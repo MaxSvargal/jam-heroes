@@ -45,6 +45,12 @@ public class CreepsGroup implements BattleGroup
 				isAnyAlive = true
 		return isAnyAlive
 
+	override function getUnitOnMap() returns unit
+		return unitOnMap
+
+	function getWarlordId() returns int
+		return warlordId
+
 	ondestroy
 		unitOnMap.remove()
 		units.destr()

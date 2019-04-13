@@ -2,16 +2,14 @@ package GlobalMapController
 
 import ClosureTimers
 import HashMap
-import UnitIds
 import ClosureEvents
 
 import CreepCamp
 import CreepsGroup
 import GuardsGroup
-import BossGroup
 import BattleForCreepsCamp
 import BattleForIncomeBuilding
-import BattleArea
+import BattleAreas
 import MapState
 import IncomeBuilding
 import BattlesController
@@ -27,79 +25,49 @@ import CreepHPUpgrade
 import IncomeGoldMine
 import IncomeCamp
 
+import InitGlobalMapEntities
+
 // TODO: replace with map bounds
-public let topOfMap = vec2(-3500, 4400)
-public let bottomOfMap = vec2(-3500, -14900)
+// public let topOfMap = vec2(-3500, 4400)
+// public let bottomOfMap = vec2(-3500, -14900)
 
 public class GlobalMapController
-	constant creepCamps = new HashMap<unit, CreepCamp>()
-	constant incomeBuildings = new HashMap<unit, IncomeBuilding>()
+	HashMap<unit, CreepCamp> creepCamps
+	HashMap<unit, IncomeBuilding> incomeBuildings
+	BattlesController battlesController
 
 	construct()
-		createCreepCamps()
-		createBossesCamps()
+		let initialState = new InitGlobalMapEntities()
+			..createCreepCamps()
+			..createBossesCamps()
+			..createIncomeGoldMineBuildings()
+			..createIncomeCampsBuildings()
+
+		creepCamps = initialState.creepCamps
+		incomeBuildings = initialState.incomeBuildings
+		
+		battlesController = new BattlesController()
+
 		listenForCreepCampAttack()
-		createIncomeGoldMineBuildings()
-		createIncomeCampsBuildings()
 		listenForIncomeBuildingAttack()
 		restoreCampsIterator()
 		giveIncomeIterator()
 		initialCreateMapItems()
 		listenForGettingItems()
 
-	function createCreepCamps()
-		let g = GetUnitsOfTypeIdAll(UnitIds.lavaspawn)
-		for u in g
-			let pos = u.getPos()
-			u.remove()
-			let creepCamp = new CreepCamp(pos)
-			createGroupForCamp(creepCamp)
-		g.destr()
-
-	function createBossesCamps()
-		let g = GetUnitsOfTypeIdAll(UnitIds.lavaspawn2)
-		for u in g
-			let pos = u.getPos()
-			u.remove()
-			let creepCamp = new CreepCamp(pos)
-			createBossGroupForCamp(creepCamp)
-		g.destr()
-
-	function createIncomeGoldMineBuildings()
-		let g = GetUnitsOfTypeIdAll(UnitIds.goldmine)
-		for u from g
-			let pos = u.getPos()
-			u.remove()
-			let incomeBuilding = new IncomeBuilding(pos, INCOME_GOLD_MINE_ID)
-			createGroupForIncomeBuilding(incomeBuilding)
-		g.destr()
-
-	function createIncomeCampsBuildings()
-		let g = GetUnitsOfTypeIdAll(UnitIds.mercenarycampz)
-		for u from g
-			let pos = u.getPos()
-			u.remove()
-			let incomeBuilding = new IncomeBuilding(pos, INCOME_CAMP_ID)
-			createGroupForIncomeBuilding(incomeBuilding)
-		g.destr()
-
-	private function calcLevelIncByDistance(vec2 pos) returns int
-		let min = -bottomOfMap.y
-		let max = topOfMap.y
-		let distance = pos.distanceTo(bottomOfMap)
-		return ((min + max) * (distance * 0.00000001)).toInt()
-
 	function listenForCreepCampAttack()
 		EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
 			if creepCamps.has(GetAttacker())
-			and GetAttackedUnitBJ().getTypeId() != INCOME_GOLD_MINE_ID // TODO: remove later
 				let enterPlayer = GetAttackedUnitBJ().getOwner()
 				let creepCamp = creepCamps.get(GetAttacker())
 
 				if creepCamp.getCurrentBattle() != null
 					creepCamp.getCurrentBattle().enterPlayerIntoBattle(enterPlayer)
 				else
-					let battle = new BattleForCreepsCamp(creepCamp.getCreepsGroup(), getRandomBattleArea(), creepCamp)
+					let battleArea = getRandomBattleArea()
+					let battle = new BattleForCreepsCamp(creepCamp, battleArea)
+					// TODO: make more groups on more spots throught battleArea
+					creepCamp.getBattleGroup().createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
 					battlesController.add(battle)
 					battle.enterPlayerIntoBattle(enterPlayer)
 
@@ -115,13 +83,16 @@ public class GlobalMapController
 					BattleGroup battleGroup
 					if incomeBuilding.getBuilding().getOwner() == players[PLAYER_NEUTRAL_AGGRESSIVE]
 						let pos = incomeBuilding.getPos()
-						let lvl = getCampLevel(pos)
+						let lvl = InitGlobalMapEntities.getLevelByDistance(pos)
 						battleGroup = new CreepsGroup(lvl + 2)
 					else
 						let building = incomeBuilding.getBuilding()
 						battleGroup = new GuardsGroup(building)
 		
-					let battle = new BattleForIncomeBuilding(battleGroup, getRandomBattleArea(), incomeBuilding)
+					incomeBuilding.setBattleGroup(battleGroup)
+					let battleArea = getRandomBattleArea()
+					let battle = new BattleForIncomeBuilding(incomeBuilding, battleArea)
+					battleGroup.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
 					battlesController.add(battle)
 					battle.enterPlayerIntoBattle(enterPlayer)
 				
@@ -133,7 +104,7 @@ public class GlobalMapController
 				CreepCamp campToRestore = camps.get(0)
 				let iterator = camps.iterator()
 				for camp from iterator
-					let distance = camp.getPos().distanceTo(bottomOfMap) // TODO: centerOfMap instead?
+					let distance = camp.getPos().distanceTo(MapState.centerOfGlobalMap)
 					if distance < minDistance
 						minDistance = distance
 						campToRestore = camp
@@ -165,32 +136,15 @@ public class GlobalMapController
 
 	private function createGroupForEntity(EntityBattleFor entity) returns CreepsGroup
 		let pos = entity.getPos()
-		let lvl = getCampLevel(pos)
+		let lvl = InitGlobalMapEntities.getLevelByDistance(pos)
 		let creepsGroup = new CreepsGroup(lvl)
-		entity.setCreepsGroup(creepsGroup)
+		entity.setBattleGroup(creepsGroup)
 		return creepsGroup
 
 	private function createGroupForCamp(CreepCamp creepCamp)
 		let creepsGroup = createGroupForEntity(creepCamp)
 		let unitOnMap = creepsGroup.createWarlordOnMapAtPos(creepCamp.getPos())
 		creepCamps.put(unitOnMap, creepCamp)
-
-	private function createBossGroupForCamp(CreepCamp creepCamp)
-		let pos = creepCamp.getPos()
-		let lvl = getCampLevel(pos)
-		let bossGroup = new BossGroup(lvl)
-		creepCamp.setCreepsGroup(bossGroup)
-		let unitOnMap = bossGroup.createWarlordOnMapAtPos(creepCamp.getPos())
-		creepCamps.put(unitOnMap, creepCamp)
-
-	private function createGroupForIncomeBuilding(IncomeBuilding incomeBuilding)
-		createGroupForEntity(incomeBuilding)
-		let unitOnMap = incomeBuilding.getBuilding()
-		incomeBuildings.put(unitOnMap, incomeBuilding)
-
-	private function getCampLevel(vec2 pos) returns int
-		let lvlIncrease = calcLevelIncByDistance(pos)
-		return mapState.getIncreasedLevel().toInt() + lvlIncrease
 
 	private function setCreepsUpgradesLevel()
 		let lvl = mapState.getIncreasedLevel()

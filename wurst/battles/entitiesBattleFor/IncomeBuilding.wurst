@@ -1,7 +1,7 @@
 package IncomeBuilding
 
 import Battle
-import CreepsGroup
+import BattleGroup
 import EntityBattleFor
 import ClosureTimers
 
@@ -9,7 +9,7 @@ public class IncomeBuilding implements EntityBattleFor
   private constant unit building
   private vec2 pos
   private Battle currBattle = null
-  private CreepsGroup creepsGroup = null
+  private BattleGroup battleGroup = null
 
   construct(vec2 pos, int buildingId)
     this.pos = pos
@@ -21,8 +21,8 @@ public class IncomeBuilding implements EntityBattleFor
   function setOwner(player p)
     building.setOwner(p, true)
     // TODO: DEV
-    doAfter(8) () ->
-      building.setOwner(players[1], true)
+    // doAfter(8) () ->
+    //   building.setOwner(players[1], true)
 
   override function getPos() returns vec2
     return pos
@@ -33,11 +33,11 @@ public class IncomeBuilding implements EntityBattleFor
   override function getCurrentBattle() returns Battle
     return currBattle
 
-  override function getCreepsGroup() returns CreepsGroup
-    return creepsGroup
+  override function getBattleGroup() returns BattleGroup
+    return battleGroup
 
-  override function setCreepsGroup(CreepsGroup creepsGroup)
-    this.creepsGroup = creepsGroup
+  override function setBattleGroup(BattleGroup battleGroup)
+    this.battleGroup = battleGroup
 
   override function defeat()
-    creepsGroup = null
+    battleGroup = null

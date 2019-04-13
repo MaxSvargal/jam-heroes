@@ -1,12 +1,12 @@
 package CreepCamp
 
-import CreepsGroup
+import BattleGroup
 import Battle
 import EntityBattleFor
 
 public class CreepCamp implements EntityBattleFor
 	private vec2 pos
-	private CreepsGroup creepsGroup = null
+	private BattleGroup battleGroup = null
 	private Battle currentBattle = null
 
 	construct(vec2 initPos)
@@ -15,11 +15,11 @@ public class CreepCamp implements EntityBattleFor
 	override function getPos() returns vec2
 		return pos
 
-	override function getCreepsGroup() returns CreepsGroup
-		return creepsGroup
+	override function getBattleGroup() returns BattleGroup
+		return battleGroup
 
-	override function setCreepsGroup(CreepsGroup creepsGroup)
-		this.creepsGroup = creepsGroup
+	override function setBattleGroup(BattleGroup battleGroup)
+		this.battleGroup = battleGroup
 
 	override function getCurrentBattle() returns Battle
 		return currentBattle
@@ -28,4 +28,4 @@ public class CreepCamp implements EntityBattleFor
 		currentBattle = battle
 
 	override function defeat()
-		creepsGroup = null
+		battleGroup = null

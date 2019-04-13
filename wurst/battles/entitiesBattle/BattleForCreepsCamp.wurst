@@ -11,27 +11,31 @@ import DropTable
 import GuardUnitsRelations
 
 public class BattleForCreepsCamp extends Battle
-	CreepCamp creepCamp = null
-
-	construct(CreepsGroup creepsGroup, BattleArea battleArea, CreepCamp creepCamp)
-		super(creepsGroup, battleArea)
-		this.creepCamp = creepCamp
-		creepCamp.setCurrentBattle(this)
+	construct(CreepCamp creepCamp, BattleArea battleArea)
+		super(creepCamp, battleArea)
+		// TODO: does not needed? one way binding?
+		getEntityBattleFor().setCurrentBattle(this)
 
 	override function creepsDefeat(PlayerInstance p)
-		if creepCamp.getCreepsGroup().unitOnMap != null
-			creepCamp.getCreepsGroup().unitOnMap.remove()
+		let creepCamp = getEntityBattleFor() castTo CreepCamp
+		if creepCamp.getBattleGroup().getUnitOnMap() != null
+			creepCamp.getBattleGroup().getUnitOnMap().remove()
 		creepCamp.setCurrentBattle(null)
 		mapState.addCreepCampToRestoreQueue(creepCamp)
 		dropRewardItems(p.castleHeroPoint, p.heroOnMap.getPos())
 
+	override function creepsVictory()
+		getEntityBattleFor().setCurrentBattle(null)
+
+	// TODO: Move to other class?
 	function dropRewardItems(vec2 castlePos, vec2 onMapPos)
 		let lvl = mapState.getIncreasedLevel().toInt()
 		let dtg = new DropTableGenerator(lvl)
 		dtg.getDropTable().dropRandomItemAtPos(castlePos)
 		destroy dtg
 
-		let warlordId = creepCamp.getCreepsGroup().warlordId
+		let creepsGroup = getEntityBattleFor().getBattleGroup() castTo CreepsGroup
+		let warlordId = creepsGroup.getWarlordId()
 		if unitIdToGuardRelations.has(warlordId)
 			let guardItemId = unitIdToGuardRelations.get(warlordId)
 			let dtgg = new DropTable()
@@ -40,5 +44,5 @@ public class BattleForCreepsCamp extends Battle
 				..addDropItem(guardItemId)
 				..dropRandomItemAtPos(onMapPos)
 			destroy dtgg
-				
+
 

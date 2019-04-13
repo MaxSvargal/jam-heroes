@@ -51,5 +51,5 @@ public class DropTableGenerator
 
 @Test function testDropTable()
 	for i = 0 to 100
-		let dt = new DropTableGenerator(40).getDropTable().getRandomItem()
-		print(dt)
+		let _dt = new DropTableGenerator(40).getDropTable().getRandomItem()
+		// print(dt)

@@ -3,3 +3,4 @@ package BattleGroup
 public interface BattleGroup
   function createGroupAtRect(rect r) returns group
   function isGroupAlive() returns boolean
+  function getUnitOnMap() returns unit

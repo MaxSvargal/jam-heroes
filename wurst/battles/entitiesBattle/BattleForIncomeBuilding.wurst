@@ -1,0 +1,20 @@
+package BattleForIncomeBuilding
+
+import Battle
+import BattleArea
+import IncomeBuilding
+import PlayerInstance
+
+public class BattleForIncomeBuilding extends Battle
+
+	construct(IncomeBuilding incomeBuilding, BattleArea battleArea)
+		super(incomeBuilding, battleArea)
+		getEntityBattleFor().setCurrentBattle(this)
+
+	override function creepsDefeat(PlayerInstance p)
+		getEntityBattleFor() castTo IncomeBuilding
+			..setOwner(p.getPlayer())
+			..setCurrentBattle(null)
+
+	override function creepsVictory()
+		getEntityBattleFor().setCurrentBattle(null)

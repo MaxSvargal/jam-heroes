@@ -6,7 +6,7 @@ import UnitIds
 import InstantDummyCaster
 import Orders
 
-import BuildingToUnitRelations
+import GroupUnitsTowers
 import HeroesList
 import PlayersSpawnPoints
 
@@ -39,6 +39,8 @@ public class PlayerInstance
 	
 	construct(player pl)
 		p = pl
+		p.addGold(2000)
+		p.addLumber(2000)
 		initGroupBuildingPlaces()
 		createUnit(p, SELECTOR_ID, gg_rct_InitialPos.getCenter(), angle(200))
 		p.setCameraPosition(gg_rct_InitialPos.getCenter())
@@ -65,10 +67,6 @@ public class PlayerInstance
 
 	function setPositionOfHeroInCastle(rect pos)
 		castleHeroPoint = pos.getCenter()
-
-	// function createShopsOnRects(rect commonShopPos, rect recieptsShopPos)
-	// 	createUnit(p, COMMON_SHOP_ID, commonShopPos.getCenter(), angle(0))
-	// 	createUnit(p, RECIEPTS_SHOP_ID, recieptsShopPos.getCenter(), angle(0))
 
 	function setCastleRect(rect castleRect)
 		this.castleRect = castleRect
@@ -104,11 +102,11 @@ public class PlayerInstance
 	private function addDebuffToBuildOnUnitDeath(unit u)
 	// TODO: does not work
 		if groupInBattle.contains(u)
+			let buildingToUnitRelations = getBuildingToUnitRelations()
 			let iterator = buildingToUnitRelations.iterator()
 			for buildingId from iterator
 				if buildingToUnitRelations.get(buildingId) == u.getTypeId()
 					let building = GetUnitsOfPlayerAndTypeId(p, buildingId).next()
-					print("building name: " + building.getName())
 					InstantDummyCaster.castTarget(players[PLAYER_NEUTRAL_AGGRESSIVE], RECOVERY_DEBUFF_ID, 1, Orders.tornado, building)
 					break
 			iterator.close()
@@ -116,6 +114,7 @@ public class PlayerInstance
 	private function onHeroBought(unit selling, unit sold)
 		if selling.getTypeId() == TAVERN_ID and sold.getOwner() == p
 			hero = sold
+			hero.setLevel(10, true)
 			hero
 				..setPos(castleHeroPoint)
 				..addAbility(MOVE_TO_GLOBAL_MAP_ID)
@@ -127,11 +126,10 @@ public class PlayerInstance
 	private function createHeroOnMap(vec2 pos)
 		let forMapHero = heroesOnMapAndInBattleRelations.get(hero.getTypeId())
 		heroOnMap = createUnit(p, forMapHero, pos, angle(220))
+		heroOnMap.addAbility(MOVE_TO_CASTLE_ID)
+		pauseHeroOnMap(true)
 		// TODO: DEV
 		// createItem(TREASURE_ID, pos)
-		// createDestructable('B000', pos.polarOffset(angle(90), 100), angle(GetRandomDirectionDeg()), 1.1, 0)
-		// createDestructable('B000', pos.polarOffset(angle(270), 100), angle(GetRandomDirectionDeg()), 1.1, 0)
-		// createDestructable('B000', pos.polarOffset(angle(180), 100), angle(GetRandomDirectionDeg()), 1.1, 0)
 
 	private function moveToCastle()
 		pauseHeroOnMap(true)
@@ -161,6 +159,7 @@ public class PlayerInstance
 		let createdGroup = CreateGroup()
 		for u in allUnits
 			let t = u.getTypeId()
+			let buildingToUnitRelations = getBuildingToUnitRelations()
 			if buildingToUnitRelations.has(t)
 				let uId = buildingToUnitRelations.get(t)
 				let nu = createUnit(p, uId, pos, angle(0))
@@ -191,7 +190,6 @@ public class PlayerInstance
 
 	function battleDefeat()
 		moveToCastle()
-		p.selectSingle(hero)
 		for u in groupInBattle
 			u.remove()
 
@@ -247,11 +245,16 @@ public class PlayerInstance
 				doAfter(10) ->
 					t.destr()
 					td.destr()
-					hero.revive(castleHeroPoint, true)
-					hero.addAbility(MOVE_TO_GLOBAL_MAP_ID)
+					hero
+						..revive(castleHeroPoint, true)
+						..removeAbility(MOVE_TO_CASTLE_ID)
+						..addAbility(MOVE_TO_GLOBAL_MAP_ID)
 					p.setCameraQuickPosition(hero.getPos())
+					p.selectSingle(hero)
+
 			if GetTriggerUnit() == heroOnMap
 				createHeroOnMap(GetTriggerUnit().getPos())
+				pauseHeroOnMap(false)
 
 	function moveToTreasury() // TODO: Use it!
 		hero.setPos(gg_rct_Player0Treasury.getCenter())

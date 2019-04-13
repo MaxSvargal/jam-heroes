@@ -1,0 +1,53 @@
+package BattleAreas
+
+import HashList
+import BattleArea
+
+public let battleAreaJungles = new BattleArea(
+  gg_rct_BattleAreaJungles,
+  gg_rct_BattleAreaJunglesSpawnHero.getCenter(),
+  gg_rct_BattleAreaJunglesSpawnCreeps.getCenter())
+
+public let battleAreaDesert = new BattleArea(
+  gg_rct_BattleAreaDesert,
+  gg_rct_BattleAreaDesertSpawnHero.getCenter(),
+  gg_rct_BattleAreaDesertSpawnCreeps.getCenter())
+
+public let battleAreaForest = new BattleArea(
+  gg_rct_BattleAreaForestWeather,
+  gg_rct_BattleAreaForestSpawnHero.getCenter(),
+  gg_rct_BattleAreaForestSpawnCreeps.getCenter())
+
+public let battleAreaBridge = new BattleArea(
+  gg_rct_BattleAreaBridge,
+  gg_rct_BattleAreaBridgeSpawnHero.getCenter(), // TODO: fix naming
+  gg_rct_BattleAreaBridgeSpawnCreeps.getCenter())
+
+public let battleAreaBeach = new BattleArea(
+  gg_rct_BattleAreaBeach,
+  gg_rct_BattleAreaBeachSpawnHero.getCenter(),
+  gg_rct_BattleAreaBeachSpawnCreeps.getCenter())
+
+public let battleAreaDangeon = new BattleArea(
+  gg_rct_BattleAreaDangeon,
+  gg_rct_BattleAreaDangeonSpawnHero.getCenter(),
+  gg_rct_BattleAreaDangeonSpawnCreeps.getCenter())
+
+public let battleAreaGoldMine = new BattleArea(
+  gg_rct_BattleAreaGoldMine,
+  gg_rct_BattleAreaGoldMineSpawnHero.getCenter(),
+  gg_rct_BattleAreaGoldMineSpawnCreeps.getCenter())
+
+public let battleAreas = new HashList<BattleArea>()
+  ..add(battleAreaJungles)
+  ..add(battleAreaDesert)
+  ..add(battleAreaForest)
+  ..add(battleAreaBridge)
+  ..add(battleAreaBeach)
+  ..add(battleAreaDangeon)
+  ..add(battleAreaGoldMine)
+
+public function getRandomBattleArea() returns BattleArea
+  let randomArea = battleAreas.get(GetRandomInt(0, battleAreas.size() - 1))
+  // TODO: If all areas is in use? Maybe make 12 areas to fix it?
+  return randomArea.isInUse ? getRandomBattleArea() : randomArea

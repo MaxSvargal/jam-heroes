@@ -1,25 +1,20 @@
 package Battle
 
-import OrderIds
 import BattleArea
 import Players
-import BattleGroup
 import HashSet
 import PlayerInstance
 import MapState
+import EntityBattleFor
 
 public class Battle
 	constant playersInBattle = new HashSet<PlayerInstance>()
 	BattleArea battleArea
-	BattleGroup battleGroup
+	EntityBattleFor entityBattleFor
 
-	construct(BattleGroup battleGroup, BattleArea battleArea)
+	construct(EntityBattleFor entityBattleFor, BattleArea battleArea)
 		this.battleArea = battleArea
-		this.battleGroup = battleGroup
-		// TODO: get battle area by tile under creep
-		battleGroup
-			.createGroupAtRect(battleArea.enemiesStartPoint.withRadiusRect(300))
-			..pointOrderById(Orders.attack, battleArea.heroStartPoint)
+		this.entityBattleFor = entityBattleFor
 
 	function enterPlayerIntoBattle(player p)
 		let playerInstance = playersInstances.get(p.getId())
@@ -34,10 +29,16 @@ public class Battle
 
 	function creepsDefeat(PlayerInstance _p)
 		// Implemented in child classes
+		
+	function creepsVictory()
+		// Implemented in child classes
+
+	function getEntityBattleFor() returns EntityBattleFor
+		return entityBattleFor
 
 	ondestroy
 		// TODO: add points to player?
 		mapState.increaseLevel(.5) // .25 orig
+		entityBattleFor.setCurrentBattle(null)
 		battleArea.clean()
-		destroy battleGroup
 		destroy playersInBattle

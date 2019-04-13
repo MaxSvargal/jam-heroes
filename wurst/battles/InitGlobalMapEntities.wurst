@@ -1,0 +1,70 @@
+package InitGlobalMapEntities
+
+import HashMap
+import UnitIds
+
+import CreepCamp
+import IncomeBuilding
+import CreepsGroup
+import BossGroup
+import MapState
+
+import IncomeGoldMine
+import IncomeCamp
+
+abstract class ReplaceIteratorCallback
+	abstract function call(vec2 pos)
+
+public class InitGlobalMapEntities
+	constant creepCamps = new HashMap<unit, CreepCamp>()
+	constant incomeBuildings = new HashMap<unit, IncomeBuilding>()
+
+	private function replaceDummiesOnMapWith(int dummyId, ReplaceIteratorCallback cb)
+		let g = GetUnitsOfTypeIdAll(dummyId)
+		for u in g
+			let pos = u.getPos()
+			u.remove()
+			cb.call(pos)
+		g.destr()
+
+	static function getLevelByDistance(vec2 pos) returns int
+		let fullDistance = MapState.topOfGlobalMap.distanceTo(MapState.centerOfGlobalMap)
+		let distance = pos.distanceTo(MapState.centerOfGlobalMap)
+		let diff = fullDistance / distance
+		return (diff * 4 - 4).toInt()
+	
+	@Test function calcLevelIncByDistance()
+		getLevelByDistance(vec2(-3000, -15000)).assertLessThanOrEqual(0)
+		getLevelByDistance(vec2(-2243, -3270)).assertGreaterThanOrEqual(95)
+
+	function createCreepCamps()
+		replaceDummiesOnMapWith(UnitIds.lavaspawn) pos ->
+			let creepCamp = new CreepCamp(pos)
+			let creepsGroup = new CreepsGroup(getLevelByDistance(pos))
+			let unitOnMap = creepsGroup.createWarlordOnMapAtPos(pos)
+			creepCamp.setBattleGroup(creepsGroup)
+			creepCamps.put(unitOnMap, creepCamp)
+
+	function createBossesCamps()
+		replaceDummiesOnMapWith(UnitIds.lavaspawn2) pos ->
+			let creepCamp = new CreepCamp(pos)
+			let bossGroup = new BossGroup(getLevelByDistance(pos))
+			let unitOnMap = bossGroup.createWarlordOnMapAtPos(pos)
+			creepCamp.setBattleGroup(bossGroup)
+			creepCamps.put(unitOnMap, creepCamp)
+
+	function createIncomeGoldMineBuildings()
+		replaceDummiesOnMapWith(UnitIds.goldmine) pos ->
+			let incomeBuilding = new IncomeBuilding(pos, INCOME_GOLD_MINE_ID)
+			let creepsGroup = new CreepsGroup(getLevelByDistance(pos))
+			let unitOnMap = incomeBuilding.getBuilding()
+			incomeBuilding.setBattleGroup(creepsGroup)
+			incomeBuildings.put(unitOnMap, incomeBuilding)
+
+	function createIncomeCampsBuildings()
+		replaceDummiesOnMapWith(UnitIds.mercenarycampz) pos ->
+			let incomeBuilding = new IncomeBuilding(pos, INCOME_CAMP_ID)
+			let creepsGroup = new CreepsGroup(getLevelByDistance(pos))
+			let unitOnMap = incomeBuilding.getBuilding()
+			incomeBuilding.setBattleGroup(creepsGroup)
+			incomeBuildings.put(unitOnMap, incomeBuilding)

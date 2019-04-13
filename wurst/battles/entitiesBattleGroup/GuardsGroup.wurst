@@ -36,6 +36,9 @@ public class GuardsGroup implements BattleGroup
 				isAnyAlive = true
 		return isAnyAlive
 
+	override function getUnitOnMap() returns unit
+		return building
+
 	ondestroy
 		let itr = itemsInBuilding.iterator()
 		for itm from itr
