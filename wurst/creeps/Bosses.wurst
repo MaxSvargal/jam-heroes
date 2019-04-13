@@ -20,12 +20,15 @@ public constant mannoroth = new CreepWarlordDefinition(compiletime(UNIT_ID_GEN.n
   ..setOnMapUnitId(compiletime(UNIT_ID_GEN.next()))
   ..setBaseUnitId(UnitIds.mannoroth)
   ..setLevel(10)
+  ..setName("Mannoroth")
+  ..setManaInitialAmount(1000)
   ..setAttack(AttackType.Chaos, 135, 3, 20, 1.3)
-  ..setDefence(ArmorType.Large, 9000, 6, 2)
+  ..setDefence(ArmorType.Large, 8000, 6, 2)
   ..setGoldBounty(148, 2, 50) // 150-248
   ..addAbility(AbilityIds.slam)
   ..addAbility(AbilityIds.cleavingAttack)
-  ..addAbility(AbilityIds.slowAura)
+  ..addAbility(AbilityIds.bladestorm)
+  ..addAbility('ACdr') // life drain
 
 public constant bossesCreepsToCompile = new HashList<CreepDefinition>()
   ..add(firstBossCreepType)

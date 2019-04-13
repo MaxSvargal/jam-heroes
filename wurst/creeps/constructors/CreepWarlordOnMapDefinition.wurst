@@ -18,3 +18,4 @@ public class CreepWarlordOnMapDefinition extends CreepUnitBaseDefinition
 		setAcquisitionRange(250)
 		setSightRadiusNight(200)
 		setSightRadiusDay(300)
+		setNormalAbilities("")

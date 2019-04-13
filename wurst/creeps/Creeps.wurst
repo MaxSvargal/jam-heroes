@@ -50,8 +50,9 @@ class Creeps
 	construct()
 		fillCreepsList(creepsLists)
 		fillWarlordsList(warlordsLists)
-		fillWarlordsToOnMapUnitsRelations(warlordsLists)
 		fillBossesList(bossesLists)
+		fillWarlordsToOnMapUnitsRelations(warlordsLists)
+		fillWarlordsToOnMapUnitsRelations(bossesLists)
 
 	private function fillCreepsList(HashList<HashList<CreepDefinition>> list)
 		iterateListOfList(list) c ->
@@ -91,7 +92,11 @@ class Creeps
 		return getRandomUnitOfLevel(creepToLevelList, level, 0, 2)
 
 	function getRandomBossIdOfLevel(int level) returns int
-		return getRandomUnitOfLevel(bossesToLevelList, level, 0, 5)
+		int rUnitId = getRandomUnitOfLevel(bossesToLevelList, level, 0, 5)
+		if rUnitId != 0
+			return rUnitId
+		else
+			return getRandomUnitOfLevel(bossesToLevelList, level, 0, 100)
 
 	function getOnMapUnitIdByBattleId(int id) returns int
 		return warlordsToMapList.get(id)

@@ -36,3 +36,6 @@ public class CreepUnitBaseDefinition extends UnitDefinition
 			setSpeedBase(creep.speedBase)
 			setSpeedMinimum(creep.speedMin)
 			setSpeedMaximum(creep.speedMax)
+		if creep.manaInitialAmount != 0
+			setManaInitialAmount(creep.manaInitialAmount)
+			setManaMaximum(creep.manaInitialAmount)

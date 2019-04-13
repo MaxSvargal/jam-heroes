@@ -17,6 +17,7 @@ public class CreepDefinition
 	real cooldownTime
 	ArmorType armorType
 	int hitPoints
+	int manaInitialAmount
 	int defenceBase
 	int upgradeBonus
 	int goldBountyBase
@@ -51,6 +52,9 @@ public class CreepDefinition
 		this.hitPoints = hitPoints
 		this.defenceBase = defenceBase
 		this.upgradeBonus = upgradeBonus
+
+	function setManaInitialAmount(int manaAmount)
+		this.manaInitialAmount = manaAmount
 
 	function setGoldBounty(int base, int numberOfDice, int sideperDie)
 		this.goldBountyBase = base
