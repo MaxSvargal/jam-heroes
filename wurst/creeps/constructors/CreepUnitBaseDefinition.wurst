@@ -17,6 +17,7 @@ public class CreepUnitBaseDefinition extends UnitDefinition
 		setNormalAbilities(creep.getAbilities())
 		
 		setLevel(creep.level)
+		setAttacksEnabled(1)
 		setAttack1AttackType(creep.attackType)
 		setAttack1DamageBase(creep.damageBase)
 		setAttack1DamageNumberofDice(creep.numberofDice)
@@ -32,6 +33,7 @@ public class CreepUnitBaseDefinition extends UnitDefinition
 		setTintingColorRed(creep.tintingColorRed)
 		setTintingColorGreen(creep.tintingColorGreen)
 		setTintingColorBlue(creep.tintingColorBlue)
+		setScalingValue(creep.scale)
 		if creep.speedBase != 0
 			setSpeedBase(creep.speedBase)
 			setSpeedMinimum(creep.speedMin)

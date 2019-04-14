@@ -32,4 +32,4 @@ public class CompileItemDefinition extends ItemDefinition
 				..setTooltipBasic(itemDef.recieptName) // TODO: Add "Buy"?
 				..setTooltipExtended(itemDef.getRecieptTooltipExtended())
 				..setButtonPositionX(0)
-				..setButtonPositionY(1)
+				..setButtonPositionY(0)

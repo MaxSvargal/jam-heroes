@@ -163,6 +163,20 @@ public class BaseAbilityItemDefinition extends BaseItemDefinition
 				..setLifeRegenerated(1, val)
 				.getNewId())
 
+	function setHitPointsGained(int val)
+		addProp("life gained", val.toString())
+		addAbility(
+			new AbilityDefinitionItemHealLesser(ABIL_ID_GEN.next())
+				..setHitPointsGained(1, val)
+				.getNewId())
+
+	function setManaPointsGained(int val)
+		addProp("mana gained", val.toString())
+		addAbility(
+			new AbilityDefinitionItemManaRestoreLesser(ABIL_ID_GEN.next())
+				..setManaPointsGained(1, val)
+				.getNewId())
+
 	function setManaRegenerated(real val)
 		addProp("mana regenerated", val.toInt().toString())
 		addAbility(

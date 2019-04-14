@@ -12,7 +12,7 @@ public constant healthPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID
 	..setType(ItemType.COMMON)
   ..setCost(50, 0)
   ..setNumberOfCharges(3)
-  ..setLifeRegenerated(500)
+  ..setHitPointsGained(500)
 
 public constant greatHealthPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pghe')
 	..setName("Great Health Positon")
@@ -20,7 +20,7 @@ public constant greatHealthPotion = new BaseAbilityItemDefinition(compiletime(IT
 	..setType(ItemType.COMMON)
   ..setCost(400, 0)
   ..setNumberOfCharges(5)
-	..setLifeRegenerated(5000)
+	..setHitPointsGained(5000)
 
 public constant manaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pgma')
 	..setName("Mana Potion")
@@ -28,7 +28,7 @@ public constant manaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_G
 	..setType(ItemType.COMMON)
   ..setCost(60, 0)
   ..setNumberOfCharges(3)
-	..setManaRegenerated(150)
+	..setManaPointsGained(150)
 
 public constant greatManaPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pgma')
 	..setName("Great Mana Positon")
@@ -36,7 +36,7 @@ public constant greatManaPotion = new BaseAbilityItemDefinition(compiletime(ITEM
 	..setType(ItemType.COMMON)
   ..setCost(500, 0)
   ..setNumberOfCharges(5)
-	..setManaRegenerated(1500)
+	..setManaPointsGained(1500)
 
 public constant universalPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pgma')
 	..setName("Universal Potion")
@@ -44,8 +44,8 @@ public constant universalPotion = new BaseAbilityItemDefinition(compiletime(ITEM
 	..setType(ItemType.COMMON)
   ..setCost(70, 0)
   ..setNumberOfCharges(6)
-	..setLifeRegenerated(250)
-	..setManaRegenerated(75)
+	..setHitPointsGained(250)
+	..setManaPointsGained(75)
 
 public constant greatUniversalPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pgma')
 	..setName("Great Universal Positon")
@@ -53,8 +53,8 @@ public constant greatUniversalPotion = new BaseAbilityItemDefinition(compiletime
 	..setType(ItemType.COMMON)
 	..setCost(600, 0)
   ..setNumberOfCharges(10)
-	..setLifeRegenerated(2500)
-	..setManaRegenerated(750)
+	..setHitPointsGained(2500)
+	..setManaPointsGained(750)
 
 public constant chargedItemsList = new HashList<BaseAbilityItemDefinition>()
 	..add(healthPotion)
