@@ -43,9 +43,9 @@ public constant universalPotion = new BaseAbilityItemDefinition(compiletime(ITEM
 	..setIcon("BTNgreenAApotionGS")
 	..setType(ItemType.COMMON)
   ..setCost(70, 0)
-  ..setNumberOfCharges(6)
-	..setHitPointsGained(250)
+	..setNumberOfCharges(6)
 	..setManaPointsGained(75)
+	..setHitPointsGained(250)
 
 public constant greatUniversalPotion = new BaseAbilityItemDefinition(compiletime(ITEM_ID_GEN.next()), 'pgma')
 	..setName("Great Universal Positon")

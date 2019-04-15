@@ -156,12 +156,19 @@ public class BaseAbilityItemDefinition extends BaseItemDefinition
 				..setMovementSpeedFactor(1, movementSpeedFactor)
 				.getNewId())
 
-	function setLifeRegenerated(real val)
-		addProp("life regenerated", val.toInt().toString())
-		addAbility(
-			new AbilityDefinitionPotionofRejuvI(ABIL_ID_GEN.next())
-				..setLifeRegenerated(1, val)
-				.getNewId())
+	// function setLifeRegenerated(real val)
+	// 	addProp("life regenerated", val.toInt().toString())
+	// 	addAbility(
+	// 		new AbilityDefinitionPotionofRejuvI(ABIL_ID_GEN.next())
+	// 			..setLifeRegenerated(1, val)
+	// 			.getNewId())
+
+	// function setManaRegenerated(real val)
+	// 	addProp("mana regenerated", val.toInt().toString())
+	// 	addAbility(
+	// 		new AbilityDefinitionPotionofRejuvII(ABIL_ID_GEN.next())
+	// 			..setManaRegenerated(1, val)
+	// 			.getNewId())
 
 	function setHitPointsGained(int val)
 		addProp("life gained", val.toString())
@@ -173,13 +180,6 @@ public class BaseAbilityItemDefinition extends BaseItemDefinition
 	function setManaPointsGained(int val)
 		addProp("mana gained", val.toString())
 		addAbility(
-			new AbilityDefinitionItemManaRestoreLesser(ABIL_ID_GEN.next())
+			new AbilityDefinitionItemManaRestoreGreater(ABIL_ID_GEN.next())
 				..setManaPointsGained(1, val)
-				.getNewId())
-
-	function setManaRegenerated(real val)
-		addProp("mana regenerated", val.toInt().toString())
-		addAbility(
-			new AbilityDefinitionPotionofRejuvII(ABIL_ID_GEN.next())
-				..setManaRegenerated(1, val)
 				.getNewId())

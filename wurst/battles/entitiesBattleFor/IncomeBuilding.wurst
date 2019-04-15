@@ -3,7 +3,6 @@ package IncomeBuilding
 import Battle
 import BattleGroup
 import EntityBattleFor
-import ClosureTimers
 
 public class IncomeBuilding implements EntityBattleFor
   private constant unit building

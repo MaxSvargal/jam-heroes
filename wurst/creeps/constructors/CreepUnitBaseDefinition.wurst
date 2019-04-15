@@ -14,6 +14,7 @@ public class CreepUnitBaseDefinition extends UnitDefinition
 
 	function initByDefinition(CreepDefinition creep)
 		setUpgradesUsed(commaList(CREEP_DAMAGE_UPGRADE_ID, CREEP_DEFENCE_UPGRADE_ID, CREEP_HP_UPGRADE_ID))
+		setNormalAbilities("")
 		setNormalAbilities(creep.getAbilities())
 		
 		setLevel(creep.level)

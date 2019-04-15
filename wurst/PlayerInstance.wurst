@@ -39,8 +39,9 @@ public class PlayerInstance
 	
 	construct(player pl)
 		p = pl
-		p.addGold(2000)
-		p.addLumber(2000)
+		p.addGold(50)
+		// p.addGold(2000)
+		// p.addLumber(2000)
 		initGroupBuildingPlaces()
 		createUnit(p, SELECTOR_ID, gg_rct_InitialPos.getCenter(), angle(200))
 		p.setCameraPosition(gg_rct_InitialPos.getCenter())
@@ -114,7 +115,9 @@ public class PlayerInstance
 	private function onHeroBought(unit selling, unit sold)
 		if selling.getTypeId() == TAVERN_ID and sold.getOwner() == p
 			hero = sold
-			hero.setLevel(10, true)
+			// DEV
+			// hero.setLevel(3, true)
+			// createUnit(players[1], sold.getTypeId(), castleHeroPoint, angle(0))
 			hero
 				..setPos(castleHeroPoint)
 				..addAbility(MOVE_TO_GLOBAL_MAP_ID)

@@ -3,9 +3,11 @@ package RecoveryDebuff
 import ChannelAbilityPreset
 
 public constant RECOVERY_DEBUFF_ID = compiletime(ABIL_ID_GEN.next())
+// TODO: replace sith ability with debuff
 
 @compiletime function gen()
-  new AbilityDefinitionTornadoDamage(RECOVERY_DEBUFF_ID)
-    ..setDummyAbility()
+  new ChannelAbilityPreset(RECOVERY_DEBUFF_ID, 1, true)
+    ..setHeroAbility(false)
+    ..setCooldown(1, 60)
     ..setDurationNormal(1, 60)
     ..setTargetsAllowed(1, commaList(TargetsAllowed.enemies))
