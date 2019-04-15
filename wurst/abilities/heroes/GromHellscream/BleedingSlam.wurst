@@ -1,0 +1,87 @@
+package BleedingSlam
+
+import ChannelAbilityPreset
+import ClosureEvents
+import ClosureTimers
+import ClosureForGroups
+import Abilities
+import BuffObjEditing
+import HashMap
+import DamageEvent
+
+constant SPELL_RADIUS = 256.
+constant BUFF_DURATION = 7.
+
+constant BUFF_NAME = "Bleeding"
+constant BUFF_TT = "Cause damage every second"
+constant BUFF_EFFECT = Abilities.stampedeMissileDeath
+
+constant SPELL_EFFECT_PATH = Abilities.bloodImpact
+constant SPELL_TARGET_EFFECT_PATH = "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl"
+constant SPELL_ICON = "BTNMaceStrike"
+constant SPELL_NAME = "Bleeding Slam"
+constant SPELL_HOTKEY = "W"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "Damage nearby enemies depending on base damage, agility and strength and cause a bleeding effect." +
+	" When the enemy already have a debuff, it adds extra damage and stack bleeding effect." +
+	color(255, 184, 30).toColorString() + "\nDamage formula: (base + strength + (agility * 2)) * (level / 2)"
+
+public constant BLEEDING_SLAM_ID = compiletime(ABIL_ID_GEN.next())
+public constant BUFF_OBJ = compiletime(createDummyBuffObject(BUFF_NAME, BUFF_TT,	SPELL_ICON, Abilities.stampedeMissileDeath, "chest"))
+
+@compiletime function gen()
+	new ChannelAbilityPreset(BLEEDING_SLAM_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.NONE)
+		..presetAreaofEffect(lvl -> SPELL_RADIUS)
+		..presetCooldown(lvl -> 5 - (lvl / 5))
+		..presetManaCost(lvl -> 30 + (lvl * 5))
+		..presetCastingTime(lvl -> .1)
+		..presetOption(Option.PHYSICALSPELL, true)
+		..setOrderStringUseTurnOn("whirlwind")
+		..setArtCaster(Abilities.warStompCaster)
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(2)
+
+function bleedingSlamDamage(unit caster, unit target, real damage)
+	DamageEvent.setNextDamageFromCode()
+	DamageEvent.setNextDamageId(BLEEDING_SLAM_ID)
+	caster.damageTarget(target, damage)
+
+let buffMap = new IterableMap<unit, CallbackSingle>()
+let buffId = BUFF_OBJ.abilId
+init
+	EventListener.onCast(BLEEDING_SLAM_ID) (unit caster) ->
+		let abilLvl = caster.getAbilityLevel(BLEEDING_SLAM_ID)
+		let damage = (caster.getBaseDamage(1) + caster.getStr(true) + (caster.getAgi(true) * 2.)) * (abilLvl / 2)
+		caster.queueAnimation("Spell")
+
+		forUnitsInRange(caster.getPos(), SPELL_RADIUS) u ->
+			// Damage based on heroes stats
+			if u.isEnemyOf(caster.getOwner()) and u.isAlive()
+				// Bonus damage for double cast
+				if u.hasAbility(buffId)
+					bleedingSlamDamage(caster, u, damage)
+				// Basic damage
+				u.addEffect(SPELL_TARGET_EFFECT_PATH, "chest")
+				bleedingSlamDamage(caster, u, damage)
+				// Add/remove buff
+				u.addAbility(buffId)
+				if buffMap.has(u)
+					destroy buffMap.get(u)
+				let cb = doAfter(BUFF_DURATION) ->
+					if buffMap.has(u)
+						buffMap.remove(u)
+						u.removeAbility(buffId)
+				buffMap.put(u, cb)
+				// Buff damage, stacked
+				doPeriodicallyTimed(1., BUFF_DURATION) cb ->
+					if u.isAlive()
+						bleedingSlamDamage(caster, u, damage / 7)
+						u.addEffect(BUFF_EFFECT, "chest")

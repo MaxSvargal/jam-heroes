@@ -1,0 +1,89 @@
+package AbsorbShield
+
+import ChannelAbilityPreset
+import ClosureTimers
+import StandardTextTags
+import Abilities
+import ClosureEvents
+import BuffObjEditing
+import DamageEvent
+
+constant BUFF_DURATION = 2.5
+
+constant BUFF_NAME = "Absorb Shield"
+constant BUFF_TT = "When stack it deal more damage"
+constant BUFF_EFFECT = Abilities.voodooAuraTarget
+
+constant SPELL_EFFECT = Abilities.feralspirittarget
+constant SPELL_ICON = "BTNMagicShield1Small"
+constant SPELL_NAME = "Absorb Shield"
+constant SPELL_HOTKEY = "Q"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "Cast shield that absorbs a part of damage based on intellect and agility." +
+	" After 5 seconds it heal a hero for a part of absorbed damage." +
+	color(255, 184, 30).toColorString() + "\nAbsorb formula: (.05 * level) + (.5 - (1 / (intellect + agility)))"
+
+public constant ABSORB_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function gen()
+	new ChannelAbilityPreset(ABSORB_SHIELD_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.NONE)
+		..presetOption(Option.UNIQUECAST, true)
+		..presetCooldown(lvl -> 10 - (lvl / 4))
+		..presetManaCost(lvl -> 20 + (lvl * 5))
+		..presetCastingTime(lvl -> .1)
+		..setButtonPositionNormalX(0)
+		..setButtonPositionNormalY(2)
+
+class AbsorbShield
+	constant BUFF_OBJ = compiletime(createDummyBuffObject(BUFF_NAME, BUFF_TT,	SPELL_ICON, BUFF_EFFECT, "overhead"))
+	constant buffId = BUFF_OBJ.abilId
+	real absorbed = 0
+
+	construct(unit caster)
+		let abilLvl = caster.getAbilityLevel(ABSORB_SHIELD_ID)
+		let statsAmount = (caster.getInt(true) + caster.getAgi(true)).toReal()
+		let absorbPerc = getShieldAbsorbPerc(statsAmount, abilLvl)
+
+		caster.addEffect(SPELL_EFFECT, "origin")
+		caster.addAbility(buffId)
+
+		let cb = DamageEvent.addListener() ->
+			if DamageEvent.getType() == DamageType.ATTACK
+			and DamageEvent.getTarget() == caster
+				let dmg = DamageEvent.getAmount()
+				let incomingDmg = dmg * absorbPerc
+				let absorbedDmg = incomingDmg * absorbPerc
+				DamageEvent.setAmount(incomingDmg)
+				absorbed += absorbedDmg
+				createAbsorbTextTag(caster, absorbedDmg.toInt())
+
+		doAfter(5) ->
+			print("absorbed on heal " + absorbed.toString())
+			caster.addHP(absorbed)
+			caster.removeAbility(buffId)
+			destroy cb
+			destroy this
+
+	function getShieldAbsorbPerc(real val, int lvl) returns real
+		return (.05 * lvl) + (.5 - (1 / val))
+	
+	@Test function getShieldAbsorbPerc()
+		getShieldAbsorbPerc(20, 1).assertEquals(.5)
+		getShieldAbsorbPerc(400, 20).assertEquals(1.4975)
+	
+	function createAbsorbTextTag(unit u, int absorbed)
+		let text = "+" + absorbed.toString()
+		let pos  = u.getPos() - vec2(16., 0.)
+		standardTextTag(pos, text)..setColor(0, 225, 255, 255)
+
+init
+	EventListener.onCast(ABSORB_SHIELD_ID) (unit caster) ->
+		new AbsorbShield(caster)

@@ -1,0 +1,84 @@
+package SeriesOfAttack
+
+import ChannelAbilityPreset
+import ClosureTimers
+import StandardTextTags
+import Abilities
+import HashMap
+import BuffObjEditing
+import DamageEvent
+
+constant BUFF_DURATION = 2.5
+
+constant BUFF_NAME = "Series Of Attack"
+constant BUFF_TT = "When stack it deal more damage"
+constant BUFF_EFFECT = Abilities.stampedeMissileDeath
+
+constant SPELL_EFFECT_PATH = Abilities.bloodImpact
+constant SPELL_TARGET_EFFECT_PATH = "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl"
+constant SPELL_ICON = "PASShadowStrike"
+constant SPELL_NAME = "Series Of Attack"
+constant SPELL_TT_NORMAL = SPELL_NAME
+constant SPELL_TT_EXTENDED = "Passive. When attacking a single target, a debuff is added, which deals extra damage on the next attack." +
+	" When switch the target effect disappears." +
+	color(255, 184, 30).toColorString() + "\nDamage formula: ((strength + (agility * 2)) * number of stacks) / 20 * level"
+
+public constant SERIES_OF_ATTACK_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function gen()
+	new ChannelAbilityPreset(SERIES_OF_ATTACK_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.PASSIVE)
+		..presetOption(Option.PHYSICALSPELL, true)
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(1)
+
+class SeriesOfAttack
+	let buffSet = new HashMap<unit, int>()
+	let cbSet = new HashMap<unit, CallbackSingle>()
+	constant BUFF_OBJ = compiletime(createDummyBuffObject(BUFF_NAME, BUFF_TT,	SPELL_ICON, Abilities.shadowstrike, "overhead"))
+	let buffId = BUFF_OBJ.abilId
+	
+	construct()
+		DamageEvent.addListener() ->
+			if DamageEvent.getSource().hasAbility(SERIES_OF_ATTACK_ID)
+			and	DamageEvent.getType() == DamageType.ATTACK
+				let caster = DamageEvent.getSource()
+				let target = DamageEvent.getTarget()
+
+				if target.hasAbility(buffId)
+					let stacksNum = buffSet.has(target) ? buffSet.get(target) + 1 : 1
+					let abilLvl = caster.getAbilityLevel(SERIES_OF_ATTACK_ID)
+					let bonusDamage = (((caster.getStr(true) + (caster.getAgi(true) * 2)) * stacksNum) / 20) * abilLvl
+					let damage = DamageEvent.getAmount() + bonusDamage
+
+					buffSet.put(target, stacksNum)
+					DamageEvent.setAmount(damage)
+					createCriticalStrikeTextTag(target, damage.toInt())
+
+					target.addAbility(buffId)
+					addCbToRemove(target)
+				else
+					target.addAbility(buffId)
+					buffSet.put(target, 1)
+					addCbToRemove(target)
+
+	function addCbToRemove(unit target)
+		if cbSet.has(target)
+			destroy cbSet.get(target)
+			cbSet.remove(target)
+
+		let cb = doAfter(BUFF_DURATION) () ->
+			if buffSet.has(target)
+				buffSet.remove(target)
+				target.removeAbility(buffId)
+				cbSet.remove(target)
+		cbSet.put(target, cb)
+
+init
+	new SeriesOfAttack()

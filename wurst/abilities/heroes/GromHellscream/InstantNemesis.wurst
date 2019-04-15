@@ -1,0 +1,65 @@
+package InstantNemesis
+
+import ChannelAbilityPreset
+import ClosureEvents
+import ClosureTimers
+import ClosureForGroups
+import Abilities
+import HashSet
+import DamageEvent
+
+constant SPELL_RADIUS = 2000.
+constant BUFF_DURATION = 7.
+
+constant BUFF_NAME = "Instant Nemesis"
+constant BUFF_TT = "Cause damage every second"
+constant BUFF_EFFECT = Abilities.stampedeMissileDeath
+
+constant SPELL_EFFECT_PATH = Abilities.bloodImpact
+constant SPELL_TARGET_EFFECT_PATH = "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl"
+constant SPELL_ICON = "BTN_CR_TIDE_flow"
+constant SPELL_NAME = "Instant Nemesis"
+constant SPELL_HOTKEY = "R"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "Hero immediately blinks from target to target and cause damage for each." +
+	color(255, 184, 30).toColorString() + "\nNumber of targets: 3 + level" +
+	color(255, 184, 30).toColorString() + "\nDamage formula: (base + (strength * 2) + (agility * 3)) * level"
+
+public constant INSTANT_NEMESIS_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function gen()
+	new ChannelAbilityPreset(INSTANT_NEMESIS_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.NONE)
+		..presetAreaofEffect(lvl -> SPELL_RADIUS)
+		..presetCooldown(lvl -> 20 - (lvl / 5))
+		..presetManaCost(lvl -> 70 + (lvl * 5))
+		..presetCastingTime(lvl -> .1)
+		..presetOption(Option.PHYSICALSPELL, true)
+		..setButtonPositionNormalX(3)
+		..setButtonPositionNormalY(2)
+
+let buffSet = new HashSet<unit>()
+// let buffId = BUFF_OBJ.abilId
+init
+	EventListener.onCast(INSTANT_NEMESIS_ID) (unit caster) ->
+		let abilLevel = caster.getAbilityLevel(INSTANT_NEMESIS_ID)
+		let damage = ((caster.getBaseDamage(1) + (caster.getStr(true) * 2) + (caster.getAgi(true) * 3)) * abilLevel).toReal()
+		let count = 3 + abilLevel
+		int i = -1
+		forUnitsInRangeCounted(caster.getPos(), SPELL_RADIUS, count) u ->
+			if u.isEnemyOf(caster.getOwner()) and u.isAlive()
+				i++
+				doAfter(i / 2) () ->
+					caster.setPos(u.getPos())
+					caster.addEffect(Abilities.blinkCaster, "chest")
+					u.addEffect(Abilities.slowcaster, "chest")
+					caster.setAnimation("Attack")
+					DamageEvent.setNextDamageFromCode()
+					caster.damageTarget(u, damage)

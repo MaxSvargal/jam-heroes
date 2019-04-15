@@ -6,16 +6,24 @@ import ObjectIdGenerator
 import Units
 import HeroesList
 import HeroBaseDefinition
+import ObjectIds
+
+import BleedingSlam
+import BrutalLeap
+import InstantNemesis
+import SeriesOfAttack
+import AbsorbShield
 
 public constant GROM_HELLSCREAM_ID = compiletime(HERO_ID_GEN.next())
 public constant GROM_HELLSCREAM_ONMAP_ID = compiletime(UNIT_ID_GEN.next())
 
 @compiletime function gen()
 	new HeroBaseDefinition(UnitIds.gromhellscream, GROM_HELLSCREAM_ID, GROM_HELLSCREAM_ONMAP_ID)
-		..setAttack(27, 2, 16, 1.2) // 36 DPS
-		..setDefence(ArmorType.Hero, 200, 3, 2)
 		..setModelFile(Units.hellscream1)
-		..setStats(23, 19, 16, 2, 1.75, 2)
+		..setAttack(0, 2, 15, 1.7) // 7 DPS
+		..setDefence(ArmorType.Hero, 300, 0, 1)
+		..setStats(9, 11, 8, 2., 1.75, 2.25)
+		..setHeroAbilities(commaList(BLEEDING_SLAM_ID, BRUTAL_LEAP_ID, INSTANT_NEMESIS_ID, SERIES_OF_ATTACK_ID, ABSORB_SHIELD_ID))
 
 init
 	heroesOnMapAndInBattleRelations

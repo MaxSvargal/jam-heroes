@@ -1,0 +1,77 @@
+package BrutalLeap
+
+import Abilities
+import AbilityIds
+import ClosureEvents
+import ClosureTimers
+import ChannelAbilityPreset
+import DummyCaster
+import OrderIds
+
+public constant BRUTAL_LEAP_ID = compiletime(ABIL_ID_GEN.next())
+public constant DUMMY_WARSTOMP_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RANGE_BASE = 600.
+constant SPELL_RADIUS = 300.
+
+constant SPELL_NAME = "Brutal Leap"
+constant SPELL_HOTKEY = "E"
+constant SPELL_ICON = "BTN_CR_TaurSTOMP"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "Jump to spot and stun emenies near point of landing." +
+	color(255, 184, 30).toColorString() + "\nRange: 600 + (level * 50)" +
+	color(255, 184, 30).toColorString() + "\nRadius: 300 + (level * 25)"
+
+@compiletime function gen()
+	new ChannelAbilityPreset(BRUTAL_LEAP_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.POINT)
+		..presetCastRange(lvl -> RANGE_BASE + (lvl * 50))
+		..presetCooldown(lvl -> 15 - (lvl / 5))
+		..presetManaCost(lvl -> 50 + (lvl * 5))
+		..presetCastingTime(lvl -> .01)
+		..presetOption(Option.TARGETIMAGE, true)
+		..setButtonPositionNormalX(2)
+		..setButtonPositionNormalY(2)
+
+	new AbilityDefinitionWarStompcreep(DUMMY_WARSTOMP_ID)
+		..setLevels(20)
+		..presetDamage(lvl -> 0)
+		..presetAreaofEffect(lvl -> SPELL_RADIUS + (lvl * 25))
+
+init
+	EventListener.onPointCast(BRUTAL_LEAP_ID) (unit caster, vec2 pos) ->
+		let casterPos = caster.getPos()
+		let distance = casterPos.distanceTo(pos)
+		let high = .5 * distance
+		let steps = 30
+		let duration = .6
+		let eff = caster.addEffect(Abilities.phoenix_Missile, "chest")
+
+		caster.setPathing(false)
+		caster.addAbility(AbilityIds.stormCrowForm)
+		caster.removeAbility(AbilityIds.stormCrowForm)
+
+		for i = steps downto 1
+			doAfter(duration - (duration / steps * i)) ->
+				let x = distance - (distance / steps * i)
+				let xy = casterPos.moveTowards(pos, x)
+				let z = (4 * high / distance) * (distance - x) * (x / distance)
+				let newPos = xy.withZ(z)
+				caster.setPosFly(newPos)
+				if i == 1
+					eff.destr()
+					caster.setFlyHeight(0, 0)
+					caster.setPathing(true)
+					caster.setAnimation("spell,slam")
+
+					new DummyCaster()
+						..origin(xy)
+						..owner(caster.getOwner())
+						..castImmediate(DUMMY_WARSTOMP_ID, caster.getAbilityLevel(BRUTAL_LEAP_ID), OrderIds.stomp)
