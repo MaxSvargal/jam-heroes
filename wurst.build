@@ -1,5 +1,8 @@
 ---
 projectName: JAMHeroes
+dependencies:
+- https://github.com/wurstscript/wurstStdlib2
+- https://github.com/Frotty/Frentity
 buildMapData:
   name: JAM Heroes
   fileName: Main.w3x

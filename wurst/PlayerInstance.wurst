@@ -40,8 +40,8 @@ public class PlayerInstance
 	construct(player pl)
 		p = pl
 		p.addGold(50)
-		// p.addGold(2000)
-		// p.addLumber(2000)
+		p.addGold(2000)
+		p.addLumber(2000)
 		initGroupBuildingPlaces()
 		createUnit(p, SELECTOR_ID, gg_rct_InitialPos.getCenter(), angle(200))
 		p.setCameraPosition(gg_rct_InitialPos.getCenter())
@@ -101,22 +101,20 @@ public class PlayerInstance
 		return p.getId()
 
 	private function addDebuffToBuildOnUnitDeath(unit u)
-	// TODO: does not work
 		if groupInBattle.contains(u)
-			let buildingToUnitRelations = getBuildingToUnitRelations()
-			let iterator = buildingToUnitRelations.iterator()
-			for buildingId from iterator
-				if buildingToUnitRelations.get(buildingId) == u.getTypeId()
-					let building = GetUnitsOfPlayerAndTypeId(p, buildingId).next()
-					InstantDummyCaster.castTarget(players[PLAYER_NEUTRAL_AGGRESSIVE], RECOVERY_DEBUFF_ID, 1, Orders.tornado, building)
-					break
-			iterator.close()
+		and groupUnitsTowers.getUnitToBuildingRelations().has(u.getTypeId())
+			let buildingId = groupUnitsTowers.getUnitToBuildingRelations().get(u.getTypeId())
+			print("unit contains!" + buildingId.toString())
+			print(GetUnitsOfPlayerAndTypeId(p, buildingId).size())
+			let building = GetUnitsOfPlayerAndTypeId(p, buildingId).next()
+			print("building: " + building.getName())
+			building.addAbility(RECOVERY_DEBUFF_ABILITY_ID)
 
 	private function onHeroBought(unit selling, unit sold)
 		if selling.getTypeId() == TAVERN_ID and sold.getOwner() == p
 			hero = sold
 			// DEV
-			// hero.setLevel(3, true)
+			hero.setLevel(5, true)
 			// createUnit(players[1], sold.getTypeId(), castleHeroPoint, angle(0))
 			hero
 				..setPos(castleHeroPoint)
@@ -162,7 +160,7 @@ public class PlayerInstance
 		let createdGroup = CreateGroup()
 		for u in allUnits
 			let t = u.getTypeId()
-			let buildingToUnitRelations = getBuildingToUnitRelations()
+			let buildingToUnitRelations = groupUnitsTowers.getBuildingToUnitRelations()
 			if buildingToUnitRelations.has(t)
 				let uId = buildingToUnitRelations.get(t)
 				let nu = createUnit(p, uId, pos, angle(0))

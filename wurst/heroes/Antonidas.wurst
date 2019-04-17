@@ -6,16 +6,31 @@ import ObjectIdGenerator
 import Units
 import HeroesList
 import HeroBaseDefinition
+import ObjectIds
+
+import initlater AstralRecovery
+import MagicanMinions
+import ManaReplenishmentAttack
+import GiantFireball
 
 public constant ANTONIDAS_ID = compiletime(HERO_ID_GEN.next())
+public constant ANTONIDAS_ALT_FORM_ID = compiletime(HERO_ID_GEN.next())
 public constant ANTONIDAS_ONMAP_ID = compiletime(UNIT_ID_GEN.next())
 
 @compiletime function gen()
 	new HeroBaseDefinition(UnitIds.antonidus, ANTONIDAS_ID, ANTONIDAS_ONMAP_ID)
-		..setAttack(25, 2, 10, 1.2) // 30 DPS
-		..setDefence(ArmorType.Hero, 150, 2, 2)
-		..setModelFile(Units.heroArchMage) // TODO: make a spell that uses HeroArchMageGhost
-		..setStats(14, 17, 19, 1, 1.5, 3)
+		..setAttack(0, 2, 18, 1.7)
+		..setDefence(ArmorType.Hero, 80, 0, 1)
+		..setStats(7, 9, 12, 1.5, 1.75, 2)
+		..setModelFile(Units.heroArchMage)
+		..setHeroAbilities(commaList(ASTRAL_RECOVERY_ID, MAGICAN_MINIONS_ID, MANA_REPLENISHMENT_ATTACK_ID, GIANT_FIREBALL_ID))
+
+	new UnitDefinition(ANTONIDAS_ALT_FORM_ID, UnitIds.antonidus)
+		..setModelFile(Units.heroArchMageGhost)
+		..setAttacksEnabled(0)
+		..setDefenseBase(2)
+		..setHitPointsMaximumBase(150)
+		// ..setStats(14, 17, 19, 1, 1.5, 3)
 
 init
 	heroesOnMapAndInBattleRelations

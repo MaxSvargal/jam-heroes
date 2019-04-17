@@ -1,0 +1,70 @@
+package AstralRecovery
+
+import ChannelAbilityPreset
+import ClosureEvents
+import ClosureTimers
+import Abilities
+import TextTags
+import DamageEvent
+
+import Antonidas
+
+constant BUFF_NAME = "Astral Recovery"
+constant BUFF_TT = "Cause damage every second"
+constant BUFF_EFFECT = Abilities.stampedeMissileDeath
+
+constant SPELL_EFFECT_PATH = Abilities.bloodImpact
+constant SPELL_TARGET_EFFECT_PATH = "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl"
+constant SPELL_ICON = "BTNMaceStrike"
+constant SPELL_NAME = "Astral Recovery"
+constant SPELL_HOTKEY = "W"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "The hero goes to the astral plan, where he restores his life, is immune to melee attacks but can't attack himself. Spell attack does double damage." +
+	color(255, 184, 30).toColorString() + "\nRestore HP formula: (((intellect * 2 + strength) * level) * (maxHP * 10)) / maxHP"
+
+public constant ASTRAL_RECOVERY_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function gen()
+	new AbilityDefinitionEvilIllidanMetamorphosis(ASTRAL_RECOVERY_ID)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetCastingTime(lvl -> .01)
+		..presetCooldown(lvl -> 30 - (lvl / 5))
+		..presetManaCost(lvl -> 90 + (lvl * 5))
+		..presetCastingTime(lvl -> .1)
+		..setOrderStringUseTurnOn("whirlwind")
+		..setArtCaster(Abilities.warStompCaster)
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(2)
+		..setRequiredLevel(0)
+		..presetNormalFormUnit(lvl -> ANTONIDAS_ID.toRawCode())
+		..presetAlternateFormUnit(lvl -> ANTONIDAS_ALT_FORM_ID.toRawCode())
+		..presetAlternateFormHitPointBonus(lvl -> 0)
+		..presetDurationHero(lvl -> 6)
+
+init
+	EventListener.onCast(ASTRAL_RECOVERY_ID) (unit caster) ->
+		print(GetIssuedOrderIdBJ())
+		print("cast astral")
+		let abilLvl = caster.getAbilityLevel(ASTRAL_RECOVERY_ID)
+		let restoredHP = (((caster.getInt(true) * 2 + caster.getStr(true)) * abilLvl) * (caster.getMaxHP() * 10)) / caster.getMaxHP()
+
+		let cb = DamageEvent.addListener() ->
+			if DamageEvent.getTarget() == caster
+				if DamageEvent.getType() == DamageType.ATTACK
+					DamageEvent.abortCurrent()
+				if DamageEvent.getType() == DamageType.SPELL
+					DamageEvent.addAmount(DamageEvent.getAmount())
+
+		doPeriodicallyCounted(1, 3) cb ->
+			let val = restoredHP / 6
+			caster.addHP(val)
+			createLifeTextTag(caster, val.toInt())
+
+		doAfter(6) ->
+			destroy cb

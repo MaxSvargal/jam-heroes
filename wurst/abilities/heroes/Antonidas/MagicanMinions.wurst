@@ -1,0 +1,56 @@
+package MagicanMinions
+
+// Summon minions that fight on your side. They get a stats based on heroes intellect and strength.
+// Number of minions: 5/10 minions based on level
+// Base damage damage: (strength + (intellect * 2)) * level
+// Amount of life: ((intellect * 3) + (strength * 2)) * level * 10
+
+import ClosureEvents
+import ChannelAbilityPreset
+
+public constant MAGICAN_MINIONS_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RANGE_BASE = 600.
+constant SPELL_RADIUS = 300.
+
+constant SPELL_NAME = "Magican Minions"
+constant SPELL_HOTKEY = "E"
+constant SPELL_ICON = "BTN_CR_TaurSTOMP"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "Summon minions that fight on your side. They get a stats based on heroes intellect and strength." +
+	color(255, 184, 30).toColorString() + "\nNumber of minions: 5/10 minions based on level" +
+	color(255, 184, 30).toColorString() + "\nBase damage damage: (strength + (intellect * 2)) * level / 10" +
+	color(255, 184, 30).toColorString() + "\nAmount of life: ((intellect * 3) + (strength * 2)) * level * 10"
+
+@compiletime function gen()
+	new ChannelAbilityPreset(MAGICAN_MINIONS_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.POINT)
+		..presetOption(Option.TARGETIMAGE, true)
+		..presetCastRange(lvl -> RANGE_BASE + (lvl * 50))
+		..presetCastingTime(lvl -> 2)
+		..presetCooldown(lvl -> 60 - (lvl / 5))
+		..presetManaCost(lvl -> 120 + (lvl * 5))
+		..presetCastingTime(lvl -> .01)
+		..setButtonPositionNormalX(2)
+		..setButtonPositionNormalY(2)
+
+init
+	EventListener.onPointCast(MAGICAN_MINIONS_ID) (unit caster, vec2 pos) ->
+		let abilLvl = caster.getAbilityLevel(MAGICAN_MINIONS_ID)
+		let numOfUnits = abilLvl >= 10 ? 10 : 5
+		for i = 0 to numOfUnits
+			print("base damage " + ((caster.getStr(true) + (caster.getInt(true) * 2)) * abilLvl / 10).toString())
+			print("set hp " + (((caster.getInt(true) * 3) + (caster.getStr(true) * 2)) * abilLvl).toString())
+			createUnit(caster.getOwner(), 'hwat', pos, caster.getFacingAngle())
+				..setTimedLife(60)
+				..setBaseDamage((((caster.getStr(true) + (caster.getInt(true) * 2)) * abilLvl) / 10).toInt(), 1)
+				..setMaxHP(((caster.getInt(true) * 3) + (caster.getStr(true) * 2)) * abilLvl * 10, true)
+				..setArmor(caster.getArmor() / 2)
+				..setScale(0.4 + (0.06 * abilLvl))

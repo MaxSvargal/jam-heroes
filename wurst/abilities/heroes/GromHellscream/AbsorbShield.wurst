@@ -2,7 +2,7 @@ package AbsorbShield
 
 import ChannelAbilityPreset
 import ClosureTimers
-import StandardTextTags
+import TextTags
 import Abilities
 import ClosureEvents
 import BuffObjEditing
@@ -60,10 +60,9 @@ class AbsorbShield
 			and DamageEvent.getTarget() == caster
 				let dmg = DamageEvent.getAmount()
 				let incomingDmg = dmg * absorbPerc
-				let absorbedDmg = incomingDmg * absorbPerc
 				DamageEvent.setAmount(incomingDmg)
-				absorbed += absorbedDmg
-				createAbsorbTextTag(caster, absorbedDmg.toInt())
+				absorbed += incomingDmg
+				createAbsorbTextTag(caster, incomingDmg.toInt())
 
 		doAfter(5) ->
 			print("absorbed on heal " + absorbed.toString())
@@ -78,11 +77,6 @@ class AbsorbShield
 	@Test function getShieldAbsorbPerc()
 		getShieldAbsorbPerc(20, 1).assertEquals(.5)
 		getShieldAbsorbPerc(400, 20).assertEquals(1.4975)
-	
-	function createAbsorbTextTag(unit u, int absorbed)
-		let text = "+" + absorbed.toString()
-		let pos  = u.getPos() - vec2(16., 0.)
-		standardTextTag(pos, text)..setColor(0, 225, 255, 255)
 
 init
 	EventListener.onCast(ABSORB_SHIELD_ID) (unit caster) ->

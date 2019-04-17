@@ -1,0 +1,4 @@
+package MagicBarrier
+
+// Make a shield what reduce damage inside region for value based on intellect and agility.
+// Formula: intellect + (agility * 2)

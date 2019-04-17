@@ -70,9 +70,9 @@ public constant nightArcher = new BaseUnitTowerDefinition(compiletime(UNIT_ID_GE
 	..setIcon(Icons.bTNArcher)
 	..setName("Night Archer")
 	..setDescription("Advanced range unit")
-	..setCost(120, 5, 2)
-	..setAttack(AttackType.Pierce, 130, 3, 25, 1.2)
-  ..setDefence(ArmorType.Unarmored, 700, 2, 1)
+	..setCost(120, 5, 3)
+	..setAttack(AttackType.Pierce, 130, 3, 25, 1.6)
+  ..setDefence(ArmorType.Unarmored, 600, 2, 1)
   ..addUpgradesTo(scout)
 
 public constant archer = new BaseUnitTowerDefinition(compiletime(UNIT_ID_GEN.next()), compiletime(UNIT_ID_GEN.next()))
@@ -82,8 +82,8 @@ public constant archer = new BaseUnitTowerDefinition(compiletime(UNIT_ID_GEN.nex
 	..setName("Archer")
 	..setDescription("Basic range unit")
 	..setCost(60, 1, 1)
-	..setAttack(AttackType.Pierce, 30, 2, 15, 1.3)
-  ..setDefence(ArmorType.Unarmored, 400, 1, 1)
+	..setAttack(AttackType.Pierce, 20, 2, 15, 1.7)
+  ..setDefence(ArmorType.Unarmored, 300, 1, 1)
   ..addUpgradesTo(nightArcher)
 
 public constant rangeUnitsList = new HashList<BaseUnitTowerDefinition>()

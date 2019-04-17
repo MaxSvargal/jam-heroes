@@ -31,7 +31,7 @@ constant SPELL_TT_EXTENDED = "Jump to spot and stun emenies near point of landin
 		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
 		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
 		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
-		..presetTargetTypes(Targettype.POINT)
+		..presetTargetTypes(Targettype.POINTUNIT)
 		..presetCastRange(lvl -> RANGE_BASE + (lvl * 50))
 		..presetCooldown(lvl -> 15 - (lvl / 5))
 		..presetManaCost(lvl -> 50 + (lvl * 5))

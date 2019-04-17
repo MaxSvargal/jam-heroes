@@ -4,11 +4,13 @@ import ClosureTimers
 import MapState
 import GlobalMapController
 import Tavern
+import EntityManagement
 
 init
 	new GlobalMapController()
 	SetTimeOfDay(12)
 	createUnit(players[PLAYER_NEUTRAL_PASSIVE], TAVERN_ID, gg_rct_InitialPos.getCenter(), angle(200))
+	startEntityLoop()
 
 	doAfter(1) ->
 		let multi = CreateMultiboard()

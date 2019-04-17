@@ -12,22 +12,22 @@ import CreepWarlordDefinition
 public constant makruraPrawn = new CreepDefinition(compiletime(UNIT_ID_GEN.next()))
   ..setBaseUnitId(UnitIds.lobstrokkprawn)
   ..setLevel(3)
-  ..setAttack(AttackType.Normal, 13, 2, 6, 1.3) // 15 DPS
-  ..setDefence(ArmorType.Small, 180, 1, 1)
+  ..setAttack(AttackType.Normal, 13, 2, 6, 1.6) // 15 DPS
+  ..setDefence(ArmorType.Small, 160, 1, 1)
   ..setGoldBounty(2, 1, 2)
 
 public constant makruraTidecaller = new CreepDefinition(compiletime(UNIT_ID_GEN.next()))
   ..setBaseUnitId(UnitIds.lobstrokktidecaller)
   ..setLevel(4)
-  ..setAttack(AttackType.Normal, 16, 2, 10, 1.2) // 22 DPS
-  ..setDefence(ArmorType.Medium, 270, 2, 1)
+  ..setAttack(AttackType.Normal, 16, 2, 10, 1.5) // 22 DPS
+  ..setDefence(ArmorType.Medium, 250, 1, 1)
   ..setGoldBounty(3, 1, 2)
 
 public constant makruraDeepseer = new CreepDefinition(compiletime(UNIT_ID_GEN.next()))
   ..setBaseUnitId(UnitIds.lobstrokkdeepseer)
   ..setLevel(5)
-  ..setAttack(AttackType.Hero, 21, 3, 10, 1.1) // 33 DPS
-  ..setDefence(ArmorType.Hero, 400, 3, 1)
+  ..setAttack(AttackType.Hero, 21, 3, 10, 1.4) // 33 DPS
+  ..setDefence(ArmorType.Hero, 400, 2, 1)
   ..setGoldBounty(4, 1, 2)
 
 public constant makruraTidalLord = new CreepWarlordDefinition(compiletime(UNIT_ID_GEN.next()))

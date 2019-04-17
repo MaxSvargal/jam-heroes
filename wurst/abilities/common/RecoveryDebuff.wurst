@@ -1,13 +1,13 @@
 package RecoveryDebuff
 
-import ChannelAbilityPreset
+import BuffObjEditing
+import Icons
+import Abilities
 
-public constant RECOVERY_DEBUFF_ID = compiletime(ABIL_ID_GEN.next())
-// TODO: replace sith ability with debuff
+constant BUFF_NAME = "Recovery"
+constant BUFF_TT = "This unit have reduced stats because it was hurted."
+constant SPELL_ICON = Icons.bTNHex
+constant BUFF_EFFECT = Abilities.boltImpact
 
-@compiletime function gen()
-  new ChannelAbilityPreset(RECOVERY_DEBUFF_ID, 1, true)
-    ..setHeroAbility(false)
-    ..setCooldown(1, 60)
-    ..setDurationNormal(1, 60)
-    ..setTargetsAllowed(1, commaList(TargetsAllowed.enemies))
+public constant BUFF_OBJ = compiletime(createDummyBuffObject(BUFF_NAME, BUFF_TT, SPELL_ICON, BUFF_EFFECT, "chest"))
+public constant RECOVERY_DEBUFF_ABILITY_ID = BUFF_OBJ.abilId

@@ -23,16 +23,24 @@ let toCompile = new HashList<HashList<BaseUnitTowerDefinition>>()
 		listItr.close()
 	citr.close()
 
-constant buildingToUnitRelations = new IterableMap<int, int>()
-public function getBuildingToUnitRelations() returns IterableMap<int, int>
-	if buildingToUnitRelations.size() > 0
-		return buildingToUnitRelations
-	else
+class GroupUnitsTowers
+	constant buildingToUnitRelations = new IterableMap<int, int>()
+	constant unitToBuildingRelations = new IterableMap<int, int>()
+
+	construct()
 		let itr = toCompile.iterator()
 		for list from itr
 			let listItr = list.iterator()
 			for itm from listItr
 				buildingToUnitRelations.put(itm.buildingId, itm.id)
+				unitToBuildingRelations.put(itm.id, itm.buildingId)
 			listItr.close()
 		itr.close()
+
+	function getBuildingToUnitRelations() returns IterableMap<int, int>
 		return buildingToUnitRelations
+
+	function getUnitToBuildingRelations() returns IterableMap<int, int>
+		return unitToBuildingRelations
+
+public constant groupUnitsTowers = new GroupUnitsTowers()

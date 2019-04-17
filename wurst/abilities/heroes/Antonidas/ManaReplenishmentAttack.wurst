@@ -1,0 +1,48 @@
+package ManaReplenishmentAttack
+
+import ChannelAbilityPreset
+import StandardTextTags
+import Abilities
+import DamageEvent
+
+constant SPELL_EFFECT_PATH = Abilities.bloodImpact
+constant SPELL_TARGET_EFFECT_PATH = "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl"
+constant SPELL_ICON = "PASShadowStrike"
+constant SPELL_NAME = "Mana Replenishment Attack"
+constant SPELL_TT_NORMAL = SPELL_NAME
+constant SPELL_TT_EXTENDED = "Passive. Each attack restore mana to the hero based on damage and intellect." +
+	color(255, 184, 30).toColorString() + "\nMana restore formula: ((base damage + intellect) * lvl) / 20"
+
+public constant MANA_REPLENISHMENT_ATTACK_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function gen()
+	new ChannelAbilityPreset(MANA_REPLENISHMENT_ATTACK_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.PASSIVE)
+		..presetOption(Option.PHYSICALSPELL, true)
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(1)
+
+class ManaReplenishmentAttack
+	construct()
+		DamageEvent.addListener() ->
+			if DamageEvent.getSource().hasAbility(MANA_REPLENISHMENT_ATTACK_ID)
+			and	DamageEvent.getType() == DamageType.ATTACK
+				let caster = DamageEvent.getSource()
+				let abilLvl = caster.getAbilityLevel(MANA_REPLENISHMENT_ATTACK_ID)
+				let restoreManaAmount = ((DamageEvent.getAmount() + caster.getInt(true)) * abilLvl) / 20
+				caster.addMana(restoreManaAmount)
+				createTextTag(caster, restoreManaAmount.toInt())
+
+	function createTextTag(unit u, int absorbed)
+		let text = "+" + absorbed.toString()
+		let pos  = u.getPos() - vec2(16., 0.)
+		standardTextTag(pos, text)..setColor(0, 0, 255, 255)
+
+init
+	new ManaReplenishmentAttack()

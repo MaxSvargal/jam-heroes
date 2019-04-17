@@ -1,0 +1,19 @@
+package TextTags
+
+import StandardTextTags
+
+constant OFFSET	 = vec2(16., 0.)
+
+function createTextTagUnit(string prefix, colorA c, int val, unit u)
+  let text = prefix + val.toString()
+  let pos  = u.getPos() - OFFSET
+  standardTextTag(pos, text)..setColor(c)
+
+public function createLifeTextTag(unit u, int val)
+  createTextTagUnit("+", colorA(0, 220, 0, 255), val, u)
+
+public function createManaTextTag(unit u, int val)
+  createTextTagUnit("+", colorA(0, 0, 220, 255), val, u)
+
+public function createAbsorbTextTag(unit u, int val)
+  createTextTagUnit("+", colorA(0, 220, 220, 255), val, u)

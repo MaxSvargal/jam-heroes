@@ -1,0 +1,125 @@
+package GiantFireball
+
+import ChannelAbilityPreset
+import ClosureEvents
+import ClosureTimers
+import ClosureForGroups
+import Abilities
+import BuffObjEditing
+import HashMap
+import DamageEvent
+
+import FxEntity
+import Projectile
+import Fx
+import SoundUtils
+import Assets
+import Collision
+import AbilityTooltipGenerator
+
+constant SPELL_RADIUS = 256.
+constant BUFF_DURATION = 7.
+
+constant BUFF_NAME = "Bleeding"
+constant BUFF_TT = "Cause damage every second"
+constant BUFF_EFFECT = Abilities.stampedeMissileDeath
+
+constant SPELL_EFFECT_PATH = Abilities.bloodImpact
+constant SPELL_TARGET_EFFECT_PATH = "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl"
+constant SPELL_ICON = "BTNMaceStrike"
+constant SPELL_NAME = "Giant Fireball"
+constant SPELL_HOTKEY = "W"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "Damage nearby enemies depending on base damage, agility and strength and cause a bleeding effect." +
+	" When the enemy already have a debuff, it adds extra damage and stack bleeding effect." +
+	color(255, 184, 30).toColorString() + "\nDamage formula: (base + strength + (agility * 2)) * (level / 2)"
+
+public constant GIANT_FIREBALL_ID = compiletime(ABIL_ID_GEN.next())
+public constant BUFF_OBJ = compiletime(createDummyBuffObject(BUFF_NAME, BUFF_TT,	SPELL_ICON, Abilities.stampedeMissileDeath, "chest"))
+
+@compiletime function gen()
+	new ChannelAbilityPreset(GIANT_FIREBALL_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetOption(Option.VISIBLE, true)
+		..presetOption(Option.TARGETIMAGE, true)
+		..presetTargetTypes(Targettype.POINT)
+		..presetAreaofEffect(lvl -> SPELL_RADIUS)
+		..presetCooldown(lvl -> 5 - (lvl / 5))
+		..presetManaCost(lvl -> 30 + (lvl * 5))
+		..presetCastingTime(lvl -> .1)
+		..presetCastRange(lvl -> 1000)
+		..setOrderStringUseTurnOn("whirlwind")
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(2)
+
+constant missileSpeed = 1000.
+constant gravity = 981.
+constant missileType = Abilities.redDragonMissile
+constant SPEED = 13.5
+constant RealLevelClosure AOE = lvl -> (235. + lvl * 35)
+constant RealLevelClosure FACTOR = lvl -> 6.95 + (lvl * 0.5)
+
+class GiantFireball extends PhysicsProjectile
+	vec3 target
+
+	construct(vec3 pos, player owner, vec3 target)
+		super(pos, 16., owner, pos.angleTo2d(target), missileType)
+		let dist = target.distanceToSq(pos)
+		if dist < 512. * 512.
+			setTarget(target, max(SPEED * (dist / (512. .squared())), 2))
+		else
+			setTarget(target, SPEED)
+		this.target = target
+
+	override function onGroundHit()
+		addEffect(Abilities.faerieDragonMissile, pos)..setScale(1.5).destr()
+		terminate()
+
+	override function update()
+		print("upd " + pos.toString() + "target: " + target.toString())
+		super.update()
+
+init
+	EventListener.onPointCast(GIANT_FIREBALL_ID) (unit caster, vec2 pos) ->
+		vec3 castPos = caster.getPos().toVec3().add(0,0,48)
+		let owner = caster.getOwner()
+		vec3 target = pos.withTerrainZ()
+		let angle = castPos.angleTo2d(target)
+		castPos -= angle.toVec(6)
+
+		if castPos.distanceTo(target) < 78.
+			target = (castPos + angle.toVec(128)).toVec2().withTerrainZ()
+
+		new GiantFireball(castPos, owner, target)
+		// new GiantFireball(caster.getPos().withZ(48), caster.getOwner(), pos.withTerrainZ())
+
+		// let abilLvl = caster.getAbilityLevel(GIANT_FIREBALL_ID)
+		// let damage = (caster.getBaseDamage(1) + caster.getStr(true) + (caster.getAgi(true) * 2.)) * (abilLvl / 2)
+
+		// let casterPos = caster.getPos()
+		// let castDirection = casterPos.angleTo(pos)
+		// let distToTarget = casterPos.distanceTo(pos)
+
+		// let flyTime = distToTarget / missileSpeed
+		// let speedZ = (flyTime/2) * gravity
+
+		// vec2 missileVelocity2D = missileSpeed * castDirection.direction()
+		// vec3 missileVelocity = missileVelocity2D.withZ(speedZ)
+
+		// let missile = new Fx(casterPos, castDirection, missileType)
+		// missile.setScale(1.5)
+
+		// doPeriodicallyTimed(ANIMATION_PERIOD, flyTime) (CallbackCounted cb) ->
+		// 	vec3 missilePos = missile.getPos3()
+		// 	missileVelocity.z -= gravity * ANIMATION_PERIOD
+		// 	missilePos += missileVelocity * ANIMATION_PERIOD
+		// 	print(missilePos.toString())
+		// 	missile.setXYZ(missilePos)
+		// 	if cb.isLast()
+		// 		destroy missile
