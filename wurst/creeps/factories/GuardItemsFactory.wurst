@@ -1,0 +1,48 @@
+package GuardItemsFactory
+
+import HashMap
+
+import ItemObjEditing
+import CreepsFactory
+
+public class GuardItemsFactory extends CreepsFactory
+	constant ITEM_DESC = "You can hire this unit for using it in your group or for defend your buildings."
+
+	construct(Warlord warlord)
+		if compiletime
+			new ItemDefinition(warlord.warlordItem.id, 'rst1') // TODO: replace to other?
+			..setAbilities("")
+			..setDescription(ITEM_DESC)
+			..setLevel(warlord.level)
+			..setTooltipBasic(warlord.warlordItem.name)
+			..setName(warlord.warlordItem.name)
+			..setInterfaceIcon(warlord.warlordItem.icon)
+			..setTooltipExtended(ITEM_DESC + "\n\n" + generateProps(warlord))
+
+	function generateProps(Warlord warlord) returns string
+		let lvl = warlord.level
+		let damageBase = getDamageBase(lvl)
+		let numberofDice = getDamageNumberofDice(lvl, damageBase)
+		let sidesperDie = getDamageSidesperDie(damageBase)
+		let cooldownTime = getCooldownTime(lvl)
+		let hitPoints = getHitPointsMaximumBase(lvl)
+		let defenceBase = getDefenceBase(lvl)
+		let f = damageBase + numberofDice
+		let t = damageBase + (numberofDice * sidesperDie)
+
+		let props = new IterableMap<string, string>()
+			..put("Level", lvl.toString())
+			..put("Attack Type", warlord.attackType.toObjectString())
+			..put("Damage", f.toString() + " - " + t.toString())
+			..put("DPS", (((f + t) / 2) * cooldownTime).toInt().toString())
+			..put("Armor type", warlord.armorType.toObjectString())
+			..put("HP", hitPoints.toString())
+			..put("Defence", defenceBase.toString())
+	
+		let iterator = props.iterator()
+		string tooltip = ""
+	
+		for prop from iterator
+			if props.get(prop) != "0"
+				tooltip += prop + ": " + COLOR_GOLD.toColorString() + props.get(prop) + "|r\n"
+		return tooltip

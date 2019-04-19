@@ -1,162 +1,120 @@
 package Creeps
 
-import HashList
-import HashMap
-import LinkedList
+import UnitIds
+import ObjectIdGenerator
+import Icons
+import AbilityIds
 
-import CreepDefinition
-import CreepWarlordDefinition
-import CreepUnitDefinition
-import CreepWarlordOnMapDefinition
-import CompileItemGuardDefinition
-import GuardUnitsRelations
+import CreepsFactory
+import CreepsController
 
-import Crabs
-import Makrura
-import Murlocs
-import SeaElementals
+let crabCrawler = new Creep(
+	1, UnitIds.spidercrab, AttackType.Normal, ArmorType.Unarmored, compiletime(UNIT_ID_GEN.next())
+)
+let crabLimbripper = new Creep(
+	2, UnitIds.spidercrab2, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next())
+)
+let crabBegemoth = new Warlord(
+	new Creep(
+		3, UnitIds.spidercrab3, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
+	),
+	new WarlordItem("Crab Behemoth", Icons.bTNHermitCrab, compiletime(ITEM_ID_GEN.next())),
+	compiletime(UNIT_ID_GEN.next())
+)
+let makruraPrawn = new Creep(
+	3, UnitIds.lobstrokkprawn, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next())
+)
+let makruraTidecaller = new Creep(
+	4, UnitIds.lobstrokktidecaller, AttackType.Normal, ArmorType.Normal, compiletime(UNIT_ID_GEN.next())
+)
+let makruraDeepseer = new Creep(
+	5, UnitIds.lobstrokkdeepseer, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
+)
+let makruraTidalLord = new Warlord(
+	new Creep(
+		6, UnitIds.lobstrokktidallord, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
+	),
+	new WarlordItem("Makura Tidal Lord", Icons.bTNLobstrokkBlue, compiletime(ITEM_ID_GEN.next())),
+	compiletime(UNIT_ID_GEN.next())
+)
+let murloc = new Creep(
+	6, UnitIds.murlocflesheater, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next())
+)
+let murlocWarrior = new Creep(
+	7, UnitIds.murlochuntsman, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
+)
+let murlocMutant = new Warlord(
+	new Creep(
+		8, UnitIds.murlocmutant, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
+	),
+	new WarlordItem("Murloc Mutant", Icons.bTNMurlocMutant, compiletime(ITEM_ID_GEN.next())),
+	compiletime(UNIT_ID_GEN.next())
+)
+let reefElemental = new Creep(
+	8, UnitIds.reefelemental, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next())
+)
+let seaElemental = new Creep(
+	9, UnitIds.seaelemental, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
+)
+let blackwaterElemental = new Warlord(
+	new Creep(
+		10, UnitIds.seaelemental, AttackType.Normal, ArmorType.Hero, compiletime(UNIT_ID_GEN.next()), color(32, 12, 0)
+	),
+	new WarlordItem("Blackwater Elemental", Icons.bTNSeaElemental, compiletime(ITEM_ID_GEN.next())),
+	compiletime(UNIT_ID_GEN.next())
+)
 
-import Bosses
+// Bosses
+let necromancerGhost = new Boss(
+	new Warlord(
+		new Creep(
+			5, UnitIds.seaelemental, AttackType.Magic, ArmorType.Normal, compiletime(UNIT_ID_GEN.next())
+		),
+		new WarlordItem("Necromancer Ghost", Icons.bTNNecromancer, compiletime(ITEM_ID_GEN.next())),
+		compiletime(UNIT_ID_GEN.next())
+	)
+)..setAbilities(AbilityIds.fingerofDeath, AbilityIds.frostArmor, AbilityIds.frostNova, 'ANdp' /* dark portal */)
 
-abstract class CallbackCreep
-	abstract function call(CreepDefinition c)
+let mannoroth = new Boss(
+	new Warlord(
+		new Creep(
+			10, UnitIds.mannoroth, AttackType.Chaos, ArmorType.Large, compiletime(UNIT_ID_GEN.next())
+		),
+		new WarlordItem("Mannoroth", Icons.bTNMannoroth, compiletime(ITEM_ID_GEN.next())),
+		compiletime(UNIT_ID_GEN.next())
+	)
+)..setAbilities(AbilityIds.slam, AbilityIds.cleavingAttack, AbilityIds.bladestorm, 'ACdr' /* life drain */)
 
-abstract class CallbackWarlord
-	abstract function call(CreepWarlordDefinition c)
-
-class Creeps
-	constant creepsLists = new HashList<HashList<CreepDefinition>>()
-		..add(crabsCreepsToCompile)
-		..add(makruraCreepsToCompile)
-		..add(murlocCreepsToCompile)
-		..add(seaElementalsCreepsToCompile)
-		//
-		..add(bossesCreepsToCompile)
-
-	constant warlordsLists = new HashList<HashList<CreepWarlordDefinition>>()
-		..add(crabsWarlordsToCompile)
-		..add(makruraWarlordsToCompile)
-		..add(murlocWarlordsToCompile)
-		..add(seaElementalsWarlordsToCompile)
-	
-	constant bossesLists = new HashList<HashList<CreepWarlordDefinition>>()
-		..add(bossesWarlordsToCompile)
-
-	constant creepToLevelList = new IterableMap<int, int>()
-	constant warlordsToLevelList = new IterableMap<int, int>()
-	constant warlordsToMapList = new IterableMap<int, int>()
-	constant bossesToLevelList = new IterableMap<int, int>()
-
-	construct()
-		fillCreepsList(creepsLists)
-		fillWarlordsList(warlordsLists)
-		fillBossesList(bossesLists)
-		fillWarlordsToOnMapUnitsRelations(warlordsLists)
-		fillWarlordsToOnMapUnitsRelations(bossesLists)
-
-	private function fillCreepsList(HashList<HashList<CreepDefinition>> list)
-		iterateListOfList(list) c ->
-			creepToLevelList.put(c.getId(), c.getLevel())
-
-	private function fillWarlordsList(HashList<HashList<CreepWarlordDefinition>> list)
-		iterateListOfList(list) w ->
-			warlordsToLevelList.put(w.getId(), w.getLevel())
-
-	private function fillBossesList(HashList<HashList<CreepWarlordDefinition>> list)
-		iterateListOfList(list) w ->
-			bossesToLevelList.put(w.getId(), w.getLevel())
-
-	private function fillWarlordsToOnMapUnitsRelations(HashList<HashList<CreepWarlordDefinition>> list)
-		iterateListOfList(list) w ->
-			warlordsToMapList.put(w.getId(), w.getOnMapId())
-
-	private function getRandomUnitOfLevel(IterableMap<int, int> hMap, int level, int min, int max) returns int
-		let iterator = hMap.iterator()
-		let minLvl = level + min
-		let maxLvl = level + max
-		let list = new LinkedList<int>()
-		for uId from iterator
-			let lvl = hMap.get(uId)
-			if lvl >= minLvl and lvl <= maxLvl
-				list.add(uId)
-		iterator.close()
-		if list.size() == 0
-			return hMap.get(0)
-		else
-			return list..shuffle().get(0)
-
-	function getRandomWarlordIdOfLevel(int level) returns int
-		return getRandomUnitOfLevel(warlordsToLevelList, level, 2, 4)
-
-	function getRandomRegularIdOfLevel(int level) returns int
-		return getRandomUnitOfLevel(creepToLevelList, level, 0, 2)
-
-	function getRandomBossIdOfLevel(int level) returns int
-		int rUnitId = getRandomUnitOfLevel(bossesToLevelList, level, 0, 5)
-		if rUnitId != 0
-			return rUnitId
-		else
-			return getRandomUnitOfLevel(bossesToLevelList, level, 0, 100)
-
-	function getOnMapUnitIdByBattleId(int id) returns int
-		return warlordsToMapList.get(id)
-
-	private function iterateListOfList(HashList<HashList<CreepDefinition>> list, CallbackCreep cb)
-		let listListItr = list.iterator()
-		for l from listListItr
-			let listItr = l.iterator()
-			for i from listItr
-				cb.call(i)
-			listItr.close()
-		listListItr.close()
-
-	private function iterateListOfList(HashList<HashList<CreepWarlordDefinition>> list, CallbackWarlord cb)
-		let listListItr = list.iterator()
-		for l from listListItr
-			let listItr = l.iterator()
-			for i from listItr
-				cb.call(i)
-			listItr.close()
-		listListItr.close()
+let goblinBlaster = new Boss(
+	new Warlord(
+		new Creep(
+			15, UnitIds.goblinblaster, AttackType.Pierce, ArmorType.Fortified, compiletime(UNIT_ID_GEN.next())
+		),
+		new WarlordItem("Goblin Blaster", Icons.bTNGoblinZeppelin, compiletime(ITEM_ID_GEN.next())),
+		compiletime(UNIT_ID_GEN.next())
+	)
+)..setAbilities(AbilityIds.cleavingAttack, AbilityIds.chainLightning, AbilityIds.divineShield, 'AEfk' /* Fan of Knifes */)
 
 
-public constant creeps = new Creeps()
+let factory = new CreepsFactory()
+	..add(crabCrawler)
+	..add(crabLimbripper)
+	..add(crabBegemoth)
+	..add(makruraPrawn)
+	..add(makruraTidecaller)
+	..add(makruraDeepseer)
+	..add(makruraTidalLord)
+	..add(murloc)
+	..add(murlocWarrior)
+	..add(murlocMutant)
+	..add(reefElemental)
+	..add(seaElemental)
+	..add(blackwaterElemental)
+	..add(necromancerGhost)
+	..add(mannoroth)
+	..add(goblinBlaster)
 
+public let creepsController = new CreepsController(factory)
 
 @compiletime function gen()
-	let creepsItr = creeps.creepsLists.iterator()
-	for list from creepsItr
-		let itr = list.iterator()
-		for i from itr
-			new CreepUnitDefinition(i)
-		itr.close()
-	creepsItr.close()
-
-	let warlordsItr = creeps.warlordsLists.iterator()
-	for list from warlordsItr
-		let itr = list.iterator()
-		for w from itr
-			new CreepUnitDefinition(w)
-			new CreepWarlordOnMapDefinition(w)
-			new CompileItemGuardDefinition(w)
-		itr.close()
-	warlordsItr.close()
-
-	let bossesItr = creeps.bossesLists.iterator()
-	for list from bossesItr
-		let itr = list.iterator()
-		for b from itr
-			new CreepUnitDefinition(b)
-			new CreepWarlordOnMapDefinition(b)
-		itr.close()
-	bossesItr.close()
-
-init
-	let warlordsItr = creeps.warlordsLists.iterator()
-	for list from warlordsItr
-		let itr = list.iterator()
-		for w from itr
-			unitIdToGuardRelations.put(w.getId(), w.getItemId())
-			itemIdToGuardUnitRelations.put(w.getItemId(), w.getId())
-		itr.close()
-	warlordsItr.close()
+	factory.compile()

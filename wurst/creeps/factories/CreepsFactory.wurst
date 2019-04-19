@@ -1,0 +1,155 @@
+package CreepsFactory
+
+import HashList
+
+import public CreepsEntities
+import initlater GuardItemsFactory
+
+public class CreepsFactory
+	constant creepsList = new HashList<Creep>()
+	constant warlordsList = new HashList<Warlord>()
+	constant bossesList = new HashList<Boss>()
+
+	function createCreepUnit()
+		// TODO: needed here?
+
+	function add(Creep creep)
+		if creep instanceof Boss
+			bossesList.add(creep castTo Boss)
+		else if creep instanceof Warlord
+			warlordsList.add(creep castTo Warlord)
+		else
+			creepsList.add(creep)
+
+	function getDamageBase(int lvl) returns int
+		return 2 + 2 * lvl
+
+	function getDamageNumberofDice(int lvl, int damageBase) returns int
+		return 1 + (damageBase * lvl / 100).toInt()
+
+	function getDamageSidesperDie(int damageBase) returns int
+		return (damageBase / 2).toInt()
+
+	function getCooldownTime(int lvl) returns real // TODO: make based on attack type?
+		return 1.9 - (.01 * lvl)
+
+	function getDefenceBase(int lvl) returns int
+		return (lvl * .45).toInt()
+
+	function getHitPointsMaximumBase(int lvl) returns int
+		return lvl * 150
+	
+	function getDefenseUpgradeBonus(int lvl) returns int
+		return (1 + (lvl / 10)).toInt()
+
+	function getGoldBountyBase(int lvl) returns int
+		return (lvl * 1.25).toInt()
+
+	function getGoldBountyNumberOfDice(int lvl) returns int
+		return (1 + lvl * .25).toInt()
+
+	function getGoldBountyAwardedSidesperDie(int lvl) returns int
+		return (getGoldBountyBase(lvl) / 2).toInt()
+
+	function getScalingValue(int lvl) returns real
+		return 0.8 + lvl * .01
+
+	function getBaseCreepDefinition(int id, Creep creep) returns UnitDefinition
+		return new UnitDefinition(id, creep.baseId)
+			..setLevel(creep.level)
+			..setAttacksEnabled(1)
+			..setAttack1AttackType(creep.attackType)
+			..setArmorType(creep.armorType)
+			..setNormalAbilities("")
+
+	function compileCreep(Creep creep)
+		let lvl = creep.level
+		// print("setAttack1DamageBase " + getDamageBase(lvl).toString())
+		// print("setAttack1DamageNumberofDice " + getDamageNumberofDice(lvl, getDamageBase(lvl)).toString())
+		// print("setAttack1DamageSidesperDie " + getDamageBase(lvl).toString())
+
+		getBaseCreepDefinition(creep.id, creep)
+			..setManaMaximum(0)
+			..setAttack1DamageBase(getDamageBase(lvl))
+			..setAttack1DamageNumberofDice(getDamageNumberofDice(lvl, getDamageBase(lvl)))
+			..setAttack1DamageSidesperDie(getDamageSidesperDie(getDamageBase(lvl)))
+			..setAttack1CooldownTime(getCooldownTime(lvl))
+			..setDefenseBase(getDefenceBase(lvl))
+			..setDefenseUpgradeBonus(getDefenseUpgradeBonus(lvl))
+			..setHitPointsMaximumBase(getHitPointsMaximumBase(lvl))
+			..setGoldBountyAwardedBase(getGoldBountyBase(lvl))
+			..setGoldBountyAwardedNumberofDice(getGoldBountyNumberOfDice(lvl))
+			..setGoldBountyAwardedSidesperDie(getGoldBountyAwardedSidesperDie(lvl))
+			..setScalingValue(getScalingValue(lvl))
+
+	function compileWarlordBase(Warlord warlord)
+		let lvl = warlord.level
+		getBaseCreepDefinition(warlord.id, warlord)
+			..setAttack1DamageBase(getDamageBase(lvl) * 2)
+			..setAttack1DamageNumberofDice(getDamageNumberofDice(lvl, getDamageBase(lvl)) * 2)
+			..setAttack1DamageSidesperDie(getDamageSidesperDie(getDamageBase(lvl)) * 2)
+			..setAttack1CooldownTime(getCooldownTime(lvl) / 1.5)
+			..setDefenseBase(getDefenceBase(lvl) * 2)
+			..setDefenseUpgradeBonus(getDefenseUpgradeBonus(lvl) * 2)
+			..setHitPointsMaximumBase(getHitPointsMaximumBase(lvl) * 4)
+			..setGoldBountyAwardedBase(getGoldBountyBase(lvl) * 5)
+			..setGoldBountyAwardedNumberofDice(getGoldBountyNumberOfDice(lvl) * 2)
+			..setGoldBountyAwardedSidesperDie(getGoldBountyAwardedSidesperDie(lvl) * 2)
+			..setScalingValue(getScalingValue(lvl) + .2)
+
+	function compileBossBase(Boss boss)
+		let lvl = boss.level
+		getBaseCreepDefinition(boss.id, boss)
+			..setAttack1DamageBase(getDamageBase(lvl) * 3)
+			..setAttack1DamageNumberofDice(getDamageNumberofDice(lvl, getDamageBase(lvl)) * 2)
+			..setAttack1DamageSidesperDie(getDamageSidesperDie(getDamageBase(lvl)) * 2)
+			..setAttack1CooldownTime(getCooldownTime(lvl) / 1.5)
+			..setDefenseBase(getDefenceBase(lvl) * 4)
+			..setDefenseUpgradeBonus(getDefenseUpgradeBonus(lvl) * 3)
+			..setHitPointsMaximumBase(getHitPointsMaximumBase(lvl) * 8)
+			..setGoldBountyAwardedBase(getGoldBountyBase(lvl) * 20)
+			..setGoldBountyAwardedNumberofDice(getGoldBountyNumberOfDice(lvl) * 4)
+			..setGoldBountyAwardedSidesperDie(getGoldBountyAwardedSidesperDie(lvl) * 4)
+			..setScalingValue(getScalingValue(lvl) + 1)
+			..setManaInitialAmount(5000)
+			..setManaMaximum(5000)
+
+	function compileWarlordOnMap(Warlord warlord)
+		let lvl = warlord.level
+		getBaseCreepDefinition(warlord.onMapId, warlord)
+			..setSpeedBase(60)
+			..setAttacksEnabled(1)
+			..setAttack1Range(100)
+			..setAttack1TargetsAllowed(TargetsAllowed.organic)
+			..setAcquisitionRange(250)
+			..setSightRadiusNight(200)
+			..setSightRadiusDay(300)
+			..setScalingValue(getScalingValue(lvl) - 0.2)
+
+	function compileGuardItem(Warlord warlord)
+		new GuardItemsFactory(warlord)
+	
+	function compileWarlord(Warlord warlord)
+		compileWarlordBase(warlord)
+		compileWarlordOnMap(warlord)
+		compileGuardItem(warlord)
+
+	function compileBoss(Boss boss)
+		compileBossBase(boss)
+		compileWarlordOnMap(boss)
+
+	function compile()
+		let itr = creepsList.iterator()
+		for i from itr
+			compileCreep(i)
+		itr.close()
+
+		let itr2 = warlordsList.iterator()
+		for i from itr2
+			compileWarlord(i)
+		itr2.close()
+
+		let itr3 = bossesList.iterator()
+		for i from itr3
+			compileBoss(i)
+		itr3.close()

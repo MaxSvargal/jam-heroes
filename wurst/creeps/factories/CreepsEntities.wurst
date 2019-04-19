@@ -1,0 +1,73 @@
+package CreepsEntities
+
+import public UnitObjEditing
+import HashList
+
+public class Creep
+	int level
+	int baseId
+	int id
+	color color
+	AttackType attackType
+	ArmorType armorType
+	HashList<int> abilities
+
+	construct(int level, int baseId, AttackType attackType, ArmorType armorType, int id, color color)
+		this.level = level
+		this.baseId = baseId
+		this.id = id
+		this.attackType = attackType
+		this.armorType = armorType
+		this.color = color
+
+	construct(int level, int baseId, AttackType attackType, ArmorType armorType, int id)
+		this.level = level
+		this.baseId = baseId
+		this.id = id
+		this.attackType = attackType
+		this.armorType = armorType
+		this.color = color(255, 255, 255)
+
+	construct(Creep creep)
+		this.level = creep.level
+		this.baseId = creep.baseId
+		this.id = creep.id
+		this.attackType = creep.attackType
+		this.armorType = creep.armorType
+		this.color = creep.color
+
+	function setAbilities(vararg int abilities)
+		this.abilities = new HashList<int>()
+		for abil in abilities
+			this.abilities.add(abil)
+
+public class WarlordItem
+	string name
+	string icon
+	int id
+	construct(string name, string icon, int id)
+		this.name = name
+		this.icon = icon
+		this.id = id
+
+
+public class Warlord extends Creep
+	WarlordItem warlordItem
+	Creep creep
+	int onMapId
+	construct(Creep creep, WarlordItem warlordItem, int onMapId)
+		super(creep)
+		this.creep = creep
+		this.warlordItem = warlordItem
+		this.onMapId = onMapId
+
+	construct(Warlord warlord)
+		super(warlord.creep)
+		this.creep = warlord.creep
+		this.warlordItem = warlord.warlordItem
+		this.onMapId = warlord.onMapId
+
+
+public class Boss extends Warlord
+	construct(Warlord warlord)
+		super(warlord)

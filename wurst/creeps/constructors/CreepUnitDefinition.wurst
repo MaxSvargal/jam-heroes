@@ -1,9 +1,0 @@
-package CreepUnitDefinition
-
-import CreepUnitBaseDefinition
-import CreepDefinition
-
-public class CreepUnitDefinition extends CreepUnitBaseDefinition
-	construct(CreepDefinition creep)
-		super(creep.id, creep.baseId)
-		super.initByDefinition(creep)

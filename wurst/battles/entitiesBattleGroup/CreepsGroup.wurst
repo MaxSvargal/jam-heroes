@@ -15,9 +15,9 @@ public class CreepsGroup implements BattleGroup
 	unit unitOnMap
 
 	construct(int lvl)
-		warlordId = creeps.getRandomWarlordIdOfLevel(lvl)
-		let creepId = creeps.getRandomRegularIdOfLevel(lvl)
-		for i = 0 to GetRandomInt(2, 8)
+		warlordId = creepsController.getRandomWarlordIdOfLevel(lvl)
+		let creepId = creepsController.getRandomRegularIdOfLevel(lvl)
+		for i = 0 to GetRandomInt(4, 8)
 			unitIds.add(creepId)
 
 	override function createGroupAtRect(rect r) returns group
@@ -34,7 +34,7 @@ public class CreepsGroup implements BattleGroup
 		return units
 
 	function createWarlordOnMapAtPos(vec2 pos) returns unit
-		let unitOnMapId = creeps.warlordsToMapList.get(warlordId)
+		let unitOnMapId = creepsController.getWarlordOnMapById(warlordId)
 		unitOnMap = createUnit(p, unitOnMapId, pos, angle(200))
 		return unitOnMap
 
