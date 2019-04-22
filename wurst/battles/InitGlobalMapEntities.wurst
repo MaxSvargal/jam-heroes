@@ -31,11 +31,7 @@ public class InitGlobalMapEntities
 		let fullDistance = MapState.topOfGlobalMap.distanceTo(MapState.centerOfGlobalMap)
 		let distance = pos.distanceTo(MapState.centerOfGlobalMap)
 		let diff = fullDistance / distance
-		return (diff * 4 - 4).toInt()
-	
-	@Test function calcLevelIncByDistance()
-		getLevelByDistance(vec2(-3000, -15000)).assertLessThanOrEqual(0)
-		getLevelByDistance(vec2(-2243, -3270)).assertGreaterThanOrEqual(95)
+		return 1 + (20 - (20 / diff)).toInt()
 
 	function createCreepCamps()
 		replaceDummiesOnMapWith(UnitIds.lavaspawn) pos ->
@@ -68,3 +64,8 @@ public class InitGlobalMapEntities
 			let unitOnMap = incomeBuilding.getBuilding()
 			incomeBuilding.setBattleGroup(creepsGroup)
 			incomeBuildings.put(unitOnMap, incomeBuilding)
+
+@Test function calcLevelIncByDistance()
+	InitGlobalMapEntities.getLevelByDistance(MapState.topOfGlobalMap).assertEquals(1)
+	InitGlobalMapEntities.getLevelByDistance(MapState.centerOfGlobalMap).assertEquals(101)
+	InitGlobalMapEntities.getLevelByDistance(vec2(-2243, 2465)).assertEquals(51)

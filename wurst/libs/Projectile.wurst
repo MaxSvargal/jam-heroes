@@ -1,4 +1,5 @@
 package Projectile
+
 import public Entity
 import PhysicsEntity
 import FxEntity

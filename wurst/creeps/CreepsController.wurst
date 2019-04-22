@@ -28,7 +28,6 @@ public class CreepsController
 			bossesToLevelList.put(c.id, c.level)
 		itr3.close()
 
-
 		let itr4 = factory.warlordsList.iterator()
 		for c from itr4
 			warlordsToMapList.put(c.id, c.onMapId)
@@ -55,13 +54,13 @@ public class CreepsController
 			return list..shuffle().get(0)
 
 	function getRandomWarlordIdOfLevel(int level) returns int
-		return getRandomUnitOfLevel(warlordsToLevelList, level, 2, 4)
+		return getRandomUnitOfLevel(warlordsToLevelList, level, 1, 2)
 
 	function getRandomRegularIdOfLevel(int level) returns int
-		return getRandomUnitOfLevel(creepToLevelList, level, 2, 4)
+		return getRandomUnitOfLevel(creepToLevelList, level, 0, 2)
 
 	function getRandomBossIdOfLevel(int level) returns int
-		int rUnitId = getRandomUnitOfLevel(bossesToLevelList, level, 0, 5)
+		int rUnitId = getRandomUnitOfLevel(bossesToLevelList, level, 0, 4)
 		if rUnitId != 0
 			return rUnitId
 		else

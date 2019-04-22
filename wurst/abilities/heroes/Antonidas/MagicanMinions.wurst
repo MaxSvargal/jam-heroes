@@ -9,13 +9,15 @@ import ClosureEvents
 import ChannelAbilityPreset
 
 public constant MAGICAN_MINIONS_ID = compiletime(ABIL_ID_GEN.next())
+public constant MAGICAN_MINION_ID = compiletime(UNIT_ID_GEN.next())
 
 constant RANGE_BASE = 600.
 constant SPELL_RADIUS = 300.
 
+
+constant SPELL_ICON = "BTNHellfirePossession"
 constant SPELL_NAME = "Magican Minions"
 constant SPELL_HOTKEY = "E"
-constant SPELL_ICON = "BTN_CR_TaurSTOMP"
 constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
 constant SPELL_TT_EXTENDED = "Summon minions that fight on your side. They get a stats based on heroes intellect and strength." +
 	color(255, 184, 30).toColorString() + "\nNumber of minions: 5/10 minions based on level" +
@@ -40,6 +42,9 @@ constant SPELL_TT_EXTENDED = "Summon minions that fight on your side. They get a
 		..presetCastingTime(lvl -> .01)
 		..setButtonPositionNormalX(2)
 		..setButtonPositionNormalY(2)
+	
+	new UnitDefinition(MAGICAN_MINION_ID, 'nlv1')
+		..setHitPointsMaximumBase(50)
 
 init
 	EventListener.onPointCast(MAGICAN_MINIONS_ID) (unit caster, vec2 pos) ->
@@ -48,7 +53,7 @@ init
 		for i = 0 to numOfUnits
 			print("base damage " + ((caster.getStr(true) + (caster.getInt(true) * 2)) * abilLvl / 10).toString())
 			print("set hp " + (((caster.getInt(true) * 3) + (caster.getStr(true) * 2)) * abilLvl).toString())
-			createUnit(caster.getOwner(), 'hwat', pos, caster.getFacingAngle())
+			createUnit(caster.getOwner(), MAGICAN_MINION_ID, pos, caster.getFacingAngle())
 				..setTimedLife(60)
 				..setBaseDamage((((caster.getStr(true) + (caster.getInt(true) * 2)) * abilLvl) / 10).toInt(), 1)
 				..setMaxHP(((caster.getInt(true) * 3) + (caster.getStr(true) * 2)) * abilLvl * 10, true)

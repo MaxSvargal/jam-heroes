@@ -40,8 +40,8 @@ public class PlayerInstance
 	construct(player pl)
 		p = pl
 		p.addGold(50)
-		p.addGold(2000)
-		p.addLumber(2000)
+		// p.addGold(2000)
+		// p.addLumber(2000)
 		initGroupBuildingPlaces()
 		createUnit(p, SELECTOR_ID, gg_rct_InitialPos.getCenter(), angle(200))
 		p.setCameraPosition(gg_rct_InitialPos.getCenter())
@@ -114,7 +114,7 @@ public class PlayerInstance
 		if selling.getTypeId() == TAVERN_ID and sold.getOwner() == p
 			hero = sold
 			// DEV
-			hero.setLevel(5, true)
+			// hero.setLevel(5, true)
 			// createUnit(players[1], sold.getTypeId(), castleHeroPoint, angle(0))
 			hero
 				..setPos(castleHeroPoint)

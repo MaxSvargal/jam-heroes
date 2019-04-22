@@ -1,103 +1,17 @@
 package Creeps
 
-import UnitIds
-import ObjectIdGenerator
-import Icons
-import AbilityIds
-
 import CreepsFactory
 import CreepsController
 
-let crabCrawler = new Creep(
-	1, UnitIds.spidercrab, AttackType.Normal, ArmorType.Unarmored, compiletime(UNIT_ID_GEN.next())
-)
-let crabLimbripper = new Creep(
-	2, UnitIds.spidercrab2, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next())
-)
-let crabBegemoth = new Warlord(
-	new Creep(
-		3, UnitIds.spidercrab3, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
-	),
-	new WarlordItem("Crab Behemoth", Icons.bTNHermitCrab, compiletime(ITEM_ID_GEN.next())),
-	compiletime(UNIT_ID_GEN.next())
-)
-let makruraPrawn = new Creep(
-	3, UnitIds.lobstrokkprawn, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next())
-)
-let makruraTidecaller = new Creep(
-	4, UnitIds.lobstrokktidecaller, AttackType.Normal, ArmorType.Normal, compiletime(UNIT_ID_GEN.next())
-)
-let makruraDeepseer = new Creep(
-	5, UnitIds.lobstrokkdeepseer, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
-)
-let makruraTidalLord = new Warlord(
-	new Creep(
-		6, UnitIds.lobstrokktidallord, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
-	),
-	new WarlordItem("Makura Tidal Lord", Icons.bTNLobstrokkBlue, compiletime(ITEM_ID_GEN.next())),
-	compiletime(UNIT_ID_GEN.next())
-)
-let murloc = new Creep(
-	6, UnitIds.murlocflesheater, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next())
-)
-let murlocWarrior = new Creep(
-	7, UnitIds.murlochuntsman, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
-)
-let murlocMutant = new Warlord(
-	new Creep(
-		8, UnitIds.murlocmutant, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
-	),
-	new WarlordItem("Murloc Mutant", Icons.bTNMurlocMutant, compiletime(ITEM_ID_GEN.next())),
-	compiletime(UNIT_ID_GEN.next())
-)
-let reefElemental = new Creep(
-	8, UnitIds.reefelemental, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next())
-)
-let seaElemental = new Creep(
-	9, UnitIds.seaelemental, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next())
-)
-let blackwaterElemental = new Warlord(
-	new Creep(
-		10, UnitIds.seaelemental, AttackType.Normal, ArmorType.Hero, compiletime(UNIT_ID_GEN.next()), color(32, 12, 0)
-	),
-	new WarlordItem("Blackwater Elemental", Icons.bTNSeaElemental, compiletime(ITEM_ID_GEN.next())),
-	compiletime(UNIT_ID_GEN.next())
-)
+import CreepsRegular
+import CreepsWarlords
+import CreepsBosses
 
-// Bosses
-let necromancerGhost = new Boss(
-	new Warlord(
-		new Creep(
-			5, UnitIds.seaelemental, AttackType.Magic, ArmorType.Normal, compiletime(UNIT_ID_GEN.next())
-		),
-		new WarlordItem("Necromancer Ghost", Icons.bTNNecromancer, compiletime(ITEM_ID_GEN.next())),
-		compiletime(UNIT_ID_GEN.next())
-	)
-)..setAbilities(AbilityIds.fingerofDeath, AbilityIds.frostArmor, AbilityIds.frostNova, 'ANdp' /* dark portal */)
-
-let mannoroth = new Boss(
-	new Warlord(
-		new Creep(
-			10, UnitIds.mannoroth, AttackType.Chaos, ArmorType.Large, compiletime(UNIT_ID_GEN.next())
-		),
-		new WarlordItem("Mannoroth", Icons.bTNMannoroth, compiletime(ITEM_ID_GEN.next())),
-		compiletime(UNIT_ID_GEN.next())
-	)
-)..setAbilities(AbilityIds.slam, AbilityIds.cleavingAttack, AbilityIds.bladestorm, 'ACdr' /* life drain */)
-
-let goblinBlaster = new Boss(
-	new Warlord(
-		new Creep(
-			15, UnitIds.goblinblaster, AttackType.Pierce, ArmorType.Fortified, compiletime(UNIT_ID_GEN.next())
-		),
-		new WarlordItem("Goblin Blaster", Icons.bTNGoblinZeppelin, compiletime(ITEM_ID_GEN.next())),
-		compiletime(UNIT_ID_GEN.next())
-	)
-)..setAbilities(AbilityIds.cleavingAttack, AbilityIds.chainLightning, AbilityIds.divineShield, 'AEfk' /* Fan of Knifes */)
-
-
+// TODO: set level based on added index!
 let factory = new CreepsFactory()
 	..add(crabCrawler)
+	..add(archnathid)
+	..add(barbedArachnathid)
 	..add(crabLimbripper)
 	..add(crabBegemoth)
 	..add(makruraPrawn)
@@ -110,6 +24,10 @@ let factory = new CreepsFactory()
 	..add(reefElemental)
 	..add(seaElemental)
 	..add(blackwaterElemental)
+	..add(centaurArcher)
+	..add(centaurOutrunner)
+	..add(centaurKhan)
+
 	..add(necromancerGhost)
 	..add(mannoroth)
 	..add(goblinBlaster)

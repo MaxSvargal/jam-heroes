@@ -1,0 +1,35 @@
+package CreepsBosses
+
+import CreepsEntities
+import ObjectIdGenerator
+import Assets
+
+public let necromancerGhost = new Boss(
+	new Warlord(
+		new Creep(
+			5, UnitIds.seaelemental, AttackType.Magic, ArmorType.Normal, compiletime(UNIT_ID_GEN.next())
+		),
+		new WarlordItem("Necromancer Ghost", Icons.bTNNecromancer, compiletime(ITEM_ID_GEN.next())),
+		compiletime(UNIT_ID_GEN.next())
+	)
+)..setAbilities(AbilityIds.fingerofDeath, AbilityIds.frostArmor, AbilityIds.frostNova, 'ANdp' /* dark portal */)
+
+public let mannoroth = new Boss(
+	new Warlord(
+		new Creep(
+			10, UnitIds.mannoroth, AttackType.Chaos, ArmorType.Large, compiletime(UNIT_ID_GEN.next())
+		),
+		new WarlordItem("Mannoroth", Icons.bTNMannoroth, compiletime(ITEM_ID_GEN.next())),
+		compiletime(UNIT_ID_GEN.next())
+	)
+)..setAbilities(AbilityIds.slam, AbilityIds.cleavingAttack, AbilityIds.bladestorm, 'ACdr' /* life drain */)
+
+public let goblinBlaster = new Boss(
+	new Warlord(
+		new Creep(
+			15, UnitIds.goblinblaster, AttackType.Pierce, ArmorType.Fortified, compiletime(UNIT_ID_GEN.next())
+		),
+		new WarlordItem("Goblin Blaster", Icons.bTNGoblinZeppelin, compiletime(ITEM_ID_GEN.next())),
+		compiletime(UNIT_ID_GEN.next())
+	)
+)..setAbilities(AbilityIds.cleavingAttack, AbilityIds.chainLightning, AbilityIds.divineShield, 'AEfk' /* Fan of Knifes */)

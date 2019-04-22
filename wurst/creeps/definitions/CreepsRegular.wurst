@@ -1,0 +1,52 @@
+package CreepsRegular
+
+import CreepsEntities
+import ObjectIdGenerator
+import Assets
+
+public let crabCrawler = new Creep(
+	1, UnitIds.spidercrab, AttackType.Normal, ArmorType.Unarmored, compiletime(UNIT_ID_GEN.next()))
+
+public let archnathid = new Creep(
+	2, UnitIds.crystalarachnathid, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next()))
+
+public let crabLimbripper = new Creep(
+	3, UnitIds.spidercrab2, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next()))
+
+public let forestSpider = new Creep(
+	4, UnitIds.forestspider, AttackType.Normal, ArmorType.Unarmored, compiletime(UNIT_ID_GEN.next()))
+
+public let blackSpider = new Creep(
+	5, UnitIds.spiderblack, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next()))
+
+public let spittingSpider = new Creep(
+	6, UnitIds.spittingspider, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next()))
+
+public let makruraPrawn = new Creep(
+	7, UnitIds.lobstrokkprawn, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next()))
+
+public let makruraTidecaller = new Creep(
+	8, UnitIds.lobstrokktidecaller, AttackType.Normal, ArmorType.Normal, compiletime(UNIT_ID_GEN.next()))
+
+public let makruraDeepseer = new Creep(
+	9, UnitIds.lobstrokkdeepseer, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next()))
+
+public let murloc = new Creep(
+	10, UnitIds.murlocflesheater, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next()))
+
+public let murlocWarrior = new Creep(
+	11, UnitIds.murlochuntsman, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next()))
+
+public let reefElemental = new Creep(
+	12, UnitIds.reefelemental, AttackType.Normal, ArmorType.Small, compiletime(UNIT_ID_GEN.next()))
+
+public let centaurArcher = new Creep(
+	13, UnitIds.centaurarcher, AttackType.Pierce, ArmorType.Small, compiletime(UNIT_ID_GEN.next()))
+
+public let centaurOutrunner = new Creep(
+	14, UnitIds.centauroutrunner, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next()))
+
+public let seaElemental = new Creep(
+	15, UnitIds.seaelemental, AttackType.Normal, ArmorType.Medium, compiletime(UNIT_ID_GEN.next()))
+
+// TODO: set level based on index

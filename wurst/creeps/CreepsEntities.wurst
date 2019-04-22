@@ -12,18 +12,10 @@ public class Creep
 	ArmorType armorType
 	HashList<int> abilities
 
-	construct(int level, int baseId, AttackType attackType, ArmorType armorType, int id, color color)
-		this.level = level
-		this.baseId = baseId
-		this.id = id
-		this.attackType = attackType
-		this.armorType = armorType
-		this.color = color
-
 	construct(int level, int baseId, AttackType attackType, ArmorType armorType, int id)
 		this.level = level
 		this.baseId = baseId
-		this.id = id
+		this.id = id //UNIT_ID_GEN.next()
 		this.attackType = attackType
 		this.armorType = armorType
 		this.color = color(255, 255, 255)
@@ -40,6 +32,9 @@ public class Creep
 		this.abilities = new HashList<int>()
 		for abil in abilities
 			this.abilities.add(abil)
+
+	function setColor(color color)
+		this.color = color
 
 public class WarlordItem
 	string name

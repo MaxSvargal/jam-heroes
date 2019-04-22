@@ -25,10 +25,10 @@ public class CreepsFactory
 		return 2 + 2 * lvl
 
 	function getDamageNumberofDice(int lvl, int damageBase) returns int
-		return 1 + (damageBase * lvl / 100).toInt()
+		return 1 + (damageBase / 100).toInt()
 
 	function getDamageSidesperDie(int damageBase) returns int
-		return (damageBase / 2).toInt()
+		return (damageBase / 3).toInt()
 
 	function getCooldownTime(int lvl) returns real // TODO: make based on attack type?
 		return 1.9 - (.01 * lvl)
@@ -37,7 +37,7 @@ public class CreepsFactory
 		return (lvl * .45).toInt()
 
 	function getHitPointsMaximumBase(int lvl) returns int
-		return lvl * 150
+		return lvl * 80
 	
 	function getDefenseUpgradeBonus(int lvl) returns int
 		return (1 + (lvl / 10)).toInt()
@@ -85,13 +85,13 @@ public class CreepsFactory
 	function compileWarlordBase(Warlord warlord)
 		let lvl = warlord.level
 		getBaseCreepDefinition(warlord.id, warlord)
-			..setAttack1DamageBase(getDamageBase(lvl) * 2)
+			..setAttack1DamageBase(getDamageBase(lvl + 3))
 			..setAttack1DamageNumberofDice(getDamageNumberofDice(lvl, getDamageBase(lvl)) * 2)
-			..setAttack1DamageSidesperDie(getDamageSidesperDie(getDamageBase(lvl)) * 2)
-			..setAttack1CooldownTime(getCooldownTime(lvl) / 1.5)
-			..setDefenseBase(getDefenceBase(lvl) * 2)
-			..setDefenseUpgradeBonus(getDefenseUpgradeBonus(lvl) * 2)
-			..setHitPointsMaximumBase(getHitPointsMaximumBase(lvl) * 4)
+			..setAttack1DamageSidesperDie(getDamageSidesperDie(getDamageBase(lvl + 3)))
+			..setAttack1CooldownTime(getCooldownTime(lvl + 3))
+			..setDefenseBase(getDefenceBase(lvl) + 2)
+			..setDefenseUpgradeBonus(getDefenseUpgradeBonus(lvl) + 1)
+			..setHitPointsMaximumBase(getHitPointsMaximumBase(lvl + 5))
 			..setGoldBountyAwardedBase(getGoldBountyBase(lvl) * 5)
 			..setGoldBountyAwardedNumberofDice(getGoldBountyNumberOfDice(lvl) * 2)
 			..setGoldBountyAwardedSidesperDie(getGoldBountyAwardedSidesperDie(lvl) * 2)

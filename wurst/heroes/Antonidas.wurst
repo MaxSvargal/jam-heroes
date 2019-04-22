@@ -10,8 +10,9 @@ import ObjectIds
 
 import initlater AstralRecovery
 import MagicanMinions
-import ManaReplenishmentAttack
+import ManaSparkAttack
 import GiantFireball
+import Balls
 
 public constant ANTONIDAS_ID = compiletime(HERO_ID_GEN.next())
 public constant ANTONIDAS_ALT_FORM_ID = compiletime(HERO_ID_GEN.next())
@@ -23,7 +24,7 @@ public constant ANTONIDAS_ONMAP_ID = compiletime(UNIT_ID_GEN.next())
 		..setDefence(ArmorType.Hero, 80, 0, 1)
 		..setStats(7, 9, 12, 1.5, 1.75, 2)
 		..setModelFile(Units.heroArchMage)
-		..setHeroAbilities(commaList(ASTRAL_RECOVERY_ID, MAGICAN_MINIONS_ID, MANA_REPLENISHMENT_ATTACK_ID, GIANT_FIREBALL_ID))
+		..setHeroAbilities(commaList(ASTRAL_RECOVERY_ID, MAGICAN_MINIONS_ID, MANA_SPARK_ATTACK_ID, GIANT_FIREBALL_ID, BALLS_ID))
 
 	new UnitDefinition(ANTONIDAS_ALT_FORM_ID, UnitIds.antonidus)
 		..setModelFile(Units.heroArchMageGhost)

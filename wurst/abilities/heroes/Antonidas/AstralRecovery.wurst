@@ -6,6 +6,7 @@ import ClosureTimers
 import Abilities
 import TextTags
 import DamageEvent
+import Icons
 
 import Antonidas
 
@@ -15,7 +16,7 @@ constant BUFF_EFFECT = Abilities.stampedeMissileDeath
 
 constant SPELL_EFFECT_PATH = Abilities.bloodImpact
 constant SPELL_TARGET_EFFECT_PATH = "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl"
-constant SPELL_ICON = "BTNMaceStrike"
+constant SPELL_ICON = Icons.bTNGhostMage
 constant SPELL_NAME = "Astral Recovery"
 constant SPELL_HOTKEY = "W"
 constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
