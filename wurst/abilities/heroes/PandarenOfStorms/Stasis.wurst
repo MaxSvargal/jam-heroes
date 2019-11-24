@@ -1,0 +1,80 @@
+package Stasis
+
+import ChannelAbilityPreset
+import ClosureTimers
+import TextTags
+import ClosureEvents
+import DamageEvent
+import InstantDummyCaster
+import Orders
+
+constant SPELL_ICON = "BTN_LightningOrc_ThunderStorm"
+constant SPELL_NAME = "Stasis"
+constant SPELL_HOTKEY = "Q"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "" +
+	color(255, 184, 30).toColorString() + "\nDamage formula: base + (strength + (intellect * 2)) / 10 * level"
+
+public constant STASIS_ID = compiletime(ABIL_ID_GEN.next())
+public constant STUN_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function gen()
+	new ChannelAbilityPreset(STASIS_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.NONE)
+		..presetCooldown(lvl -> 15 - (lvl / 4))
+		..presetManaCost(lvl -> (50 * (lvl / 2)).toInt())
+		..presetCastingTime(lvl -> .25)
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(2)
+
+		..presetDisableOtherAbilities(lvl -> true)
+		..presetFollowThroughTime(lvl -> 5)
+		..presetArtDuration(lvl -> 5)
+
+	new AbilityDefinitionMountainKingThunderBolt(STUN_ID)
+		..setDamage(1, 0)
+		..setManaCost(1, 0)
+		..setMissileArt("")
+		..setMissileSpeed(2000)
+
+class Stasis
+	constant ticks = 10
+	constant interval = .5
+	constant time = ticks * interval
+
+	construct(unit caster)
+		let toRestorePerTick = (caster.getMaxHP() - caster.getHP()) / ticks
+
+		doPeriodicallyCounted(interval, ticks) cb ->
+			caster.addHP(toRestorePerTick)
+			createLifeTextTag(caster, toRestorePerTick.toInt())
+		
+		let cb = listenForIncomingDamage(caster)
+		toggleVertex(caster, true)
+		doAfter(time) () ->
+			toggleVertex(caster, false)
+			destroy cb
+			destroy this
+	
+	static function listenForIncomingDamage(unit caster) returns DamageListener
+		return DamageEvent.addListener() ->
+			if DamageEvent.getTarget() == caster
+				if GetRandomInt(0, 2) == 2
+					InstantDummyCaster.castTarget(caster.getOwner(), STUN_ID, 1, Orders.thunderbolt, DamageEvent.getSource(), caster.getPos())
+
+	static function toggleVertex(unit u, bool state)
+		if state == true
+			u.setVertexColor(colorA(255, 255, 255, 50))
+		else
+			u.setVertexColor(colorA(255, 255, 255, 255))
+
+init
+	EventListener.onCast(STASIS_ID) caster ->
+		new Stasis(caster)

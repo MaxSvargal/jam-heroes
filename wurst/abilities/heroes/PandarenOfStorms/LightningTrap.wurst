@@ -1,0 +1,70 @@
+package LightningTrap
+
+import ChannelAbilityPreset
+import ClosureTimers
+import ClosureEvents
+import ClosureForGroups
+import UnitIds
+import InstantDummyCaster
+import AbilityIds
+import Orders
+import Abilities
+
+constant SPELL_ICON = "BTNStormSphere"
+constant SPELL_NAME = "Lightning Trap"
+constant SPELL_HOTKEY = "E"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "Spawn a lightning trap at selected point. The trap detonate then enemy comes and stun all enemies around." +
+	" The trap is working for 30 seconds, then it dotenate." +
+	color(255, 184, 30).toColorString() + "\nDamage: (intellect * level) / 20" +
+	color(255, 184, 30).toColorString() + "\nStun duration: (intellect * level) / 20"
+
+public constant LIGHTNING_TRAP_ID = compiletime(ABIL_ID_GEN.next())
+public constant LIGHTNING_TRAP_UNIT_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new ChannelAbilityPreset(LIGHTNING_TRAP_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.POINT)
+		..presetCooldown(lvl -> 5 - (lvl / 6))
+		..presetManaCost(lvl -> (50 * (lvl / 2)).toInt())
+		..presetCastingTime(lvl -> .25)
+		..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.friend, TargetsAllowed.organic, TargetsAllowed.self))
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(2)
+
+	new UnitDefinition(LIGHTNING_TRAP_UNIT_ID, UnitIds.serpentward1)
+		..setAttacksEnabled(0)
+		// ..setModelFile(Units.tNTBarrel)
+		..setModelFile(Abilities.manaFlareTarget)
+		..setScalingValue(2)
+
+class LightningTrap
+	construct(unit caster, vec2 pos)
+		let lvl = caster.getAbilityLevel(LIGHTNING_TRAP_ID)
+		let owner = caster.getOwner()
+		let trap = createUnit(caster.getOwner(), LIGHTNING_TRAP_UNIT_ID, pos, caster.getFacingAngle())
+		trap.addEffect(Abilities.lightningShieldTarget, "origin")
+		trap.setInvulnerable(true) // Invisible instead?
+		let rec = trap.getPos().withRadiusRect(250)
+		doPeriodicallyTimed(.5, 30) cb ->
+			forUnitsInRect(rec) u ->
+				if u.isEnemyOf(owner)
+				and trap.isAlive()
+					trap.kill()
+					flashEffect(Abilities.thunderclapCaster, pos, 3)
+					// TODO: remove damage from ability, set time of stun
+					InstantDummyCaster.castImmediate(owner, AbilityIds.warStomp, lvl, Orders.stomp, pos)
+					cb.stop()
+			if cb.isLast()
+				trap.kill()
+
+init
+	EventListener.onPointCast(LIGHTNING_TRAP_ID) (unit caster, vec2 pos) ->
+		new LightningTrap(caster, pos)

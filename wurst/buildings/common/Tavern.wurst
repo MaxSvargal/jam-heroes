@@ -7,6 +7,7 @@ import ObjectIds
 
 import GromHellscream
 import Antonidas
+import PandarenOfStorms
 
 public constant TAVERN_ID = compiletime(UNIT_ID_GEN.next())
 
@@ -16,5 +17,6 @@ public constant TAVERN_ID = compiletime(UNIT_ID_GEN.next())
 		//..setNormalAbilities("")
 		..setUnitsSold(commaList(
 			GROM_HELLSCREAM_ID,
-			ANTONIDAS_ID
+			ANTONIDAS_ID,
+			PANDAREN_OF_STORMS_ID
 		))

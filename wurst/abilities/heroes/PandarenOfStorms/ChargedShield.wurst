@@ -1,0 +1,75 @@
+package ChargedShield
+
+import ChannelAbilityPreset
+import ClosureTimers
+import Abilities
+import TextTags
+import ClosureEvents
+import DamageEvent
+import BuffObjEditing
+import ClosureForGroups
+import Icons
+
+constant BUFF_NAME = "Charged Shield"
+constant BUFF_TT = "Demolish after 5 seconds"
+
+constant SPELL_ICON = Icons.bTNLightningShield
+constant SPELL_NAME = "Charged Shield"
+constant SPELL_HOTKEY = "W"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "Cast a charged shield to ally unit and increase it's defence based on agility and intellect of the hero." +
+	" After 5 seconds shield detonate and damage enemies around. Damage based on all heroes stats." +
+	color(255, 184, 30).toColorString() + "\nArmor formula: current + (intellect + (agility * 2)) / 10 * level" +
+	color(255, 184, 30).toColorString() + "\nDamage formula: (bonus armor * 10) + strength"
+
+public constant CHARGED_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
+public constant CHARGED_SHIELD_BUFF_ID = compiletime(createDummyBuffObject(BUFF_NAME, BUFF_TT,	SPELL_ICON, Abilities.shadowstrike, "overhead"))
+
+@compiletime function gen()
+	new ChannelAbilityPreset(CHARGED_SHIELD_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.UNIT)
+		..presetCooldown(lvl -> 5 - (lvl / 6))
+		..presetManaCost(lvl -> (50 * (lvl / 2)).toInt())
+		..presetCastingTime(lvl -> .25)
+		..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.friend, TargetsAllowed.organic, TargetsAllowed.self))
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(2)
+
+class ChargedShield
+	construct(unit caster, unit target)
+		let lvl = caster.getAbilityLevel(CHARGED_SHIELD_ID)
+		let bonusArmor = ((caster.getAgi(true) * 2) + caster.getInt(true)) / 10 * lvl
+		let origArmor = target.getArmor()
+		let radius = 250. + (caster.getStr(true) * lvl)
+		let damage = (bonusArmor * 10) + caster.getStr(true)
+
+		target.addAbility(CHARGED_SHIELD_BUFF_ID.abilId)
+		let targetEf = target.addEffect(Abilities.lightningShieldTarget, "chest")
+		target.setArmor(origArmor + bonusArmor)
+
+		doAfter(5) ->
+			target.setArmor(origArmor)
+			targetEf.destr()
+			target.removeAbility(CHARGED_SHIELD_BUFF_ID.abilId)
+			forUnitsInRange(target.getPos(), radius) (unit u) ->
+				if u.isEnemyOf(caster.getOwner())
+					spellDamage(target, u, damage)
+					flashEffect(Abilities.aIlbSpecialArt, u.getPos(), 5)
+			destroy this
+	
+	function spellDamage(unit caster, unit target, real damage)
+		DamageEvent.setNextDamageFromCode()
+		DamageEvent.setNextDamageId(CHARGED_SHIELD_ID)
+		caster.damageTarget(target, damage)
+		createDamageTextTag(target, damage.toInt())
+
+init
+	EventListener.onTargetCast(CHARGED_SHIELD_ID) (unit caster, unit target) ->
+		new ChargedShield(caster, target)

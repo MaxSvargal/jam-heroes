@@ -8,11 +8,10 @@ import ClosureEvents
 import BuffObjEditing
 import DamageEvent
 
-constant BUFF_DURATION = 2.5
-
 constant BUFF_NAME = "Absorb Shield"
 constant BUFF_TT = "When stack it deal more damage"
 constant BUFF_EFFECT = Abilities.voodooAuraTarget
+constant BUFF_DURATION = 2.5
 
 constant SPELL_EFFECT = Abilities.feralspirittarget
 constant SPELL_ICON = "BTNMagicShield1Small"

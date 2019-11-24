@@ -1,0 +1,81 @@
+package StormManaburnTotem
+
+import ChannelAbilityPreset
+import ClosureTimers
+import ClosureEvents
+import DamageEvent
+import UnitIds
+import Buildings
+import TextTags
+
+constant SPELL_ICON = "BTNInsigniumOfTheBloodpriest"
+constant SPELL_NAME = "Storm Manaburn Totem"
+constant SPELL_HOTKEY = "W"
+constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
+constant SPELL_TT_EXTENDED = "Spawn a storm totem that burn mana on attack." +
+	" Attack and defence stats of totem is equal to caster's stats divided by 2. Amount of burned mana based on intellect of a hero." +
+	color(255, 184, 30).toColorString() + "\nBurn mana amount:  1 + ((intellect * level) / 20)"
+
+public constant STORM_MANABURN_TOTEM_ID = compiletime(ABIL_ID_GEN.next())
+public constant STORM_MANABURN_TOTEM_UNIT_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function gen()
+	new ChannelAbilityPreset(STORM_MANABURN_TOTEM_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..presetHotkey(SPELL_HOTKEY)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.POINT)
+		..presetCooldown(lvl -> 5 - (lvl / 6))
+		..presetManaCost(lvl -> (50 * (lvl / 2)).toInt())
+		..presetCastingTime(lvl -> .25)
+		..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.friend, TargetsAllowed.organic, TargetsAllowed.self))
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(2)
+
+	new UnitDefinition(STORM_MANABURN_TOTEM_UNIT_ID, UnitIds.serpentward1)
+		..setModelFile(Buildings.elvenGuardMagicTower)
+		..setScalingValue(.4)
+		..setAttack1ProjectileArt("")
+
+class StormManaburnTotem
+	construct(unit caster, vec2 pos)
+		let lightningDuration = 0.6
+		let lvl = caster.getAbilityLevel(STORM_MANABURN_TOTEM_ID)
+		let burnManaAmount = 1 + (caster.getInt(true) * lvl / 20)
+
+		let totem = createUnit(caster.getOwner(), STORM_MANABURN_TOTEM_UNIT_ID, pos, caster.getFacingAngle())
+		totem
+			..setMaxHP((caster.getHP() / 2).toInt())
+			..setHP(caster.getHP() / 2)
+			..setArmor(caster.getArmor() / 2)
+			..setBaseDamage((caster.getBaseDamage(1) / 2).toInt(), 1)
+			..setAttackCooldown(caster.getAttackCooldown(1), 1)
+
+		let dmgCb = DamageEvent.addListener() () ->
+			if DamageEvent.getSource() == totem
+			and DamageEvent.getTarget().getMana() > 0
+				let target = DamageEvent.getTarget()
+				target.subMana(burnManaAmount)
+				caster.addMana(burnManaAmount)
+				createDecManaTextTag(target, burnManaAmount.toInt())
+				createManaTextTag(caster, burnManaAmount.toInt())
+				let effTarget = addLightning(LIGHTNING_DRAIN_MANA, true, target.getPos(), totem.getPos())
+				let effCaster = addLightning(LIGHTNING_DRAIN_MANA, true, totem.getPos(), caster.getPos())
+				doPeriodicallyTimed(ANIMATION_PERIOD, lightningDuration) cb ->
+					effTarget.move(true, target.getPos(), totem.getPos())
+					effCaster.move(true, totem.getPos(), caster.getPos())
+					if cb.isLast()
+						effTarget.destr()
+						effCaster.destr()
+
+		doAfter(20) ->
+			totem.kill()
+			destroy dmgCb
+
+init
+	EventListener.onPointCast(STORM_MANABURN_TOTEM_ID) (unit caster, vec2 pos) ->
+		new StormManaburnTotem(caster, pos)

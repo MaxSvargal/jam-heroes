@@ -1,0 +1,105 @@
+package ChainLightning
+
+import ChannelAbilityPreset
+import ClosureTimers
+import Abilities
+import DamageEvent
+import HashList
+import TextTags
+import AbilityIds
+
+constant SPELL_RADIUS = 384.
+constant SPELL_ICON = "PASstormlash"
+constant SPELL_NAME = "Chain Lightning"
+constant SPELL_TT_NORMAL = SPELL_NAME
+constant SPELL_TT_EXTENDED = "Passive. When mana level is more then a half, each attack begins to take lightning chain effect. Cost 2 mana for each target. Damage reduced by 10% per target." +
+	color(255, 184, 30).toColorString() + "\nDamage formula: base + (strength + (intellect * 2)) / 10 * level"
+
+public constant CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function gen()
+	new ChannelAbilityPreset(CHAIN_LIGHTNING_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.PASSIVE)
+		..presetAreaofEffect(lvl -> SPELL_RADIUS)
+		..presetCooldown(lvl -> 5 - (lvl / 5))
+		..presetManaCost(lvl -> 0)
+		..presetCastingTime(lvl -> .1)
+		..presetOption(Option.UNIQUECAST, true)
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(2)
+
+class ChainLightning
+	constant ENUM_GROUP = CreateGroup()
+	constant filter = Filter(() -> GetFilterUnit().isAlive())
+	constant alreadyAttaked = new HashList<unit>()
+	int lvl
+	real damage
+
+	construct()
+		DamageEvent.addListener() ->
+			let caster = DamageEvent.getSource()
+	
+			if DamageEvent.getType() == DamageType.ATTACK
+			and caster.hasAbility(CHAIN_LIGHTNING_ID)
+				if caster.getMana() >= caster.getMaxMana() / 2
+					if not caster.hasAbility(AbilityIds.lightningAttack)
+						caster.addAbility(AbilityIds.lightningAttack)
+	
+					let target = DamageEvent.getTarget()
+					lvl = caster.getAbilityLevel(CHAIN_LIGHTNING_ID)
+					damage = (caster.getStr(true) + (caster.getInt(true) * 2) / 10) * lvl
+					alreadyAttaked.add(target)
+					evalRound(caster, target, lvl, 0)
+				else
+					caster.removeAbility(AbilityIds.lightningAttack)
+
+	function getNearestEnemy(unit caster, unit source) returns unit
+		let pos = source.getPos()
+		GroupEnumUnitsInRange(ENUM_GROUP, pos.x, pos.y, SPELL_RADIUS, filter)
+		unit nearest = null
+		var bestDist = REAL_MAX
+		for u from ENUM_GROUP
+			let distSq = pos.distanceToSq(u.getPos())
+			if distSq < bestDist
+			and u != source
+			and u.isEnemyOf(caster.getOwner())
+			and not alreadyAttaked.has(u)
+				nearest = u
+				bestDist = distSq
+		if nearest != null
+			alreadyAttaked.add(nearest)
+		return nearest
+
+	function lightningEffect(unit source, unit target, real duration)
+		let eff = addLightning(LIGHTNING_CHAIN_LIGHTNING_PRIMARY, true, source.getPos(), target.getPos())
+		doPeriodicallyTimed(ANIMATION_PERIOD, duration) cb ->
+			eff.move(true, source.getPos(), target.getPos())
+			if cb.isLast()
+				eff.destr()
+
+	function evalRound(unit caster, unit source, int maxRound, int round)
+		let target = getNearestEnemy(caster, source)
+		if target != null
+			lightningEffect(source, target, 1.)
+			spellDamage(caster, target, damage)
+			target.addEffect(Abilities.aIlbSpecialArt, "chest")
+			caster.subMana(2)
+		if round < maxRound
+			doAfter(.1 * round, () -> evalRound(caster, target, maxRound, round + 1))
+		else
+			alreadyAttaked.clear()
+
+	function spellDamage(unit caster, unit target, real damage)
+		DamageEvent.setNextDamageFromCode()
+		DamageEvent.setNextDamageId(CHAIN_LIGHTNING_ID)
+		caster.damageTarget(target, damage)
+		createDamageTextTag(target, damage.toInt())
+
+init
+	new ChainLightning()

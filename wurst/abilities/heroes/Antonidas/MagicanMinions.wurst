@@ -20,6 +20,7 @@ constant SPELL_NAME = "Magican Minions"
 constant SPELL_HOTKEY = "E"
 constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
 constant SPELL_TT_EXTENDED = "Summon minions that fight on your side. They get a stats based on heroes intellect and strength." +
+	" Minion's targets takes extra damage if they have Black Fire debuff." +
 	color(255, 184, 30).toColorString() + "\nNumber of minions: 5/10 minions based on level" +
 	color(255, 184, 30).toColorString() + "\nBase damage damage: (strength + (intellect * 2)) * level / 10" +
 	color(255, 184, 30).toColorString() + "\nAmount of life: ((intellect * 3) + (strength * 2)) * level * 10"

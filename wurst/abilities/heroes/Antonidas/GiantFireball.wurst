@@ -5,6 +5,9 @@ import ClosureForGroups
 import Abilities
 import Projectile
 import Objects
+import TextTags
+
+import BlackFire
 
 constant RealLevelClosure SPELL_RADIUS = lvl -> 128. + lvl * 32
 constant RealLevelClosure SPELL_RANGE = lvl -> 500. + lvl * 30
@@ -16,6 +19,7 @@ constant SPELL_NAME = "Giant Fireball"
 constant SPELL_HOTKEY = "W"
 constant SPELL_TT_NORMAL = SPELL_NAME + " [" + SPELL_HOTKEY + "]"
 constant SPELL_TT_EXTENDED = "Launches a giant fireball that creates a powerful explosion at the landing point. Damage all units in radius." +
+	"If enemy has a Black Fire debuff, then deal double damage" +
 	color(255, 184, 30).toColorString() + "\nDamage formula: (base + (strength * 2) + (intellect * 3)) * level"
 
 public constant GIANT_FIREBALL_ID = compiletime(ABIL_ID_GEN.next())
@@ -59,7 +63,11 @@ class GiantFireball extends PhysicsProjectile
 	override function onGroundHit()
 		addEffect(Objects.neutralBuildingExplosion, pos)..setScale(1.5).destr()
 		forUnitsInRange(pos.toVec2(), SPELL_RADIUS.run(lvl)) u ->
-			fx.getDummy().damageTarget(u, damage, ATTACK_TYPE_SIEGE)
+			let extraDamage = u.hasAbility(BLACK_FIRE_BUFF_ID) ? damage : 0
+
+			fx.getDummy().damageTarget(u, damage + extraDamage, ATTACK_TYPE_SIEGE)
+			createDamageTextTag(u, (damage + extraDamage).toInt())
+
 		terminate()
 
 init

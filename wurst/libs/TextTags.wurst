@@ -15,5 +15,11 @@ public function createLifeTextTag(unit u, int val)
 public function createManaTextTag(unit u, int val)
   createTextTagUnit("+", colorA(0, 0, 220, 255), val, u)
 
+public function createDecManaTextTag(unit u, int val)
+  createTextTagUnit("-", colorA(0, 0, 220, 255), val, u)
+
 public function createAbsorbTextTag(unit u, int val)
   createTextTagUnit("+", colorA(0, 220, 220, 255), val, u)
+
+public function createDamageTextTag(unit u, int val)
+  createTextTagUnit("", colorA(220, 0, 0, 255), val, u)

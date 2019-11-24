@@ -1,9 +1,11 @@
 package ManaSparkAttack
 
+// TODO: other trigger mechanism? By casing spell? Or make a chance?
+
 import ChannelAbilityPreset
-import StandardTextTags
 import Abilities
 import DamageEvent
+import TextTags
 
 constant SPELL_EFFECT_PATH = Abilities.bloodImpact
 constant SPELL_TARGET_EFFECT_PATH = "Objects\\Spawnmodels\\Human\\HumanLargeDeathExplode\\HumanLargeDeathExplode.mdl"
@@ -37,12 +39,7 @@ class ManaReplenishmentAttack
 				let abilLvl = caster.getAbilityLevel(MANA_SPARK_ATTACK_ID)
 				let restoreManaAmount = ((DamageEvent.getAmount() + caster.getInt(true)) * abilLvl) / 20
 				caster.addMana(restoreManaAmount)
-				createTextTag(caster, restoreManaAmount.toInt())
-
-	function createTextTag(unit u, int absorbed)
-		let text = "+" + absorbed.toString()
-		let pos  = u.getPos() - vec2(16., 0.)
-		standardTextTag(pos, text)..setColor(0, 0, 255, 255)
+				createManaTextTag(caster, restoreManaAmount.toInt())
 
 init
 	new ManaReplenishmentAttack()

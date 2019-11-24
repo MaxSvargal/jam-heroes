@@ -21,8 +21,8 @@ public constant GROM_HELLSCREAM_ONMAP_ID = compiletime(UNIT_ID_GEN.next())
 	new HeroBaseDefinition(UnitIds.gromhellscream, GROM_HELLSCREAM_ID, GROM_HELLSCREAM_ONMAP_ID)
 		..setModelFile(Units.hellscream1)
 		..setAttack(0, 2, 15, 1.7) // 7 DPS
-		..setDefence(ArmorType.Hero, 300, 0, 1)
-		..setStats(9, 11, 8, 1.75, 2, 1.5)
+		..setDefence(ArmorType.Hero, 400, 0, 1)
+		..setStats(10, 12, 8, 1.75, 2, 1.5)
 		..setHeroAbilities(commaList(BLEEDING_SLAM_ID, BRUTAL_LEAP_ID, INSTANT_NEMESIS_ID, SERIES_OF_ATTACK_ID, ABSORB_SHIELD_ID))
 
 init

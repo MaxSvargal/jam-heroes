@@ -24,7 +24,7 @@ public class CreepsFactory
 	function getDamageBase(int lvl) returns int
 		return 2 + 2 * lvl
 
-	function getDamageNumberofDice(int lvl, int damageBase) returns int
+	function getDamageNumberofDice(int _lvl, int damageBase) returns int
 		return 1 + (damageBase / 100).toInt()
 
 	function getDamageSidesperDie(int damageBase) returns int

@@ -1,0 +1,77 @@
+package BlackFire
+
+// Set on fire all enemies in selected area. They recieve a debuff that damage every second.
+// All fire spells of hero gives double damage if unit has the debuff.
+
+import ChannelAbilityPreset
+import Abilities
+import DamageEvent
+import ClosureEvents
+import ClosureForGroups
+import ClosureTimers
+import TextTags
+import BuffObjEditing
+
+constant BUFF_NAME = "Black Fire"
+constant BUFF_TT = "Burning. Increase fire damage."
+constant BUFF_EFFECT = "Blood Evisceration Black.mdx"
+constant BUFF_DURATION = 2.5
+
+constant SPELL_ICON = "BTNShadowTorment"
+constant SPELL_NAME = "Mana Replenishment Attack"
+constant SPELL_TT_NORMAL = SPELL_NAME
+constant SPELL_TT_EXTENDED = "Set on fire all enemies in selected area. They recieve a debuff that damage every second." +
+	" All fire spells of hero gives double damage if unit has the debuff." +
+	color(255, 184, 30).toColorString() + "\nDamage formula: (strength + (intellect * 2)) * lvl" +
+	color(255, 184, 30).toColorString() + "\nNumber of ticks: 5 + level"
+
+public constant BLACK_FIRE_ID = compiletime(ABIL_ID_GEN.next())
+public constant BLACK_FIRE_BUFF_OBJ = compiletime(createDummyBuffObject(BUFF_NAME, BUFF_TT, SPELL_ICON, BUFF_EFFECT, "origin"))
+public constant BLACK_FIRE_BUFF_ID = BLACK_FIRE_BUFF_OBJ.abilId
+
+@compiletime function gen()
+	new ChannelAbilityPreset(BLACK_FIRE_ID, 20, true)
+		..presetIcon(SPELL_ICON)
+		..setName(SPELL_NAME)
+		..setTooltipLearn(SPELL_TT_NORMAL)
+		..setTooltipLearnExtended(SPELL_TT_EXTENDED)
+		..presetTooltipNormal(lvl -> SPELL_TT_NORMAL)
+		..presetTooltipNormalExtended(lvl -> SPELL_TT_EXTENDED)
+		..presetTargetTypes(Targettype.POINT)
+		..presetOption(Option.TARGETIMAGE, true)
+		..presetAreaofEffect(lvl -> 300. + (35 * lvl))
+		..presetCastRange(lvl -> 600. + (30 * lvl))
+		..setButtonPositionNormalX(1)
+		..setButtonPositionNormalY(1)
+
+class BlackFire
+	constant abilId = BLACK_FIRE_ID
+	constant buffId = BLACK_FIRE_BUFF_OBJ.abilId
+	constant tickInterval = 1.
+
+	construct(unit caster, vec2 pos)
+		let lvl = caster.getAbilityLevel(abilId)
+		let owner = caster.getOwner()
+		let numOfTicks = 5. + lvl
+		let damagePerTick = (caster.getStr(true) + (caster.getInt(true) * 2) * lvl) / numOfTicks
+
+		flashEffect(Abilities.markOfChaosTarget, pos, 2 + (lvl * .1))
+		doAfter(2) ->
+			forUnitsInRange(pos, 200) (unit u) ->
+				if u.isEnemyOf(owner)
+					u.addAbility(buffId)
+					doPeriodicallyTimed(tickInterval, numOfTicks) cb ->
+						if u.isAlive()
+							spellDamage(caster, u, damagePerTick)
+							createDamageTextTag(u, damagePerTick.toInt())
+							if cb.isLast()
+								u.removeAbility(buffId)
+	
+	function spellDamage(unit caster, unit target, real damage)
+		DamageEvent.setNextDamageFromCode()
+		DamageEvent.setNextDamageId(abilId)
+		caster.damageTarget(target, damage)
+
+init
+	EventListener.onPointCast(BLACK_FIRE_ID) (unit caster, vec2 target) ->
+		new BlackFire(caster, target)
